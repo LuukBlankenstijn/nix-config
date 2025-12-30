@@ -1,0 +1,34 @@
+{ ... }: {
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = [ "--cmd cd" ];
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv = { enable = true; };
+    silent = true;
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
+    antidote = {
+      enable = true;
+      plugins = [
+        "getantidote/use-omz"
+        "ohmyzsh/ohmyzsh path:lib"
+
+        "ohmyzsh/ohmyzsh path:themes/robbyrussell.zsh-theme"
+
+        "ohmyzsh/ohmyzsh path:plugins/git"
+        "ohmyzsh/ohmyzsh path:plugins/sudo"
+        "ohmyzsh/ohmyzsh path:plugins/ssh-agent"
+      ];
+    };
+    shellAliases = { ls = "ls -Ahl"; };
+  };
+}
