@@ -12,6 +12,12 @@
     silent = true;
   };
 
+  programs.oh-my-posh = {
+    enable = true;
+    enableZshIntegration = true;
+    useTheme = "multiverse-neon";
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;

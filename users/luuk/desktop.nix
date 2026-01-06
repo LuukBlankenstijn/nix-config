@@ -1,5 +1,5 @@
 { ... }: {
-  imports = [ ./config/desktop/default.nix ];
+  imports = [ ../config/gui ../config/general ../config/ssh-client.nix ];
 
   home.username = "luuk";
   home.homeDirectory = "/home/luuk";

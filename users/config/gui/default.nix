@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   imports = [
     ./cursor.nix
     ./hypridle.nix
@@ -7,11 +7,18 @@
     ./hyprpaper.nix
     ./hyprshell.nix
     ./kitty.nix
-    ./ssh-client.nix
     ./styling.nix
+    ./tailscale.nix
     ./waybar.nix
     ./zen-browser.nix
+  ];
 
-    ../shared
+  home.packages = with pkgs; [
+    signal-desktop
+    discord
+    eduvpn-client
+    gnome-calculator
+    nautilus
+    jetbrains.datagrip
   ];
 }

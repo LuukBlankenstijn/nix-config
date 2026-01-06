@@ -3,6 +3,7 @@
   programs.hyprshell = {
     enable = true;
     package = pkgs.hyprshell;
+    systemd.enable = true;
     systemd.args = "-v";
     settings = {
       windows = {

@@ -2,7 +2,7 @@
   disko.devices = {
     disk = {
       main = {
-        device = "/dev/nvme0n1";
+        device = "/dev/sda";
         type = "disk";
         content = {
           type = "gpt";
@@ -17,14 +17,47 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-            root = {
+            luks = {
               size = "100%";
+              type = "8300";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
+                type = "luks";
+                name = "crypted";
+                content = {
+                  type = "zfs";
+                  pool = "rpool";
+                };
               };
             };
+          };
+        };
+      };
+    };
+    zpool = {
+      rpool = {
+        type = "zpool";
+        rootFsOptions = {
+          compression = "zstd";
+          atime = "off";
+          mountpoint = "none";
+          "xattr" = "sa";
+        };
+        datasets = {
+          root = {
+            type = "zfs_fs";
+            mountpoint = "/";
+          };
+          nix = {
+            type = "zfs_fs";
+            mountpoint = "/nix";
+          };
+          home = {
+            type = "zfs_fs";
+            mountpoint = "/home";
+          };
+          persist = {
+            type = "zfs_fs";
+            mountpoint = "/persist";
           };
         };
       };

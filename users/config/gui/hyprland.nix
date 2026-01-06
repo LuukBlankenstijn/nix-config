@@ -24,6 +24,7 @@ in {
   services.cliphist.enable = true;
 
   wayland.windowManager.hyprland = {
+    systemd.variables = [ "--all" ];
     enable = true;
     xwayland.enable = true;
 
@@ -36,7 +37,7 @@ in {
 
       # vars
       "$terminal" = "kitty";
-      "$filemanager" = "dolphin";
+      "$filemanager" = "nautilus";
       "$browser" = "zen";
       "$mainmod" = "CTRL";
 
@@ -88,10 +89,12 @@ in {
 
       # input
       input = {
+        scroll_factor = 0.5;
         kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
         touchpad.natural_scroll = false;
+        touchpad.scroll_factor = 0.5;
       };
 
       windowrulev2 = [
@@ -104,7 +107,7 @@ in {
         # apps
         "$mainmod, Q, exec, $terminal"
         "$mainmod, B, exec, $browser"
-        "$mainmod, E, exec, $fileManager"
+        "$mainmod, E, exec, $filemanager"
 
         # window mgmt
         "$mainmod, C, killactive,"

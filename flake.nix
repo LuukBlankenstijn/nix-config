@@ -8,8 +8,8 @@
       flake = false;
     };
 
-    agenix = {
-      url = "github:ryantm/agenix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,6 +22,8 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    impermanence = { url = "github:nix-community/impermanence"; };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -37,6 +39,12 @@
     };
 
     neovim.url = "path:./nvim";
+
+    ranger-archives = {
+      url =
+        "github:maximtrp/ranger-archives/0b1cfa9a77412c3b51da5b1b213c672227f9fbb4";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, disko, home-manager, ... }@inputs: {
@@ -45,11 +53,13 @@
       specialArgs = { inherit inputs; };
       modules = [
         disko.nixosModules.disko
+        inputs.sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager
+        inputs.impermanence.nixosModules.impermanence
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.luuk = import ./users/luuk/home.nix;
+          home-manager.users.luuk = import ./users/luuk/desktop.nix;
           home-manager.extraSpecialArgs = { inherit inputs; };
         }
         ./hosts/zenbook/configuration.nix

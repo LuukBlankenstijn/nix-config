@@ -1,7 +1,10 @@
 { ... }: {
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   imports = [
     ./disko.nix
-    ../../modules/desktop.nix
+    ../../modules/secrets.nix
+    ../../modules/desktop
+    ../../modules/storage/zfs.nix
     ../../modules/users/luuk/desktop.nix
   ];
   boot.loader.systemd-boot.enable = true;
@@ -9,5 +12,6 @@
 
   system.stateVersion = "25.11";
 
-  networking.hostName = "laptop";
+  networking.hostName = "zenbook";
+  networking.hostId = "6bbc35ad";
 }

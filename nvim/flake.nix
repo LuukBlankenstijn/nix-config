@@ -1,5 +1,5 @@
 {
-  description = "Nixvim configuration";
+  description = "NeoVim";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -12,12 +12,6 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       configModule = import ./config;
-      loadConfig = path:
-        let imported = import path;
-        in if builtins.isFunction imported then
-          imported { inherit pkgs inputs; }
-        else
-          imported;
     in {
       packages.${system}.default =
         nixvim.legacyPackages.${system}.makeNixvimWithModule {
@@ -31,6 +25,7 @@
 
         programs.nixvim = {
           enable = true;
+          defaultEditor = true;
           imports = [ ./config ];
         };
       };
