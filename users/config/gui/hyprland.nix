@@ -100,7 +100,7 @@ in {
         "suppressevent maximize, class:.*"
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
         "workspace 1, class:(kitty)"
-        "workspace 2, class:(zen)"
+        "workspace 2, class:(zen-beta)"
       ];
 
       # keybinds

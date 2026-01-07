@@ -31,11 +31,6 @@
           lspBufAction = "signature_help";
         }
         {
-          key = "<leader>ca";
-          lspBufAction = "code_action";
-          mode = [ "n" "v" ];
-        }
-        {
           key = "<leader>cr";
           lspBufAction = "rename";
         }
@@ -144,6 +139,12 @@
         key = "<leader>cc";
         action.__raw = "vim.lsp.codelens.run";
         options.desc = "Run Codelens";
+      }
+      {
+        mode = [ "n" "v" ];
+        key = "<leader>ca";
+        action.__raw = "function() require('fzf-lua').lsp_code_actions() end";
+        options.desc = "Code Action";
       }
       {
         mode = "n";

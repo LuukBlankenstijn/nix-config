@@ -42,6 +42,10 @@
       };
     };
 
+    extraConfigLua = ''
+      require("fzf-lua").register_ui_select()
+    '';
+
     keymaps = [
       # --- File & Buffer Search ---
       {
