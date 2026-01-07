@@ -32,14 +32,13 @@ in {
       # monitors
       monitor = [ ",preferred,auto,auto" ];
 
-      # exec-once = [ "$browser" "$terminal", "hyprpaper" ];
-      exec-once = [ "$terminal" "hyprpaper" ];
+      exec-once = [ "$browser" "$terminal" "hyprpaper" ];
 
       # vars
       "$terminal" = "kitty";
       "$filemanager" = "nautilus";
       "$browser" = "zen";
-      "$mainmod" = "CTRL";
+      "$mainmod" = "SUPER";
 
       general = {
         gaps_in = 2;
@@ -100,6 +99,8 @@ in {
       windowrulev2 = [
         "suppressevent maximize, class:.*"
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        "workspace 1, class:(kitty)"
+        "workspace 2, class:(zen)"
       ];
 
       # keybinds

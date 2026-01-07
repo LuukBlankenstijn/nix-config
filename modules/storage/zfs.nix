@@ -4,8 +4,8 @@
   boot.initrd.luks.devices."crypted".device =
     "/dev/disk/by-partlabel/disk-main-luks";
   boot.initrd.postDeviceCommands = lib.mkAfter ''
-    if zfs list -H -t snapshot -o name rpool/root@blank >/dev/null 2>&1; then
-      zfs rollback -r rpool/root@blank
+    if ${pkgs.zfs}/bin/zfs list -H -t snapshot -o name rpool/root@blank >/dev/null 2>&1; then
+      ${pkgs.zfs}/bin/zfs rollback -r rpool/root@blank
     fi
   '';
 
@@ -16,6 +16,7 @@
     wantedBy = [ "multi-user.target" ];
     after = [ "zfs-mount.service" ];
     serviceConfig.Type = "oneshot";
+    path = [ pkgs.zfs ];
     script = ''
       if ! zfs list -H -t snapshot -o name rpool/root@blank >/dev/null 2>&1; then
         zfs snapshot rpool/root@blank
