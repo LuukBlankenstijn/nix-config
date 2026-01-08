@@ -21,6 +21,15 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    history = {
+      path = "$HOME/.zsh_history";
+      size = 100000;
+      save = 100000;
+      share = true;
+      ignoreDups = true;
+      ignoreSpace = true;
+      extended = true;
+    };
     syntaxHighlighting.enable = true;
     antidote = {
       enable = true;
