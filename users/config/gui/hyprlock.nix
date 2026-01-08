@@ -5,45 +5,51 @@ let
 
     ${builtins.readFile ./_assets/scripts/hyprlock/whatsong.sh}
   '';
-in {
+in
+{
   programs.hyprlock = {
     enable = true;
     settings = {
       # BACKGROUND
-      background = [{
-        monitor = "";
-        path = "${./_assets/wallpapers/nature.jpg}";
-        blur_passes = 2;
-        contrast = 1;
-        brightness = 0.5;
-        vibrancy = 1;
-        vibrancy_darkness = 0.2;
-      }];
+      background = [
+        {
+          monitor = "";
+          path = "${./_assets/wallpapers/nature.jpg}";
+          blur_passes = 2;
+          contrast = 1;
+          brightness = 0.5;
+          vibrancy = 1;
+          vibrancy_darkness = 0.2;
+        }
+      ];
 
       # GENERAL
-      general = { hide_cursor = true; };
+      general = {
+        hide_cursor = true;
+      };
 
       # INPUT FIELD
-      "input-field" = [{
-        monitor = "eDP-1";
-        size = "250, 60";
-        outline_thickness = 0;
-        dots_size = 0.2;
-        dots_spacing = 0.35;
-        dots_center = true;
-        outer_color = "rgba(0, 0, 0, 0.2)";
-        inner_color = "rgba(0, 0, 0, 0)";
-        font_color = "rgb(205, 214, 244)";
-        fade_on_empty = true;
-        rounding = -1;
-        check_color = "rgb(204, 136, 34)";
-        placeholder_text =
-          ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
-        hide_input = false;
-        position = "0, -200";
-        halign = "center";
-        valign = "center";
-      }];
+      "input-field" = [
+        {
+          monitor = "eDP-1";
+          size = "250, 60";
+          outline_thickness = 0;
+          dots_size = 0.2;
+          dots_spacing = 0.35;
+          dots_center = true;
+          outer_color = "rgba(0, 0, 0, 0.2)";
+          inner_color = "rgba(0, 0, 0, 0)";
+          font_color = "rgb(205, 214, 244)";
+          fade_on_empty = true;
+          rounding = -1;
+          check_color = "rgb(204, 136, 34)";
+          placeholder_text = ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
+          hide_input = false;
+          position = "0, -200";
+          halign = "center";
+          valign = "center";
+        }
+      ];
 
       # LABELS (Date, Time, Song, Battery)
       label = [
@@ -82,8 +88,7 @@ in {
         # BATTERY PERCENTAGE
         {
           monitor = "eDP-1";
-          text = ''
-            cmd[update:1000] echo "$(cat /sys/class/power_supply/BAT0/capacity)%"'';
+          text = ''cmd[update:1000] echo "$(cat /sys/class/power_supply/BAT0/capacity)%"'';
           color = "rgb(205, 214, 244)";
           font_size = 24;
           font_family = "JetBrains Mono";
@@ -96,6 +101,6 @@ in {
   };
 
   wayland.windowManager.hyprland.settings.bind = [
-    "$mainMod SHIFT, escape, exec, pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock"
+    "$mainmod, escape, exec, pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock"
   ];
 }
