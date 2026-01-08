@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   config = {
     plugins.snacks = {
       settings = {
@@ -55,22 +54,22 @@
         options.desc = "Terminal (Project Root)";
       }
       {
-        mode = [ "n" ];
-        key = "<c-/>";
-        action.__raw = "function() Snacks.terminal(nil, { cwd = Snacks.git.get_root() }) end";
-        options.desc = "Terminal (Root Dir)";
+        mode = [
+          "n"
+          "t"
+        ];
+        key = "<C-_>";
+        action.__raw = "function() Snacks.terminal.toggle() end";
+        options.desc = "Toggle terminal";
       }
       {
-        mode = [ "t" ];
-        key = "<c-_>";
-        action = "<C-\\><C-n><Cmd>close<CR>";
-        options.desc = "Hide terminal";
-      }
-      {
-        mode = [ "n" ];
-        key = "<c-_>";
-        action.__raw = "function() Snacks.terminal(nil, { cwd = Snacks.git.get_root() }) end";
-        options.desc = "which_key_ignore";
+        mode = [
+          "n"
+          "t"
+        ];
+        key = "<C-/>";
+        action.__raw = "function() Snacks.terminal.toggle() end";
+        options.desc = "Toggle terminal";
       }
     ];
   };
