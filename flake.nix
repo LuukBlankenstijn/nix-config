@@ -23,7 +23,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impermanence = { url = "github:nix-community/impermanence"; };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+    };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -41,35 +43,70 @@
     neovim.url = "path:./nvim";
 
     ranger-archives = {
-      url =
-        "github:maximtrp/ranger-archives/0b1cfa9a77412c3b51da5b1b213c672227f9fbb4";
+      url = "github:maximtrp/ranger-archives/0b1cfa9a77412c3b51da5b1b213c672227f9fbb4";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, disko, home-manager, ... }@inputs: {
-    nixosConfigurations.zenbook = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        disko.nixosModules.disko
-        inputs.sops-nix.nixosModules.sops
-        home-manager.nixosModules.home-manager
-        inputs.impermanence.nixosModules.impermanence
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.luuk = import ./users/luuk/desktop.nix;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-        }
-        ./hosts/zenbook/configuration.nix
-        ({ config, ... }: {
-          virtualisation.vmVariant = {
-            virtualisation.memorySize = 8192;
-            virtualisation.cores = 4;
-          };
-        })
-      ];
+  outputs =
+    {
+      self,
+      nixpkgs,
+      disko,
+      home-manager,
+      ...
+    }@inputs:
+    {
+      nixosConfigurations.zenbook = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          disko.nixosModules.disko
+          inputs.sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          inputs.impermanence.nixosModules.impermanence
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.luuk = import ./users/luuk/desktop.nix;
+              extraSpecialArgs = { inherit inputs; };
+            };
+          }
+          ./hosts/zenbook/configuration.nix
+          (_: {
+            virtualisation.vmVariant = {
+              virtualisation.memorySize = 8192;
+              virtualisation.cores = 4;
+            };
+          })
+        ];
+
+      };
+      nixosConfigurations.probook = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          disko.nixosModules.disko
+          inputs.sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          inputs.impermanence.nixosModules.impermanence
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.luuk = import ./users/luuk/desktop.nix;
+              extraSpecialArgs = { inherit inputs; };
+            };
+          }
+          ./hosts/probook/configuration.nix
+          (_: {
+            virtualisation.vmVariant = {
+              virtualisation.memorySize = 8192;
+              virtualisation.cores = 4;
+            };
+          })
+        ];
+      };
     };
-  };
 }
