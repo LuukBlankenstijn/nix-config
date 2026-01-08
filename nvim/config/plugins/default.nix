@@ -10,6 +10,7 @@
     ./lspconfig.nix
     ./lualine.nix
     ./mini-pairs.nix
+    ./neo-tree.nix
     ./noice.nix
     ./oil.nix
     ./persistence.nix
