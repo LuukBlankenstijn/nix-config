@@ -1,4 +1,3 @@
 *.qcow2
 keys
 result
-hosts/*/facter.json
