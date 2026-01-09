@@ -72,8 +72,15 @@
         };
         gitStatus = {
           symbols = {
+            added = "✚";
+            modified = "";
+            deleted = "✖";
+            renamed = "󰁕";
+            untracked = "";
+            ignored = "";
             unstaged = "󰄱";
-            staged = "󰱒";
+            staged = "";
+            conflict = "";
           };
         };
       };
