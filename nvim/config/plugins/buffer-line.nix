@@ -19,7 +19,10 @@
             end
           '';
 
-          offsets = [{ filetype = "snacks_layout_box"; }];
+          offsets = [
+            { filetype = "snacks_layout_box"; }
+            { filetype = "neo-tree"; }
+          ];
         };
       };
     };
@@ -95,7 +98,9 @@
         mode = "n";
         key = "<leader>bd";
         action.__raw = "function() Snacks.bufdelete() end";
-        options = { desc = "Delete Buffer"; };
+        options = {
+          desc = "Delete Buffer";
+        };
       }
       {
         mode = "n";
@@ -105,15 +110,20 @@
       }
     ];
 
-    autoCmd = [{
-      event = [ "BufAdd" "BufDelete" ];
-      callback.__raw = ''
-        function()
-          vim.schedule(function()
-            pcall(nvim_bufferline)
-          end)
-        end
-      '';
-    }];
+    autoCmd = [
+      {
+        event = [
+          "BufAdd"
+          "BufDelete"
+        ];
+        callback.__raw = ''
+          function()
+            vim.schedule(function()
+              pcall(nvim_bufferline)
+            end)
+          end
+        '';
+      }
+    ];
   };
 }
