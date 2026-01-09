@@ -5,81 +5,106 @@
     enable = true;
     systemd.enable = true;
 
-    settings = [{
-      layer = "top";
-      position = "top";
-      margin-top = 0;
-      margin-left = 0;
-      margin-right = 0;
-      spacing = 4;
+    settings = [
+      {
+        layer = "top";
+        position = "top";
+        margin-top = 0;
+        margin-left = 0;
+        margin-right = 0;
+        spacing = 4;
 
-      modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-      modules-center = [ "clock" ];
-      modules-right = [ "pulseaudio" "bluetooth" "network" "battery" "tray" ];
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/window"
+        ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "pulseaudio"
+          "bluetooth"
+          "network"
+          "battery"
+          "tray"
+        ];
 
-      "hyprland/workspaces" = {
-        format = "{name}";
-        on-click = "activate";
-      };
-
-      "clock" = {
-        format = "{:%I:%M %p  |  %a, %b %e}";
-        tooltip-format = ''
-          <big>{:%Y %B}</big>
-          <tt><small>{calendar}</small></tt>'';
-      };
-
-      "network" = {
-        format-wifi = " ";
-        format-ethernet = "󰈀";
-        format-disconnected = "󰖪";
-        tooltip-format = "{essid} ({signalStrength}%)";
-        on-click = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-      };
-
-      "bluetooth" = {
-        format = "";
-        format-connected = " {device_alias}";
-        format-connected-battery =
-          " {device_alias} {device_battery_percentage}%";
-        tooltip-format = ''
-          {controller_alias}	{controller_address}
-
-          {num_connections} connected'';
-        tooltip-format-connected = ''
-          {controller_alias}	{controller_address}
-
-          {num_connections} connected
-
-          {device_enumerate}'';
-        tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
-        on-click = "${pkgs.overskride}/bin/overskride";
-      };
-
-      "pulseaudio" = {
-        format = "{icon} {volume}%";
-        format-muted = "󰝟";
-        format-icons = {
-          headphone = "";
-          hands-free = "";
-          headset = "";
-          phone = "";
-          portable = "";
-          car = "";
-          default = [ "" "" "" ];
+        "hyprland/workspaces" = {
+          format = "{name}";
+          on-click = "activate";
         };
-        on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
-      };
 
-      "battery" = {
-        states = {
-          "warning" = 30;
-          "critical" = 15;
+        "hyprland/window" = {
+          format = "{class}";
+          icon = true;
         };
-        format = "{icon} {capacity}%";
-        format-icons = [ "" "" "" "" "" ];
-      };
-    }];
+
+        "clock" = {
+          format = "{:%I:%M %p  |  %a, %b %e}";
+          tooltip-format = ''
+            <big>{:%Y %B}</big>
+            <tt><small>{calendar}</small></tt>'';
+        };
+
+        "network" = {
+          format-wifi = " ";
+          format-ethernet = "󰈀";
+          format-disconnected = "󰖪";
+          tooltip-format = "{essid} ({signalStrength}%)";
+          on-click = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+        };
+
+        "bluetooth" = {
+          format = "";
+          format-connected = " {device_alias}";
+          format-connected-battery = " {device_alias} {device_battery_percentage}%";
+          tooltip-format = ''
+            {controller_alias}	{controller_address}
+
+            {num_connections} connected'';
+          tooltip-format-connected = ''
+            {controller_alias}	{controller_address}
+
+            {num_connections} connected
+
+            {device_enumerate}'';
+          tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
+          on-click = "${pkgs.overskride}/bin/overskride";
+        };
+
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "󰝟";
+          format-icons = {
+            headphone = "";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            default = [
+              ""
+              ""
+              ""
+            ];
+          };
+          on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
+        };
+
+        "battery" = {
+          states = {
+            "warning" = 30;
+            "critical" = 15;
+          };
+          format = "{icon} {capacity}%";
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
+        };
+      }
+    ];
 
     style = ''
       * {
