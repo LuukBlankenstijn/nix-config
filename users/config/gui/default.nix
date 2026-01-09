@@ -1,9 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ./cursor.nix
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
+    ./hyprmon.nix
     ./hyprpaper.nix
     ./hyprshell.nix
     ./kitty.nix

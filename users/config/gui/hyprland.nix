@@ -19,7 +19,6 @@ in
     pipewire
     brightnessctl
     playerctl
-    hyprmon
   ];
 
   services.cliphist.enable = true;
