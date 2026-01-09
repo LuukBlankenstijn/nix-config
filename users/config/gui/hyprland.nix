@@ -92,12 +92,12 @@ in
 
       # input
       input = {
-        scroll_factor = 0.5;
+        scroll_factor = 1;
         kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
         touchpad.natural_scroll = false;
-        touchpad.scroll_factor = 0.5;
+        touchpad.scroll_factor = 0.8;
       };
 
       windowrulev2 = [
@@ -130,21 +130,16 @@ in
         "shift, Print, exec, $(${screenShotScript}/bin/screenshot)"
       ]
       # focus workspace
-      ++ (builtins.map (
-        i:
-        "$mainmod, ${toString i}, workspace, ${toString i}"
-      ) (lib.range 1 9))
+      ++ (builtins.map (i: "$mainmod, ${toString i}, workspace, ${toString i}") (lib.range 1 9))
       # move current window to workspace
-      ++ (builtins.map (
-        i:
-        "$mainmod shift, ${toString i}, movetoworkspace, ${toString i}"
-      ) (lib.range 1 9))
+      ++ (builtins.map (i: "$mainmod shift, ${toString i}, movetoworkspace, ${toString i}") (
+        lib.range 1 9
+      ))
       # move workspace to monitor
       ++ (builtins.map (
         i:
         "$mainmod CTRL, ${toString i}, exec, hyprctl dispatch moveworkspacetomonitor ${toString i} current && hyprctl dispatch workspace ${toString i}"
-      ) (lib.range 1 9))
-      ;
+      ) (lib.range 1 9));
 
       # mouse move/resize
       bindm = [
