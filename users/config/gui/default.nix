@@ -22,5 +22,6 @@
     gnome-calculator
     nautilus
     jetbrains.datagrip
+    wasistlos
   ];
 }
