@@ -41,7 +41,7 @@ in
       # vars
       "$terminal" = "kitty";
       "$filemanager" = "nautilus";
-      "$browser" = "zen";
+      "$browser" = "zen-beta";
       "$mainmod" = "SUPER";
 
       general = {
