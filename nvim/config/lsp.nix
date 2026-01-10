@@ -1,62 +1,122 @@
+{ lib, ... }:
 {
   config = {
     lsp = {
       keymaps = [
+        # --- Navigation (Snacks Picker) ---
         {
           key = "gd";
-          lspBufAction = "definition";
+          action = lib.nixvim.mkRaw "function() Snacks.picker.lsp_definitions() end";
+          options.desc = "Goto Definition";
         }
         {
           key = "gr";
-          lspBufAction = "references";
+          action = lib.nixvim.mkRaw "function() Snacks.picker.lsp_references() end";
+          options.desc = "References";
         }
         {
           key = "gI";
-          lspBufAction = "implementation";
+          action = lib.nixvim.mkRaw "function() Snacks.picker.lsp_implementations() end";
+          options.desc = "Goto Implementation";
         }
         {
           key = "gy";
-          lspBufAction = "type_definition";
+          action = lib.nixvim.mkRaw "function() Snacks.picker.lsp_type_definitions() end";
+          options.desc = "Goto Type Definition";
         }
         {
           key = "gD";
-          lspBufAction = "declaration";
+          action = lib.nixvim.mkRaw "function() Snacks.picker.lsp_declarations() end";
+          options.desc = "Goto Declaration";
         }
+
+        # --- Native LSP Features ---
         {
           key = "K";
           lspBufAction = "hover";
+          options.desc = "Hover";
         }
         {
           key = "gK";
           lspBufAction = "signature_help";
-        }
-        {
-          key = "<leader>cr";
-          lspBufAction = "rename";
+          options.desc = "Signature Help";
         }
 
+        # --- Refactoring (Snacks & Fzf-lua) ---
         {
-          key = "<leader>cl";
-          action.__raw = "function() Snacks.picker.lsp_config() end";
+          key = "<leader>cr";
+          action = lib.nixvim.mkRaw "function() Snacks.rename.rename() end";
+          options.desc = "Rename";
         }
         {
+          key = "<leader>cR";
+          action = lib.nixvim.mkRaw "function() Snacks.rename.rename_file() end";
+          options.desc = "Rename File";
+        }
+        {
+          key = "<leader>ca";
+          mode = [
+            "n"
+            "v"
+          ];
+          action = lib.nixvim.mkRaw "function() require('fzf-lua').lsp_code_actions() end";
+          options.desc = "Code Action";
+        }
+        {
+          key = "<leader>cA";
+          mode = "n";
+          action = lib.nixvim.mkRaw "function() require('fzf-lua').lsp_code_actions({ context = { only = { 'source' }, diagnostics = {} } }) end";
+          options.desc = "Source Action";
+        }
+
+        # --- Codelens ---
+        {
+          key = "<leader>cc";
+          mode = [
+            "n"
+            "v"
+          ];
+          action = lib.nixvim.mkRaw "vim.lsp.codelens.run";
+          options.desc = "Run Codelens";
+        }
+        {
+          key = "<leader>cC";
+          action = lib.nixvim.mkRaw "vim.lsp.codelens.refresh";
+          options.desc = "Refresh Codelens";
+        }
+
+        # --- Snacks Words ---
+        {
           key = "]]";
-          action.__raw = "function() Snacks.words.jump(vim.v.count1) end";
+          action = lib.nixvim.mkRaw "function() Snacks.words.jump(vim.v.count1) end";
+          options.desc = "Next Reference";
         }
         {
           key = "[[";
-          action.__raw = "function() Snacks.words.jump(-vim.v.count1) end";
+          action = lib.nixvim.mkRaw "function() Snacks.words.jump(-vim.v.count1) end";
+          options.desc = "Prev Reference";
+        }
+        {
+          key = "<a-n>";
+          action = lib.nixvim.mkRaw "function() Snacks.words.jump(vim.v.count1, true) end";
+          options.desc = "Next Reference (Cycle)";
+        }
+        {
+          key = "<a-p>";
+          action = lib.nixvim.mkRaw "function() Snacks.words.jump(-vim.v.count1, true) end";
+          options.desc = "Prev Reference (Cycle)";
         }
 
-        {
-          key = "]d";
-          action.__raw =
-            "function() vim.diagnostic.jump({ count = 1, float = true }) end";
-        }
+        # --- Diagnostics (From your snippet) ---
         {
           key = "[d";
-          action.__raw =
-            "function() vim.diagnostic.jump({ count = -1, float = true }) end";
+          action = lib.nixvim.mkRaw "function() vim.diagnostic.jump({ count=-1, float=true }) end";
+          options.desc = "Prev Diagnostic";
+        }
+        {
+          key = "]d";
+          action = lib.nixvim.mkRaw "function() vim.diagnostic.jump({ count=1, float=true }) end";
+          options.desc = "Next Diagnostic";
         }
       ];
 
@@ -117,7 +177,7 @@
       {
         mode = "n";
         key = "gD";
-        action.__raw = "vim.lsp.buf.declaration";
+        action.__raw = "function() Snacks.picker.lsp_declarations() end";
         options.desc = "Goto Declaration";
       }
       {
@@ -135,13 +195,19 @@
 
       # --- Codelens ---
       {
-        mode = [ "n" "v" ];
+        mode = [
+          "n"
+          "v"
+        ];
         key = "<leader>cc";
         action.__raw = "vim.lsp.codelens.run";
         options.desc = "Run Codelens";
       }
       {
-        mode = [ "n" "v" ];
+        mode = [
+          "n"
+          "v"
+        ];
         key = "<leader>ca";
         action.__raw = "function() require('fzf-lua').lsp_code_actions() end";
         options.desc = "Code Action";
@@ -163,8 +229,7 @@
       {
         mode = "n";
         key = "<leader>cA";
-        action.__raw =
-          "function() vim.lsp.buf.code_action({ context = { only = { 'source' }, diagnostics = {} } }) end";
+        action.__raw = "function() vim.lsp.buf.code_action({ context = { only = { 'source' }, diagnostics = {} } }) end";
         options.desc = "Source Action";
       }
 
