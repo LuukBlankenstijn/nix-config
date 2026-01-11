@@ -9,6 +9,7 @@
     ./lint.nix
     ./lspconfig.nix
     ./lualine.nix
+    ./markdown-preview.nix
     ./mini-pairs.nix
     ./neo-tree.nix
     ./noice.nix
