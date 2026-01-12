@@ -6,6 +6,7 @@
     ./nvim.nix
     ./ranger.nix
     ./shell.nix
+    ./rbw.nix
   ];
 
   home.packages = with pkgs; [

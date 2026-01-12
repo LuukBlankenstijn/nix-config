@@ -1,12 +1,8 @@
 keys:
   - &luuk "age14aaw06ykpmrzgp56gyfhu2c0eh4w0k4aavq594tpym7j978hl5cs7qvccc"
-  - &probook "age1r2vxuh7f2lt3v437nhu607tpevt8a0rwxeajruyj3zg6lyfta3wq268m4f"
-  - &zenbook "age1d6dgkt7ysrtr7ud7g2yakyeh4aqzxxujkyuzy2tj4u7t68vyl9rq0s3fqn"
 
 creation_rules:
   - path_regex: secrets/.*
     key_groups:
       - age:
         - *luuk
-        - *probook
-        - *zenbook
