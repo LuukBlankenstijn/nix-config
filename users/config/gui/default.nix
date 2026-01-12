@@ -8,6 +8,7 @@
     ./hyprmon.nix
     ./hyprpaper.nix
     ./hyprshell.nix
+    ./keyring.nix
     ./kitty.nix
     ./styling.nix
     ./tailscale.nix
