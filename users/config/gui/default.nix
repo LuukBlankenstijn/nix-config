@@ -23,5 +23,6 @@
     nautilus
     jetbrains.datagrip
     wasistlos
+    spotify
   ];
 }
