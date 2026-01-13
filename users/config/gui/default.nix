@@ -10,6 +10,7 @@
     ./hyprshell.nix
     ./keyring.nix
     ./kitty.nix
+    ./pyprland.nix
     ./styling.nix
     ./tailscale.nix
     ./waybar.nix
@@ -23,7 +24,6 @@
     gnome-calculator
     nautilus
     jetbrains.datagrip
-    wasistlos
     spotify
   ];
 }
