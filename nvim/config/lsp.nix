@@ -121,6 +121,7 @@
       ];
 
       servers = {
+        basedpyright.enable = true;
         buf_ls.enable = true;
         clangd.enable = true;
         docker_compose_language_server.enable = true;
@@ -133,6 +134,7 @@
         nil_ls.enable = true;
         postgres_lsp.enable = true;
         protols.enable = true;
+        ruff.enable = true;
         sqls.enable = true;
         tailwindcss.enable = true;
         vtsls.enable = true;
