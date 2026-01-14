@@ -1,4 +1,5 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   imports = [ inputs.hyprshell.homeModules.hyprshell ];
   programs.hyprshell = {
     enable = true;
@@ -13,9 +14,16 @@
           enable = true;
           key = "alt_r";
           modifier = "super";
-          launcher = { max_items = 6; };
+          launcher = {
+            max_items = 6;
+          };
         };
-        switch.enable = true;
+        switch = {
+          # TODO: enable again when hyprshell supports filtering special workspaces
+          # https://github.com/H3rmt/hyprshell/issues/403
+          enable = false;
+          filter_by = [ ];
+        };
       };
     };
   };
