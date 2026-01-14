@@ -30,6 +30,14 @@
         class = "signal";
         excludes = [ "whatsapp" ];
       };
+      spotify = {
+        command = "${pkgs.spotify}/bin/spotify";
+        animation = "fromTop";
+        position = "2% 3%";
+        size = "96% 94%";
+        class = "Spotify";
+        unfocus = "hide";
+      };
     };
   };
 
@@ -39,6 +47,7 @@
       "$mainmod, Z, exec, pypr toggle term"
       "$mainmod, W, exec, pypr toggle whatsapp"
       "$mainmod, S, exec, pypr toggle signal"
+      "$mainmod, D, exec, pypr toggle spotify"
     ];
   };
 }
