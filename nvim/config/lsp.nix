@@ -128,6 +128,7 @@
         docker_language_server.enable = true;
         eslint.enable = true;
         gopls.enable = true;
+        helmls.enable = true;
         html.enable = true;
         jsonls.enable = true;
         marksman.enable = true;
@@ -138,6 +139,7 @@
         sqls.enable = true;
         tailwindcss.enable = true;
         vtsls.enable = true;
+        yamlls.enable = true;
       };
 
       inlayHints.enable = true;
