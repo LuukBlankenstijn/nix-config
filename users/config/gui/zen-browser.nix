@@ -4,6 +4,24 @@
 
   programs.zen-browser = {
     enable = true;
+    policies = {
+      AutofillAddressEnabled = true;
+      AutofillCreditCardEnabled = false;
+      DisableAppUpdate = true;
+      DisableFeedbackCommands = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      NoDefaultBookmarks = true;
+      OfferToSaveLogins = false;
+      EnableTrackingProtection = {
+        Value = true;
+        Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+    };
     profiles.default = {
       containersForce = true;
       containers = {
@@ -23,11 +41,10 @@
         "zen.welcome-screen.seen" = true;
         "zen.theme.hide-unified-extensions-button" = false;
         "zen.updates.show-update-notification" = false;
-        browser = {
-          tabs.warnOnClose = false;
-          download.panel.shown = false;
-          translations.automaticallyPopup = false;
-        };
+        "browser.tabs.warnOnClose" = false;
+        "browser.translations.automaticallyPopup" = false;
+        "signon.rememberSignons" = false;
+        "devtools.toolbox.host" = "right";
       };
       extensions.packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
         bitwarden
@@ -35,7 +52,7 @@
       ];
       search = {
         force = true;
-        default = "qwant";
+        default = "ddg";
       };
     };
   };
