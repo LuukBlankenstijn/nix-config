@@ -14,7 +14,7 @@ _: {
       mouse-scroll-multiplier = "1";
       keybind = [
         "performable:ctrl+c=copy_to_clipboard"
-        "ctrl+w=toggle_tab_overview"
+        "alt+w=toggle_tab_overview"
         "ctrl+x=close_surface"
 
         # Navigate splits
