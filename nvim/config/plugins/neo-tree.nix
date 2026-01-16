@@ -5,8 +5,6 @@
     settings = {
       sources = [
         "filesystem"
-        "buffers"
-        "git_status"
       ];
 
       commands = {
@@ -31,7 +29,7 @@
         };
       };
 
-      openFilesDoNotReplaceTypes = [
+      open_files_do_not_replace_types = [
         "terminal"
         "Trouble"
         "trouble"
@@ -40,9 +38,10 @@
       ];
 
       filesystem = {
-        bindToCwd = false;
-        followCurrentFile.enabled = true;
-        useLibuvFileWatcher = true;
+        bind_to_cwd = false;
+        follow_current_file.enabled = true;
+        filtered_items.visible = true;
+        use_libuv_file_watcher = true;
       };
 
       window = {
@@ -50,27 +49,23 @@
           "l" = "open";
           "h" = "close_node";
           "<space>" = "none";
-
           "Y" = "copy_path";
           "O" = "system_open";
-
           "P" = {
             command = "toggle_preview";
-            config = {
-              use_float = false;
-            };
           };
         };
       };
 
-      defaultComponentConfigs = {
+      default_component_configs = {
         indent = {
-          withExpanders = true;
-          expanderCollapsed = "";
-          expanderExpanded = "";
-          expanderHighlight = "NeoTreeExpander";
+          padding = 0;
+          with_expanders = true;
+          expander_collapsed = "";
+          expander_expanded = "";
+          expander_highlight = "NeoTreeExpander";
         };
-        gitStatus = {
+        git_status = {
           symbols = {
             added = "✚";
             modified = "";
@@ -85,22 +80,24 @@
         };
       };
 
-      eventHandlers = {
-        file_moved = {
-          __raw = ''
+      event_handlers = [
+        {
+          event = "file_moved";
+          handler.__raw = ''
             function(data)
               Snacks.rename.on_rename_file(data.source, data.destination)
             end
           '';
-        };
-        file_renamed = {
-          __raw = ''
+        }
+        {
+          event = "file_renamed";
+          handler.__raw = ''
             function(data)
               Snacks.rename.on_rename_file(data.source, data.destination)
             end
           '';
-        };
-      };
+        }
+      ];
     };
   };
 
