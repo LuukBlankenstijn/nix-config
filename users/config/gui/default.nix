@@ -2,6 +2,7 @@
 {
   imports = [
     ./cursor.nix
+    ./ghostty.nix
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
@@ -9,7 +10,6 @@
     ./hyprpaper.nix
     ./hyprshell.nix
     ./keyring.nix
-    ./kitty.nix
     ./pyprland.nix
     ./styling.nix
     ./tailscale.nix

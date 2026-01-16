@@ -6,12 +6,12 @@
     pyprland.plugins = [ "scratchpads" ];
     scratchpads = {
       term = {
-        command = "${pkgs.kitty}/bin/kitty --class pypr-kitty";
+        command = "${pkgs.ghostty}/bin/ghostty --class=pypr.ghostty";
         animation = "fromTop";
         unfocus = "hide";
         position = "2% 3%";
         size = "96% 94%";
-        class = "pypr-kitty";
+        class = "pypr.ghostty";
         hideDelay = 0;
       };
       whatsapp = {
