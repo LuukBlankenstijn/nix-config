@@ -45,7 +45,7 @@
         # --- Refactoring (Snacks & Fzf-lua) ---
         {
           key = "<leader>cr";
-          action = lib.nixvim.mkRaw "function() Snacks.rename.rename() end";
+          action = lib.nixvim.mkRaw "vim.lsp.buf.rename";
           options.desc = "Rename";
         }
         {
