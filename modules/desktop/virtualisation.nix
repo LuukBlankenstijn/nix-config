@@ -1,6 +1,12 @@
-{ ... }: {
-  virtualisation.docker.enable = true;
-  virtualisation.libvirtd.enable = true;
+{ pkgs, ... }:
+{
+  virtualisation = {
+    docker.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.vhostUserPackages = [ pkgs.virtiofsd ];
+    };
+  };
   programs.virt-manager.enable = true;
 
   environment.persistence."/persist".directories = [
