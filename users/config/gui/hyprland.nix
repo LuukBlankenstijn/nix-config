@@ -32,14 +32,7 @@ in
       # monitors
       monitor = [ ",preferred,auto,auto" ];
 
-      exec-once = [
-        "$browser"
-        "hyprpaper"
-      ];
-
       # vars
-      "$filemanager" = "nautilus";
-      "$browser" = "zen-beta";
       "$mainmod" = "SUPER";
 
       general = {
@@ -98,18 +91,8 @@ in
         touchpad.scroll_factor = 0.8;
       };
 
-      windowrulev2 = [
-        "suppressevent maximize, class:.*"
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-        "workspace 2, class:(zen-beta)"
-      ];
-
       # keybinds
       bind = [
-        # apps
-        "$mainmod, B, exec, $browser"
-        "$mainmod, E, exec, $filemanager"
-
         # window mgmt
         "$mainmod, C, killactive,"
         "$mainmod, M, exit,"

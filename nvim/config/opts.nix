@@ -26,6 +26,7 @@
     inccommand = "nosplit";
     scrolloff = 4;
     smoothscroll = true;
+    mousescroll = "ver:1,hor:1";
 
     foldmethod = "expr";
     foldexpr = "nvim_treesitter#foldexpr()";

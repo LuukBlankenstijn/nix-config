@@ -14,7 +14,6 @@ _: {
     fwupd.enable = true;
     fstrim.enable = true;
 
-    printing.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;
 
@@ -24,9 +23,4 @@ _: {
       HandleLidSwitchDocked = "ignore";
     };
   };
-
-  environment.persistence."/persist".directories = [
-    "/etc/cups"
-    "/var/spool/cups"
-  ];
 }

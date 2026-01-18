@@ -10,6 +10,7 @@
     ./hyprpaper.nix
     ./hyprshell.nix
     ./keyring.nix
+    ./nautilus.nix
     ./pyprland.nix
     ./styling.nix
     ./tailscale.nix
@@ -22,7 +23,6 @@
     discord
     eduvpn-client
     gnome-calculator
-    nautilus
     jetbrains.datagrip
     spotify
   ];

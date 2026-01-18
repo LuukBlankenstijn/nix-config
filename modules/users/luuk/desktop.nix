@@ -11,5 +11,9 @@
     ];
   };
 
-  environment.persistence."/persist".users.luuk.directories = [ "." ];
+  environment.persistence."/persist".users.luuk = {
+    directories = [
+      { directory = ""; }
+    ];
+  };
 }

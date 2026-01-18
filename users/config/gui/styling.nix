@@ -4,6 +4,7 @@
     gsettings-desktop-schemas
     glib
     gsettings-desktop-schemas
+    nerd-fonts.jetbrains-mono
   ];
 
   dconf.settings = {
@@ -34,5 +35,14 @@
   home.sessionVariables = {
     GTK_USE_PORTAL = "1";
     GTK_APPLICATION_PREFER_DARK_THEME = "1";
+  };
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      monospace = [ "JetBrainsMono Nerd Font" ];
+      sansSerif = [ "JetBrainsMono Nerd Font" ];
+      serif = [ "JetBrainsMono Nerd Font" ];
+    };
   };
 }

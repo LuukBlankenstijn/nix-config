@@ -1,9 +1,21 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.hyprpaper ];
+_: {
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      splash = false;
+      wallpaper = [
+        {
+          monitor = "*";
+          path = "${./_assets/wallpapers/nature.jpg}";
+        }
+      ];
+    };
 
-  xdg.configFile."hypr/hyprpaper.conf".text = ''
-    preload = ${./_assets/wallpapers/nature.jpg}
-    wallpaper = , ${./_assets/wallpapers/nature.jpg}
-    splash = false
-  '';
+  };
+  # home.packages = [ pkgs.hyprpaper ];
+  # xdg.configFile."hypr/hyprpaper.conf".text = ''
+  #   preload = ${./_assets/wallpapers/nature.jpg}
+  #   wallpaper = *,${./_assets/wallpapers/nature.jpg}
+  #   splash = false
+  # '';
 }

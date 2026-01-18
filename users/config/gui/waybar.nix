@@ -67,23 +67,25 @@
 
             {device_enumerate}'';
           tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
-          on-click = "${pkgs.overskride}/bin/overskride";
+          # TODO: change once https://search.nixos.org/packages?channel=unstable&show=overskride&query=overskride is version 0.6.6
+          # on-click = "${pkgs.overskride}/bin/overskride";
+          on-click = "${pkgs.blueman}/bin/blueman-manager";
         };
 
-        "pulseaudio" = {
+        pulseaudio = {
           format = "{icon} {volume}%";
           format-muted = "󰝟";
           format-icons = {
             headphone = "";
-            hands-free = "";
-            headset = "";
+            hands-free = "󱡒";
+            headset = "󰋎";
             phone = "";
             portable = "";
             car = "";
             default = [
-              ""
-              ""
-              ""
+              "󰕿"
+              "󰖀"
+              "󰕾"
             ];
           };
           on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
@@ -163,6 +165,7 @@
     '';
   };
 
+  fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     pwvucontrol
@@ -171,9 +174,10 @@
   ];
 
   wayland.windowManager.hyprland.settings = {
-    windowrulev2 = [
-      "float, class:(pwvucontrol|overskride|nm-connection-editor)"
-      "move 55 50, class:(pwvucontrol|overskride|nm-connection-editor)"
+    windowrule = [
+      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), float 1"
+      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), size monitor_w*0.7 monitor_h*0.7"
+      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), move monitor_w*0.15 monitor_h*0.15"
     ];
   };
 }

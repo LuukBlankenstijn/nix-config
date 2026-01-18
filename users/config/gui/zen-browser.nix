@@ -43,6 +43,7 @@
         "zen.updates.show-update-notification" = false;
         "browser.tabs.warnOnClose" = false;
         "browser.translations.automaticallyPopup" = false;
+        "browser.shell.checkDefaultBrowser" = false;
         "signon.rememberSignons" = false;
         "devtools.toolbox.host" = "right";
       };
@@ -55,5 +56,23 @@
         default = "ddg";
       };
     };
+  };
+
+  wayland.windowManager.hyprland.settings = {
+    "$browser" = "${
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    }/bin/zen-beta";
+
+    exec-once = [
+      "$browser"
+    ];
+
+    windowrule = [
+      "match:class zen-beta, workspace 2"
+    ];
+
+    bind = [
+      "$mainmod, B, exec, $browser"
+    ];
   };
 }

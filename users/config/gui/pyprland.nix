@@ -15,6 +15,7 @@
         hideDelay = 0;
       };
       whatsapp = {
+        # use x11 because wayland does not allow setting class
         command = "${pkgs.chromium}/bin/chromium --app=https://web.whatsapp.com --class=pypr-whatsapp --user-data-dir=$HOME/.cache/pypr/whatsapp --ozone-platform=x11";
         animation = "fromRight";
         position = "39% 3%";

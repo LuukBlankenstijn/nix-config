@@ -12,7 +12,7 @@
         items_per_row = 3;
         overview = {
           enable = true;
-          key = "alt_r";
+          key = "r";
           modifier = "super";
           launcher = {
             max_items = 6;

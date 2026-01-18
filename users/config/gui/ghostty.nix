@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
@@ -36,14 +37,14 @@ _: {
     };
   };
   wayland.windowManager.hyprland.settings = {
+    "$terminal" = "${pkgs.ghostty}/bin/ghostty";
+
     exec-once = [
       "$terminal"
     ];
 
-    "$terminal" = "ghostty";
-
-    windowrulev2 = [
-      "workspace 1, class:(com.mitchellh.ghostty)"
+    windowrule = [
+      "match:class com.mitchellh.ghostty, workspace 1"
     ];
 
     bind = [
