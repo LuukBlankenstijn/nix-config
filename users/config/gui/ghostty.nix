@@ -13,6 +13,7 @@
       cursor-text = "cell-background";
       confirm-close-surface = false;
       mouse-scroll-multiplier = "1";
+      shell-integration-features = "cursor,sudo,title,ssh-env,no-ssh-terminfo";
       keybind = [
         "performable:ctrl+c=copy_to_clipboard"
         "alt+w=toggle_tab_overview"
