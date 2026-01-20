@@ -18,6 +18,8 @@
         markdown
         markdown_inline
         nix
+        php
+        php_only
         printf
         python
         query
@@ -35,9 +37,7 @@
       ];
       highlight.enable = true;
       indent.enable = true;
-
       folding.enable = true;
-
     };
 
     plugins.treesitter-textobjects = {
@@ -69,5 +69,19 @@
         };
       };
     };
+    # HACK: the treesitter module does not do this for some reason, I think it is a bug but not sure
+    autoCmd = [
+      {
+        event = [ "FileType" ];
+        # HACK: this is hardcoded to be the same as the one nixvim generates, if something breaks, its most likely this
+        group = "nixvim_treesitter";
+        callback.__raw = ''
+          function()
+            pcall(vim.treesitter.start)
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        '';
+      }
+    ];
   };
 }

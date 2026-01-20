@@ -133,6 +133,7 @@
         jsonls.enable = true;
         marksman.enable = true;
         nil_ls.enable = true;
+        phpactor.enable = true;
         postgres_lsp.enable = true;
         protols.enable = true;
         ruff.enable = true;
