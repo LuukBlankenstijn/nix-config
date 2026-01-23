@@ -18,6 +18,7 @@
     tabstop = 4;
     shiftwidth = 4;
     smartindent = true;
+    autoindent = true;
     shiftround = true;
     wrap = false;
 
