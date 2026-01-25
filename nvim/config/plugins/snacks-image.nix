@@ -1,6 +1,10 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   config = {
-    extraPackages = with pkgs; [ imagemagick ];
+    extraPackages = with pkgs; [
+      imagemagick
+      ghostscript
+    ];
 
     plugins.snacks = {
       enable = true;
