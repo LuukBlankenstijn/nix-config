@@ -135,6 +135,7 @@
         nil_ls.enable = true;
         phpactor.enable = true;
         postgres_lsp.enable = true;
+        pyright.enable = true;
         ruff.enable = true;
         sqls.enable = true;
         tailwindcss.enable = true;
