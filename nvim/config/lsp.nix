@@ -138,6 +138,7 @@
         pyright.enable = true;
         ruff.enable = true;
         sqls.enable = true;
+        svelte.enable = true;
         tailwindcss.enable = true;
         vtsls.enable = true;
         yamlls.enable = true;
