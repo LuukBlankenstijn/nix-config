@@ -6,6 +6,7 @@
     ../config/general
     ../config/ssh-client.nix
     ../config/gewis.nix
+    ../config/work
   ];
 
   sops = {
