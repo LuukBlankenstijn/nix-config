@@ -1,7 +1,11 @@
 {
   config.autoCmd = [
     {
-      event = [ "FocusGained" "TermClose" "TermLeave" ];
+      event = [
+        "FocusGained"
+        "TermClose"
+        "TermLeave"
+      ];
       callback.__raw = ''
         function()
           if vim.o.buftype ~= "nofile" then
@@ -83,7 +87,13 @@
 
     {
       event = "FileType";
-      pattern = [ "text" "plaintex" "typst" "gitcommit" "markdown" ];
+      pattern = [
+        "text"
+        "plaintex"
+        "typst"
+        "gitcommit"
+        "markdown"
+      ];
       callback.__raw = ''
         function()
           vim.opt_local.wrap = true
@@ -113,7 +123,6 @@
         "javascript"
         "javascriptreact"
         "yaml"
-        "json"
         "html"
         "css"
         "lua"
