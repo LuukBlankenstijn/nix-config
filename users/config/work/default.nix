@@ -73,7 +73,7 @@ in
 
   programs.git = {
     enable = true;
-    extraConfig = {
+    settings = {
       "includeIf \"gitdir:/home/luuk/work/\"".path = "${pkgs.writeText "work-git-config" ''
         [core]
           excludesFile = ${pkgs.writeText "work-ignore" ''
