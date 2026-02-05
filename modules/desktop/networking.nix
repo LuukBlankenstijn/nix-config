@@ -1,5 +1,10 @@
-{ ... }: {
-  networking.networkmanager.enable = true;
+_: {
+  networking = {
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;
+    };
+  };
 
   environment.persistence."/persist".directories = [
     "/etc/NetworkManager/system-connections"
