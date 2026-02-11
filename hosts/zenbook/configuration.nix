@@ -1,9 +1,5 @@
 { ... }:
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
   imports = [
     ./disko.nix
     ../../modules/secrets.nix
@@ -22,10 +18,20 @@
 
   networking.hostName = "zenbook";
   networking.hostId = "6bbc35ad";
+  nix = {
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
   };
 }
