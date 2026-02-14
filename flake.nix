@@ -50,11 +50,15 @@
       url = "github:maximtrp/ranger-archives/0b1cfa9a77412c3b51da5b1b213c672227f9fbb4";
       flake = false;
     };
+
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
-      self,
       nixpkgs,
       disko,
       home-manager,

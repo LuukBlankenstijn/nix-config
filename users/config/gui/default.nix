@@ -15,6 +15,7 @@
     ./styling.nix
     ./tailscale.nix
     ./waybar.nix
+    ./winapps.nix
     ./zen-browser.nix
   ];
 
