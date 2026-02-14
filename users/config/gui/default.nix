@@ -8,6 +8,7 @@
     ./hyprlock.nix
     ./hyprmon.nix
     ./hyprpaper.nix
+    ./hyprpicker.nix
     ./hyprshell.nix
     ./keyring.nix
     ./nautilus.nix
