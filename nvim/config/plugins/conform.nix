@@ -1,9 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   config = {
     extraPackages = with pkgs; [
       prettierd
       gofumpt
+      goimports-reviser
+      golines
       nixpkgs-fmt
       sql-formatter
       buf
@@ -29,7 +32,11 @@
 
         formatters_by_ft = {
           nix = [ "nixpkgs-fmt" ];
-          go = [ "gofumpt" ];
+          go = [
+            "gofumpt"
+            "goimports-reviser"
+            "golines"
+          ];
           javascript = [ "prettierd" ];
           typescript = [ "prettierd" ];
           javascriptreact = [ "prettierd" ];
@@ -49,7 +56,10 @@
 
     keymaps = [
       {
-        mode = [ "n" "x" ];
+        mode = [
+          "n"
+          "x"
+        ];
         key = "<leader>cF";
         action.__raw = ''
           function()
@@ -62,7 +72,10 @@
         };
       }
       {
-        mode = [ "n" "x" ];
+        mode = [
+          "n"
+          "x"
+        ];
         key = "<leader>cf";
         action.__raw = ''
           function()
