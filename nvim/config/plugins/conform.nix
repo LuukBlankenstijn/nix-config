@@ -20,7 +20,7 @@
             if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
               return
             end
-            return { timeout_ms = 500, lsp_format = "first" }
+            return { timeout_ms = 1000, lsp_format = "first" }
           end
         '';
         default_format_opts = {
@@ -48,9 +48,36 @@
           proto = [ "buf" ];
           sql = [ "sql-formatter" ];
           mysql = [ "sql-formatter" ];
+          php = [ "php_cs_fixer" ];
         };
-
-        formatters.injected.options.ignore_errors = true;
+        formatters = {
+          php_cs_fixer = {
+            # Only run if a config file is found in the project root
+            condition.__raw = ''
+              function(self, ctx)
+                return vim.fs.find({ ".php-cs-fixer.php", ".php-cs-fixer.dist.php", ".php_cs", ".php_cs.dist" }, { path = ctx.filename, upward = true })[1] ~= nil
+              end
+            '';
+            # Use the project's local binary if it exists, otherwise fall back to the one in your Nix path
+            command.__raw = ''
+              function(self, ctx)
+                local local_bin = vim.fs.find({ "vendor/bin/php-cs-fixer" }, { path = ctx.filename, upward = true })[1]
+                return local_bin or "php-cs-fixer"
+              end
+            '';
+            args = [
+              "fix"
+              "$FILENAME"
+              "--using-cache=no"
+              "--no-interaction"
+              "--quiet"
+            ];
+            format_on_save = {
+              lsp_fallback = false;
+            };
+          };
+          injected.options.ignore_errors = true;
+        };
       };
     };
 

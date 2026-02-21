@@ -59,13 +59,6 @@ let
 
 in
 {
-  home.packages = with pkgs; [
-    mkcert
-    nss.tools
-    rsync
-    docker
-  ];
-
   home.file."work/code/.envrc".text = ''
     # Nix managed, ignore
     layout work
@@ -93,6 +86,12 @@ in
     stdlib = ''
             layout_work() {
               use flake "github:loophp/nix-shell#env-php84" --impure
+
+              PATH_add "${pkgs.mkcert}/bin"
+              PATH_add "${pkgs.nss.tools}/bin"
+              PATH_add "${pkgs.rsync}/bin"
+              PATH_add "${pkgs.docker}/bin"
+              PATH_add "${pkgs.php84Packages.php-cs-fixer}/bin"
 
               # Start Docker
               ${dockerCmd} compose -f ${devComposeFile} up -d || true
