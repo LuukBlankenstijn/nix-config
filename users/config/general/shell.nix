@@ -1,4 +1,9 @@
-_: {
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    tirith
+  ];
+
   programs = {
     zoxide = {
       enable = true;
@@ -51,6 +56,9 @@ _: {
       shellAliases = {
         ls = "ls -Ahl";
       };
+      initContent = ''
+        eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
+      '';
     };
   };
 }

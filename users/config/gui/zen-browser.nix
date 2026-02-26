@@ -1,9 +1,12 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
 
+  home.file.".zen".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/zen";
+
   programs.zen-browser = {
     enable = true;
+    suppressXdgMigrationWarning = true;
     policies = {
       AutofillAddressEnabled = true;
       AutofillCreditCardEnabled = false;
