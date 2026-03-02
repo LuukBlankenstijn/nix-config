@@ -27,5 +27,6 @@
     gnome-calculator
     jetbrains.datagrip
     spotify
+    zotero
   ];
 }
