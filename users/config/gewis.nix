@@ -1,11 +1,6 @@
 { pkgs, config, ... }:
 let
   rdp = pkgs.writeShellScriptBin "rdp" ''
-    if ! ${pkgs.eduvpn-client}/bin/eduvpn-cli status | grep -q "Connected to: \"Eindhoven University of Technology\""; then
-      ${pkgs.hyprland}/bin/hyprctl notify 2 5000 "rgb(ff1111)" "Eduvpn not connected!"
-      exit 1
-    fi
-
     export P=$(${config.get-pass}/bin/get-pass "gewis-m-account")
 
     RDP_ARGS=$(head -n 1 ${config.sops.secrets.rdp-arguments.path} | tr -d "\r\n")
