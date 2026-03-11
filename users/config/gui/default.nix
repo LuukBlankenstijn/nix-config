@@ -15,6 +15,7 @@
     ./pyprland.nix
     ./styling.nix
     ./tailscale.nix
+    ./thunderbird.nix
     ./waybar.nix
     ./winapps.nix
     ./zen-browser.nix

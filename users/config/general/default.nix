@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
   imports = [
+    ./calendar.nix
+    ./email.nix
     ./git.nix
     ./keyring.nix
     ./nvim.nix

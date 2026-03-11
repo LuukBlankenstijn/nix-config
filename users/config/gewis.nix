@@ -50,4 +50,30 @@ in
   wayland.windowManager.hyprland.settings.bind = [
     "$mainmod, g, exec, ${rdp}/bin/rdp"
   ];
+
+  accounts.email.accounts."gewis m-account" = {
+    address = "m10878@gewis.nl";
+    realName = "Luuk Blankenstijn";
+    userName = "m10878@gewis.nl";
+
+    imap = {
+      host = "imap.gewis.nl";
+      port = 993;
+      tls.enable = true;
+    };
+    smtp = {
+      host = "smtp.gewis.nl";
+      port = 465;
+      tls.enable = true;
+    };
+
+    thunderbird = {
+      enable = true;
+      profiles = [ "default" ];
+      settings = id: {
+        "mail.server.server_${id}.authMethod" = 3;
+        "mail.smtpserver.smtp_${id}.authMethod" = 3;
+      };
+    };
+  };
 }
