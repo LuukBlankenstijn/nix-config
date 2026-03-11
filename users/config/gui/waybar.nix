@@ -38,10 +38,9 @@
         };
 
         "clock" = {
-          format = "{:%I:%M %p  |  %a, %b %e}";
-          tooltip-format = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
+          interval = 1;
+          format = "{:%I:%M:%S %p  |  %a, %b %e}";
+          tooltip-format = ''<tt><small>{calendar}</small></tt>'';
         };
 
         "network" = {
