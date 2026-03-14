@@ -67,8 +67,8 @@
             {device_enumerate}'';
           tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
           # TODO: change once https://search.nixos.org/packages?channel=unstable&show=overskride&query=overskride is version 0.6.6
-          # on-click = "${pkgs.overskride}/bin/overskride";
-          on-click = "${pkgs.blueman}/bin/blueman-manager";
+          on-click = "${pkgs.overskride}/bin/overskride";
+          # on-click = "${pkgs.blueman}/bin/blueman-manager";
         };
 
         pulseaudio = {
@@ -174,9 +174,9 @@
 
   wayland.windowManager.hyprland.settings = {
     windowrule = [
-      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), float 1"
-      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), size monitor_w*0.7 monitor_h*0.7"
-      "match:class (com.saivert.pwvucontrol|overskride|nm-connection-editor|.blueman-manager-wrapped), move monitor_w*0.15 monitor_h*0.15"
+      "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), float 1"
+      "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), size monitor_w*0.7 monitor_h*0.7"
+      "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), move monitor_w*0.15 monitor_h*0.15"
     ];
   };
 }

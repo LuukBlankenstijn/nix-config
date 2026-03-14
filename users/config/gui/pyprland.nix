@@ -2,7 +2,7 @@
 {
   home.packages = [ pkgs.pyprland ];
 
-  xdg.configFile."hypr/pyprland.toml".source = (pkgs.formats.toml { }).generate "pyprland-config" {
+  xdg.configFile."pypr/config.toml".source = (pkgs.formats.toml { }).generate "pyprland-config" {
     pyprland.plugins = [ "scratchpads" ];
     scratchpads = {
       term = {
@@ -12,7 +12,7 @@
         position = "2% 3%";
         size = "96% 94%";
         class = "pypr.ghostty";
-        hideDelay = 0;
+        hide_delay = 0;
       };
       whatsapp = {
         # use x11 because wayland does not allow setting class
