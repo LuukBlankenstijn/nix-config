@@ -48,7 +48,10 @@
           proto = [ "buf" ];
           sql = [ "sql-formatter" ];
           mysql = [ "sql-formatter" ];
-          php = [ "php_cs_fixer" ];
+          php = [
+            "php_cs_fixer"
+            "pint"
+          ];
         };
         formatters = {
           php_cs_fixer = {
@@ -72,6 +75,23 @@
               "--no-interaction"
               "--quiet"
             ];
+            format_on_save = {
+              lsp_fallback = false;
+            };
+          };
+          pint = {
+            condition.__raw = ''
+              function(self, ctx)
+                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1] ~= nil
+              end
+            '';
+            command.__raw = ''
+              function(self, ctx)
+                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1]
+              end
+            '';
+            args = [ "$FILENAME" ];
+
             format_on_save = {
               lsp_fallback = false;
             };

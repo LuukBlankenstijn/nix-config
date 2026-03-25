@@ -12,6 +12,7 @@
     ./markdown-preview.nix
     ./mini-pairs.nix
     ./neo-tree.nix
+    ./neotest.nix
     ./noice.nix
     ./oil.nix
     ./persistence.nix
