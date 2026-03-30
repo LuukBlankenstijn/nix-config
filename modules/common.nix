@@ -25,5 +25,19 @@
     extraSetFlags = [ "--operator=luuk" ];
   };
 
-  environment.persistence."/persist".directories = [ "/var/lib/tailscale" ];
+  services.netbird = {
+    ui.enable = true;
+    clients.default = {
+      name = "netbird";
+      port = 51820;
+    };
+  };
+  users.users.luuk.extraGroups = [
+    "netbird"
+  ];
+
+  environment.persistence."/persist".directories = [
+    "/var/lib/tailscale"
+    "/var/lib/netbird"
+  ];
 }
