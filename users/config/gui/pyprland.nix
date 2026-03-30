@@ -36,7 +36,7 @@
         animation = "fromTop";
         position = "2% 3%";
         size = "96% 94%";
-        class = "Spotify";
+        class = "spotify";
         unfocus = "hide";
       };
     };
