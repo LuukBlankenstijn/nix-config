@@ -1,4 +1,5 @@
-_: {
+{ config, lib, ... }:
+lib.mkIf config.cfg.laptop.enable {
   services.tlp = {
     enable = true;
     settings = {

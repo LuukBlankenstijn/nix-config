@@ -1,4 +1,5 @@
-_: {
+{ osConfig, lib, ... }:
+lib.mkIf osConfig.cfg.userConfig.desktop.email.enable {
   accounts.calendar.accounts = {
     "google" = {
       primary = false;

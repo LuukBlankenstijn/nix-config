@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ osConfig, lib, ... }:
 {
   imports = [
     ./cursor.nix
@@ -21,13 +21,5 @@
     ./zen-browser.nix
   ];
 
-  home.packages = with pkgs; [
-    signal-desktop
-    discord
-    eduvpn-client
-    gnome-calculator
-    jetbrains.datagrip
-    spotify
-    zotero
-  ];
+  home.packages = lib.optionals osConfig.cfg.userConfig.desktop.enable osConfig.cfg.userConfig.extraPackages;
 }

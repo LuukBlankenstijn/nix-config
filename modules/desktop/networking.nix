@@ -1,4 +1,5 @@
-_: {
+{ config, lib, ... }:
+lib.mkIf config.cfg.networking.enable {
   networking = {
     dhcpcd.enable = false;
 
@@ -31,7 +32,7 @@ _: {
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  environment.persistence."/persist".directories = [
+  environment.persistence."/persist".directories = lib.mkIf config.cfg.impermanence.enable [
     "/etc/NetworkManager/system-connections"
     "/var/lib/iwd"
   ];

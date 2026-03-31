@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    tirith
-  ];
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf osConfig.cfg.userConfig.shell.enable {
+  home.packages = [ pkgs.tirith ];
 
   programs = {
     zoxide = {
@@ -14,9 +12,7 @@
     direnv = {
       enable = true;
       enableZshIntegration = true;
-      nix-direnv = {
-        enable = true;
-      };
+      nix-direnv.enable = true;
       silent = true;
     };
 
@@ -45,9 +41,7 @@
         plugins = [
           "getantidote/use-omz"
           "ohmyzsh/ohmyzsh path:lib"
-
           "ohmyzsh/ohmyzsh path:themes/robbyrussell.zsh-theme"
-
           "ohmyzsh/ohmyzsh path:plugins/git"
           "ohmyzsh/ohmyzsh path:plugins/sudo"
           "ohmyzsh/ohmyzsh path:plugins/ssh-agent"

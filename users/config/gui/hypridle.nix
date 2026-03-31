@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userConfig.desktop.hyprland.idle.enable) {
   services.hypridle = {
     enable = true;
     settings = {

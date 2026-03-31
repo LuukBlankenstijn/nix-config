@@ -1,4 +1,5 @@
-_: {
+{ osConfig, lib, ... }:
+lib.mkIf osConfig.cfg.userConfig.git.enable {
   programs.git = {
     enable = true;
     settings = {

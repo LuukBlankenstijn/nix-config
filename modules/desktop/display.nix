@@ -1,7 +1,6 @@
-{ pkgs, ... }:
-{
+{ config, lib, pkgs, ... }:
+lib.mkIf config.cfg.desktop.enable {
   programs = {
-
     hyprland.enable = true;
     hyprlock.enable = true;
 
@@ -21,24 +20,20 @@
 
     dconf.enable = true;
   };
+
   security.pam.services = {
     hyprlock = { };
     login.enableGnomeKeyring = true;
   };
+
   services.xserver.enable = false;
+
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config = {
-      common = {
-        default = [ "gtk" ];
-      };
-      hyprland = {
-        default = [
-          "hyprland"
-          "gtk"
-        ];
-      };
+      common.default = [ "gtk" ];
+      hyprland.default = [ "hyprland" "gtk" ];
     };
   };
 }

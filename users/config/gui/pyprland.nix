@@ -1,5 +1,5 @@
-{ pkgs, ... }:
-{
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userConfig.desktop.hyprland.pyprland.enable) {
   home.packages = [ pkgs.pyprland ];
 
   xdg.configFile."pypr/config.toml".source = (pkgs.formats.toml { }).generate "pyprland-config" {

@@ -1,5 +1,5 @@
-{ pkgs, ... }:
-{
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userConfig.desktop.hyprland.mon.enable) {
   home.packages = with pkgs; [
     hyprmon
   ];

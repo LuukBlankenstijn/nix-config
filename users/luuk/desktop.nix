@@ -1,27 +1,27 @@
-{ inputs, ... }:
+{ inputs, osConfig, lib, ... }:
 {
-  imports = [
-    inputs.sops-nix.homeManagerModules.sops
-    ../config/gui
-    ../config/general
-    ../config/ssh-client.nix
-    ../config/gewis.nix
-    ../config/work
-  ];
+  imports =
+    [
+      inputs.sops-nix.homeManagerModules.sops
+      ../config/general
+      ../config/ssh-client.nix
+    ]
+    ++ lib.optionals osConfig.cfg.userConfig.gewis.enable [ ../config/gewis.nix ]
+    ++ lib.optionals osConfig.cfg.userConfig.desktop.enable [ ../config/gui ]
+    ++ lib.optionals osConfig.cfg.userConfig.work.enable [ ../config/work ];
 
   sops = {
     age.sshKeyPaths = [
       "/etc/ssh/ssh_host_ed25519_key"
-      "/home/luuk/.ssh/id_ed25519"
+      "/home/${osConfig.cfg.user}/.ssh/id_ed25519"
     ];
     defaultSopsFile = ../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
   };
 
   home = {
-    username = "luuk";
-    homeDirectory = "/home/luuk";
-
+    username = osConfig.cfg.user;
+    homeDirectory = "/home/${osConfig.cfg.user}";
     stateVersion = "25.11";
   };
 

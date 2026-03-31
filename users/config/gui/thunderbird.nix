@@ -1,5 +1,5 @@
-{ pkgs, ... }:
-{
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.email.enable) {
   programs.thunderbird = {
     enable = true;
     profiles.default = {

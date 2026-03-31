@@ -1,6 +1,6 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  users.users.luuk = {
+  users.users.${config.cfg.user} = {
     isNormalUser = true;
     extraGroups = lib.mkAfter [
       "seat"

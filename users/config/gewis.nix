@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ osConfig, lib, pkgs, config, ... }:
 let
   rdp = pkgs.writeShellScriptBin "rdp" ''
     export P=$(${config.get-pass}/bin/get-pass "gewis-m-account")
@@ -47,7 +47,7 @@ in
     pkgs.krb5
   ];
 
-  wayland.windowManager.hyprland.settings.bind = [
+  wayland.windowManager.hyprland.settings.bind = lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable [
     "$mainmod, g, exec, ${rdp}/bin/rdp"
   ];
 

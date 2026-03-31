@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ osConfig, lib, pkgs, ... }:
 let
   whatsongScript = pkgs.writeShellScriptBin "whatsong" ''
     export PATH=$PATH:${pkgs.playerctl}/bin
@@ -6,7 +6,7 @@ let
     ${builtins.readFile ./_assets/scripts/hyprlock/whatsong.sh}
   '';
 in
-{
+lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userConfig.desktop.hyprland.lock.enable) {
   programs.hyprlock = {
     enable = true;
     settings = {

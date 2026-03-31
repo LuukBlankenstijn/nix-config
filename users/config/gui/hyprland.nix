@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 let
   screenShotScript = pkgs.writeShellScriptBin "screenshot" ''
     export PATH=$PATH:${pkgs.hyprshot}/bin
@@ -11,7 +16,7 @@ let
     hyprshot -m region -o ~/screenshots -z -s "$@"
   '';
 in
-{
+lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
   home.packages = with pkgs; [
     qt5.qtwayland
     qt6.qtwayland

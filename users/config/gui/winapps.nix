@@ -1,4 +1,6 @@
 {
+  osConfig,
+  lib,
   config,
   pkgs,
   inputs,
@@ -66,7 +68,7 @@ let
     HIDEF="on"
   '';
 in
-{
+lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.winapps.enable) {
   xdg.configFile."winapps/compose.yaml".source = yaml.generate "compose.yaml" composeConfig;
   xdg.configFile."winapps/winapps.conf".text = winappsConfig;
   home.packages = [

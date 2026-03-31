@@ -1,4 +1,5 @@
-_: {
+{ config, lib, ... }:
+lib.mkIf config.cfg.impermanence.enable {
   fileSystems."/persist".neededForBoot = true;
   fileSystems."/home".neededForBoot = true;
 

@@ -1,9 +1,8 @@
-{ pkgs, ... }:
-{
+{ osConfig, lib, pkgs, ... }:
+lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.styling.enable) {
   home.packages = with pkgs; [
     gsettings-desktop-schemas
     glib
-    gsettings-desktop-schemas
     nerd-fonts.jetbrains-mono
   ];
 
@@ -13,6 +12,7 @@
       gtk-theme = "Adwaita-dark";
     };
   };
+
   gtk = {
     enable = true;
     theme = {
@@ -23,12 +23,13 @@
       name = "candy-icons";
       package = pkgs.candy-icons;
     };
-    gtk3.extraConfig = {
-      "gtk-application-prefer-dark-theme" = 1;
-    };
-
-    gtk4.extraConfig = {
-      "gtk-application-prefer-dark-theme" = 1;
+    gtk3.extraConfig."gtk-application-prefer-dark-theme" = 1;
+    gtk4 = {
+      theme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome-themes-extra;
+      };
+      extraConfig."gtk-application-prefer-dark-theme" = 1;
     };
   };
 

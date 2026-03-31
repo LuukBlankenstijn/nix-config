@@ -1,4 +1,5 @@
 {
+  osConfig,
   pkgs,
   lib,
   ...
@@ -46,7 +47,7 @@ in
     type = lib.types.package;
     default = get-pass;
   };
-  config = {
+  config = lib.mkIf osConfig.cfg.userConfig.rbw.enable {
     home.packages = [
       pkgs.libsecret
       get-pass

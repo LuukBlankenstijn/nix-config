@@ -64,57 +64,44 @@
       home-manager,
       ...
     }@inputs:
+    let
+      mkHost =
+        {
+          hostname,
+          user ? "luuk",
+          system ? "x86_64-linux",
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            disko.nixosModules.disko
+            inputs.sops-nix.nixosModules.sops
+            home-manager.nixosModules.home-manager
+            inputs.impermanence.nixosModules.impermanence
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.${user} = import ./users/${user}/desktop.nix;
+              };
+              cfg.user = user;
+            }
+            ./hosts/${hostname}/configuration.nix
+            (_: {
+              virtualisation.vmVariant = {
+                virtualisation.memorySize = 8192;
+                virtualisation.cores = 4;
+              };
+            })
+          ];
+        };
+    in
     {
-      nixosConfigurations.zenbook = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          disko.nixosModules.disko
-          inputs.sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          inputs.impermanence.nixosModules.impermanence
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.luuk = import ./users/luuk/desktop.nix;
-              extraSpecialArgs = { inherit inputs; };
-            };
-          }
-          ./hosts/zenbook/configuration.nix
-          (_: {
-            virtualisation.vmVariant = {
-              virtualisation.memorySize = 8192;
-              virtualisation.cores = 4;
-            };
-          })
-        ];
-
-      };
-      nixosConfigurations.probook = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          disko.nixosModules.disko
-          inputs.sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          inputs.impermanence.nixosModules.impermanence
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.luuk = import ./users/luuk/desktop.nix;
-              extraSpecialArgs = { inherit inputs; };
-            };
-          }
-          ./hosts/probook/configuration.nix
-          (_: {
-            virtualisation.vmVariant = {
-              virtualisation.memorySize = 8192;
-              virtualisation.cores = 4;
-            };
-          })
-        ];
+      nixosConfigurations = {
+        zenbook = mkHost { hostname = "zenbook"; };
+        probook = mkHost { hostname = "probook"; };
       };
     };
 }

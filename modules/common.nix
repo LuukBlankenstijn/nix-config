@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -22,7 +22,7 @@
 
   services.tailscale = {
     enable = true;
-    extraSetFlags = [ "--operator=luuk" ];
+    extraSetFlags = [ "--operator=${config.cfg.user}" ];
   };
 
   services.netbird = {
@@ -32,11 +32,9 @@
       port = 51820;
     };
   };
-  users.users.luuk.extraGroups = [
-    "netbird"
-  ];
+  users.users.${config.cfg.user}.extraGroups = [ "netbird" ];
 
-  environment.persistence."/persist".directories = [
+  environment.persistence."/persist".directories = lib.mkIf config.cfg.impermanence.enable [
     "/var/lib/tailscale"
     "/var/lib/netbird"
   ];

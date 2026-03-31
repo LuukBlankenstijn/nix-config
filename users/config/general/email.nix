@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 let
   gmailAuth = id: {
     "mail.server.server_${id}.authMethod" = 10;
@@ -15,7 +20,7 @@ let
     "mail.smtpserver.smtp_${id}.authMethod" = 3;
   };
 in
-{
+lib.mkIf osConfig.cfg.userConfig.desktop.email.enable {
   accounts.email.accounts = {
     "luukblankenstijn" = {
       primary = true;
