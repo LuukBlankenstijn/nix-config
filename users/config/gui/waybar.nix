@@ -1,4 +1,9 @@
-{ osConfig, lib, pkgs, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.waybar.enable) (
   lib.mkMerge [
     {
@@ -45,7 +50,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
             };
 
             "network" = {
-              format-wifi = " ";
+              format-wifi = " {essid}";
               format-ethernet = "󰈀";
               format-disconnected = "󰖪";
               tooltip-format = "{essid} ({signalStrength}%)";
@@ -53,9 +58,9 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
             };
 
             "bluetooth" = {
-              format = "";
-              format-connected = " {device_alias}";
-              format-connected-battery = " {device_alias} {device_battery_percentage}%";
+              format = "";
+              format-connected = " {device_alias}";
+              format-connected-battery = " {device_alias} {device_battery_percentage}%";
               tooltip-format = ''
                 {controller_alias}	{controller_address}
 
@@ -67,7 +72,6 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
                 {device_enumerate}'';
               tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
-              # TODO: change once https://search.nixos.org/packages?channel=unstable&show=overskride&query=overskride is version 0.6.6
               on-click = "${pkgs.overskride}/bin/overskride";
             };
 
@@ -75,13 +79,17 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               format = "{icon} {volume}%";
               format-muted = "󰝟";
               format-icons = {
-                headphone = "";
+                headphone = "";
                 hands-free = "󱡒";
                 headset = "󰋎";
-                phone = "";
-                portable = "";
-                car = "";
-                default = [ "󰕿" "󰖀" "󰕾" ];
+                phone = "";
+                portable = "";
+                car = "";
+                default = [
+                  "󰕿"
+                  "󰖀"
+                  "󰕾"
+                ];
               };
               on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
             };
@@ -92,14 +100,20 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
                 "critical" = 15;
               };
               format = "{icon} {capacity}%";
-              format-icons = [ "" "" "" "" "" ];
+              format-icons = [
+                ""
+                ""
+                ""
+                ""
+                ""
+              ];
             };
           }
         ];
 
         style = ''
           * {
-              font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+              font-family: "JetBrainsMono Nerd Font Mono", Roboto, Helvetica, Arial, sans-serif;
               font-size: 13px;
               border: none;
               border-radius: 0;

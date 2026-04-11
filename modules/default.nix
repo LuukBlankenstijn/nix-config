@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./myconfig.nix
+    ./config.nix
     ./secrets.nix
     ./desktop
     ./storage/zfs.nix
