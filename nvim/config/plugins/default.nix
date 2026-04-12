@@ -26,8 +26,10 @@
     ./trouble.nix
     ./which-key.nix
   ];
-
-  config.plugins.ts-comments.enable = true;
-  config.plugins.rustaceanvim.enable = true;
+  config.plugins = {
+    ts-comments.enable = true;
+    rustaceanvim.enable = true;
+    helm.enable = true;
+  };
 
 }

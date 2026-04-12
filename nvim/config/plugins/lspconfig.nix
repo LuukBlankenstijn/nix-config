@@ -1,1 +1,5 @@
-{ config.plugins.lspconfig = { enable = true; }; }
+{
+  config.plugins.lspconfig = {
+    enable = true;
+  };
+}

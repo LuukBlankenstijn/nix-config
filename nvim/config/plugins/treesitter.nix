@@ -13,7 +13,6 @@
         javascript
         jsdoc
         json
-        jsonc
         make
         markdown
         markdown_inline
