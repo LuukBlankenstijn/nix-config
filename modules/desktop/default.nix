@@ -2,15 +2,15 @@
 {
   imports = [
     ../common.nix
-    ./display.nix
+    ./hyprland.nix
+    ./display-manager.nix
+    ./portals.nix
     ./hardware.nix
     ./bluetooth.nix
-    ./networking.nix
     ./power-management.nix
     ./virtualisation.nix
     ./services.nix
     ./shell.nix
-    ../persistence.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

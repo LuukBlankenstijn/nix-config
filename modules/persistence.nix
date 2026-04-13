@@ -15,5 +15,10 @@ lib.mkIf config.cfg.impermanence.enable {
       "/etc/machine-id"
       "/etc/adjtime"
     ];
+    users.${config.cfg.user} = {
+      directories = [
+        { directory = ""; }
+      ];
+    };
   };
 }

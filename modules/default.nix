@@ -4,7 +4,11 @@
     ./config.nix
     ./secrets.nix
     ./desktop
-    ./storage/zfs.nix
+    ./server.nix
+    ./networking
+    ./services
+    ./persistence.nix
     ./users/luuk/desktop.nix
+    ./storage/zfs.nix
   ];
 }

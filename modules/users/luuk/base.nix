@@ -1,11 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   users.users.${config.cfg.user} = {
     isNormalUser = true;
-    extraGroups = lib.mkAfter [
+    shell = pkgs.zsh;
+    extraGroups = [
       "seat"
       "wheel"
-    ];
-    shell = pkgs.zsh;
+    ]
+    ++ lib.optionals config.cfg.networking.enable [ "networkmanager" ]
+    ++ lib.optionals config.cfg.virtualisation.docker.enable [ "docker" ]
+    ++ lib.optionals config.cfg.virtualisation.libvirtd.enable [ "libvirtd" ];
   };
 }

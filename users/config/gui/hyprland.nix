@@ -26,8 +26,6 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
     playerctl
   ];
 
-  services.cliphist.enable = true;
-
   wayland.windowManager.hyprland = {
     systemd.variables = [ "--all" ];
     enable = true;

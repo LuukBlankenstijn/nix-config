@@ -16,21 +16,50 @@ in
 
     # ── system features ─────────────────────────────────────────────────────────
     desktop = {
-      enable = mkEnableOption "desktop environment (Hyprland, display manager, XDG portal)";
+      enable = mkEnableOption "desktop environment (Hyprland, portals, etc.)";
+      displayManager.enable = mkEnableOption "display manager (ReGreet)";
       audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, JACK, PulseAudio compat)";
       hardware.enable = mkEnableOption "desktop hardware support (firmware, GPU drivers)";
     };
 
+    server.enable = mkEnableOption "server-specific features (OpenSSH, wheel passwordless sudo)";
+
     bluetooth.enable = mkEnableOption "Bluetooth hardware + blueman";
 
-    networking.enable = mkEnableOption "NetworkManager with iwd backend";
+    networking = {
+      enable = mkEnableOption "NetworkManager";
+      wifi.enable = mkEnableOption "Wi-Fi support (iwd)";
+      tailscale = {
+        enable = mkEnableOption "Tailscale mesh VPN";
+        loginServer = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "Optional login server for Tailscale (e.g. Headscale URL)";
+        };
+      };
+      netbird.enable = mkEnableOption "Netbird mesh VPN";
+      nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
+    };
 
     laptop.enable = mkEnableOption "laptop features (TLP power management, lid-switch handling)";
 
     virtualisation = {
       docker.enable = mkEnableOption "Docker container runtime";
+      podman = {
+        enable = mkEnableOption "Podman container runtime";
+        dockerAlias = mkEnableOption "alias podman to docker";
+      };
       libvirtd.enable = mkEnableOption "libvirtd (KVM/QEMU hypervisor)";
       virtManager.enable = mkEnableOption "virt-manager GUI (implies libvirtd)";
+    };
+
+    services = {
+      headscale.enable = mkEnableOption "Headscale – self-hosted Tailscale control server";
+      traefik.enable = mkEnableOption "Traefik – reverse proxy and edge router";
+      k3s = {
+        enable = mkEnableOption "K3s – lightweight Kubernetes distribution";
+        clusterInit = mkEnableOption "initialize a new cluster with embedded etcd";
+      };
     };
 
     # ── identity ────────────────────────────────────────────────────────────────
@@ -83,6 +112,10 @@ in
             ranger.enable = mkEnableOption "Ranger file manager";
             rbw.enable = mkEnableOption "rbw Bitwarden CLI";
             shell.enable = mkEnableOption "zsh shell configuration";
+            clipboard = {
+              enable = mkEnableOption "clipboard tools (wl-clipboard, xclip, osc52)";
+              history.enable = mkEnableOption "clipboard history (cliphist)";
+            };
 
             # ── extra packages ─────────────────────────────────────────────────
             extraPackages = mkOption {
@@ -114,9 +147,10 @@ in
       mkDefault true
     );
 
-    # winapps (any user) requires docker
-    cfg.virtualisation.docker.enable = mkIf (builtins.any (u: u.desktop.winapps.enable) (
-      builtins.attrValues config.cfg.users
-    )) (mkDefault true);
+    # winapps (any user) requires docker or podman
+    cfg.virtualisation.docker.enable = mkIf (
+      !config.cfg.virtualisation.podman.enable
+      && (builtins.any (u: u.desktop.winapps.enable) (builtins.attrValues config.cfg.users))
+    ) (mkDefault true);
   };
 }

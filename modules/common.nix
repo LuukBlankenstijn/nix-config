@@ -17,25 +17,30 @@
     zip
     tree
     file
-    tailscale
   ];
 
-  services.tailscale = {
-    enable = true;
-    extraSetFlags = [ "--operator=${config.cfg.user}" ];
-  };
+  nix = {
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
-  services.netbird = {
-    ui.enable = true;
-    clients.default = {
-      name = "netbird";
-      port = 51820;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
     };
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
   };
-  users.users.${config.cfg.user}.extraGroups = [ "netbird" ];
 
-  environment.persistence."/persist".directories = lib.mkIf config.cfg.impermanence.enable [
-    "/var/lib/tailscale"
-    "/var/lib/netbird"
-  ];
+  users.users.${config.cfg.user} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]
+      ++ lib.optional config.cfg.networking.enable "networkmanager"
+      ++ lib.optional config.cfg.networking.netbird.enable "netbird";
+  };
+  users.defaultUserShell = pkgs.zsh;
 }

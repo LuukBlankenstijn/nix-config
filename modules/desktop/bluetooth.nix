@@ -7,8 +7,10 @@ lib.mkIf config.cfg.bluetooth.enable {
 
   services.blueman.enable = true;
 
-  environment.persistence."/persist".directories = lib.mkIf config.cfg.impermanence.enable [
-    "/etc/bluetooth"
-    "/var/lib/bluetooth"
-  ];
+  environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
+    directories = [
+      "/etc/bluetooth"
+      "/var/lib/bluetooth"
+    ];
+  };
 }

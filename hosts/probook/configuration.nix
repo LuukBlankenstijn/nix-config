@@ -10,11 +10,16 @@
     impermanence.enable = true;
 
     desktop.enable = true;
+    desktop.displayManager.enable = true;
     desktop.audio.enable = true;
     desktop.hardware.enable = true;
 
     bluetooth.enable = true;
-    networking.enable = true;
+    networking = {
+      enable = true;
+      wifi.enable = true;
+      tailscale.enable = true;
+    };
     laptop.enable = true;
     virtualisation.docker.enable = true;
     virtualisation.libvirtd.enable = true;
@@ -55,6 +60,10 @@
       ranger.enable = true;
       rbw.enable = true;
       shell.enable = true;
+      clipboard = {
+        enable = true;
+        history.enable = true;
+      };
 
       extraPackages = with pkgs; [
         claude-code

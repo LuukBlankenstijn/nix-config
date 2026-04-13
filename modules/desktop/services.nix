@@ -2,6 +2,10 @@
 lib.mkMerge [
   (lib.mkIf config.cfg.desktop.enable {
     security.polkit.enable = true;
+    programs.dconf.enable = true;
+
+    security.pam.services.login.enableGnomeKeyring = true;
+
     services = {
       gnome.gnome-keyring.enable = true;
       fwupd.enable = true;

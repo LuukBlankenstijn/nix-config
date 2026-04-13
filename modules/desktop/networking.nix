@@ -6,12 +6,12 @@ lib.mkIf config.cfg.networking.enable {
     networkmanager = {
       enable = true;
       wifi = {
-        powersave = false;
-        backend = "iwd";
+        powersave = lib.mkDefault false;
+        backend = lib.mkIf config.cfg.networking.wifi.enable "iwd";
       };
     };
 
-    wireless.iwd = {
+    wireless.iwd = lib.mkIf config.cfg.networking.wifi.enable {
       enable = true;
       settings = {
         General = {
@@ -32,8 +32,9 @@ lib.mkIf config.cfg.networking.enable {
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  environment.persistence."/persist".directories = lib.mkIf config.cfg.impermanence.enable [
-    "/etc/NetworkManager/system-connections"
-    "/var/lib/iwd"
-  ];
+  environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
+    directories =
+      [ "/etc/NetworkManager/system-connections" ]
+      ++ lib.optionals config.cfg.networking.wifi.enable [ "/var/lib/iwd" ];
+  };
 }
