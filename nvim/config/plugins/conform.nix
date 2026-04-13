@@ -87,7 +87,7 @@
             '';
             command.__raw = ''
               function(self, ctx)
-                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1]
+                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1] or "pint"
               end
             '';
             args = [ "$FILENAME" ];

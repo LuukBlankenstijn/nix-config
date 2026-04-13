@@ -165,7 +165,7 @@ in
           echo 'user_pref("network.proxy.socks_remote_dns", true);'
       } >> "\$PROFILE_DIR/user.js"
 
-      zen --profile "\$PROFILE_DIR" --new-instance --no-remote https://google.com
+      zen-beta --profile "\$PROFILE_DIR" --new-instance --no-remote https://google.com
       EOF
 
               chmod +x "$LAUNCHER"
