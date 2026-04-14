@@ -1,4 +1,9 @@
-{ osConfig, lib, pkgs, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkIf osConfig.cfg.userConfig.shell.enable {
   home.packages = [ pkgs.tirith ];
 
@@ -19,7 +24,7 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
     oh-my-posh = {
       enable = true;
       enableZshIntegration = true;
-      useTheme = "multiverse-neon";
+      useTheme = if osConfig.cfg.desktop.enable then "multiverse-neon" else "blue-owl";
     };
 
     zsh = {
@@ -43,7 +48,8 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
           "ohmyzsh/ohmyzsh path:lib"
           "ohmyzsh/ohmyzsh path:themes/robbyrussell.zsh-theme"
           "ohmyzsh/ohmyzsh path:plugins/git"
-          "ohmyzsh/ohmyzsh path:plugins/sudo"
+        ]
+        ++ lib.optionals osConfig.cfg.desktop.enable [
           "ohmyzsh/ohmyzsh path:plugins/ssh-agent"
         ];
       };
