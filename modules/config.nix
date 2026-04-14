@@ -124,8 +124,6 @@ in
               description = "Extra packages to install for this user";
             };
 
-            # ── work / org ─────────────────────────────────────────────────────
-            work.enable = mkEnableOption "work environment (PHP dev, CoreDNS, dev browser profile)";
             gewis.enable = mkEnableOption "GEWIS organisation configuration";
           };
         })

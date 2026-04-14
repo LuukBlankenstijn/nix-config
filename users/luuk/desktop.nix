@@ -1,14 +1,17 @@
-{ inputs, osConfig, lib, ... }:
 {
-  imports =
-    [
-      inputs.sops-nix.homeManagerModules.sops
-      ../config/general
-      ../config/ssh-client.nix
-    ]
-    ++ lib.optionals osConfig.cfg.userConfig.gewis.enable [ ../config/gewis.nix ]
-    ++ lib.optionals osConfig.cfg.userConfig.desktop.enable [ ../config/gui ]
-    ++ lib.optionals osConfig.cfg.userConfig.work.enable [ ../config/work ];
+  inputs,
+  osConfig,
+  lib,
+  ...
+}:
+{
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+    ../config/general
+    ../config/ssh-client.nix
+  ]
+  ++ lib.optionals osConfig.cfg.userConfig.gewis.enable [ ../config/gewis.nix ]
+  ++ lib.optionals osConfig.cfg.userConfig.desktop.enable [ ../config/gui ];
 
   sops = {
     age.sshKeyPaths = [

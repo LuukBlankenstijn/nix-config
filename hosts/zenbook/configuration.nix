@@ -8,11 +8,12 @@
 
   cfg = {
     impermanence.enable = true;
-
-    desktop.enable = true;
-    desktop.displayManager.enable = true;
-    desktop.audio.enable = true;
-    desktop.hardware.enable = true;
+    desktop = {
+      enable = true;
+      displayManager.enable = true;
+      audio.enable = true;
+      hardware.enable = true;
+    };
 
     bluetooth.enable = true;
     networking = {
@@ -25,9 +26,11 @@
       netbird.enable = true;
     };
     laptop.enable = true;
-    virtualisation.docker.enable = true;
-    virtualisation.libvirtd.enable = true;
-    virtualisation.virtManager.enable = true;
+    virtualisation = {
+      docker.enable = true;
+      libvirtd.enable = true;
+      virtManager.enable = true;
+    };
 
     users.luuk = {
       desktop = {
@@ -82,7 +85,6 @@
         slack
       ];
 
-      work.enable = true;
       gewis.enable = true;
     };
   };
