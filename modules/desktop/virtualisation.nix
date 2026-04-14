@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkMerge [
   (lib.mkIf config.cfg.virtualisation.docker.enable {
     virtualisation.docker.enable = true;
@@ -28,16 +33,33 @@ lib.mkMerge [
   })
 
   (lib.mkIf config.cfg.virtualisation.podman.enable {
-    virtualisation.podman = {
-      enable = true;
-      dockerCompat = config.cfg.virtualisation.podman.dockerAlias;
-      defaultNetwork.settings.dns_enabled = true;
+    virtualisation = {
+      podman = {
+        enable = true;
+        dockerCompat =
+          (!config.cfg.virtualisation.docker.enable) && config.cfg.virtualisation.podman.dockerAlias;
+        dockerSocket.enable = !config.cfg.virtualisation.docker.enable;
+        defaultNetwork.settings.dns_enabled = true;
+      };
+
+      containers.containersConf.settings = {
+        engine = {
+          compose_warning_logs = false;
+        };
+      };
     };
 
-    environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
-      directories = [
-        "/var/lib/containers"
+    environment = {
+
+      systemPackages = [
+        pkgs.podman-compose
       ];
+
+      persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
+        directories = [
+          "/var/lib/containers"
+        ];
+      };
     };
   })
 ]

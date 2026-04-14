@@ -27,7 +27,10 @@
     };
     laptop.enable = true;
     virtualisation = {
-      docker.enable = true;
+      podman = {
+        enable = true;
+        dockerAlias = true;
+      };
       libvirtd.enable = true;
       virtManager.enable = true;
     };
