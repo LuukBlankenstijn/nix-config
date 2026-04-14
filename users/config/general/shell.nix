@@ -48,17 +48,29 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
           "ohmyzsh/ohmyzsh path:lib"
           "ohmyzsh/ohmyzsh path:themes/robbyrussell.zsh-theme"
           "ohmyzsh/ohmyzsh path:plugins/git"
-        ]
-        ++ lib.optionals osConfig.cfg.desktop.enable [
-          "ohmyzsh/ohmyzsh path:plugins/ssh-agent"
         ];
       };
       shellAliases = {
         ls = "ls -Ahl";
       };
-      initContent = ''
+      initContent = lib.mkBefore ''
+        DISABLE_AUTO_UPDATE="true"
         eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
       '';
+      completionInit = ''
+        autoload -Uz compinit
+        if [[ ~/.zcompdump -ot /run/current-system ]]; then
+          compinit
+          touch ~/.zcompdump
+        else
+          compinit -C
+        fi
+      '';
+    };
+
+    keychain = {
+      inherit (osConfig.cfg.desktop) enable;
+      keys = [ "id_ed25519" ];
     };
   };
 }
