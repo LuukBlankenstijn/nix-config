@@ -15,6 +15,21 @@
         desc = "Save File";
       };
     }
+    {
+      mode = [
+        "i"
+        "n"
+        "s"
+        "x"
+      ];
+      key = "<C-S-s>";
+      action = "<Cmd>noa w<CR><Esc>";
+      options = {
+        silent = true;
+        desc = "Save File without formating it";
+      };
+    }
+
     # --- Tab Navigation ---
     {
       mode = "n";
