@@ -8,6 +8,7 @@
     ./hardware.nix
     ./bluetooth.nix
     ./power-management.nix
+    ./printing.nix
     ./virtualisation.nix
     ./services.nix
     ./shell.nix
