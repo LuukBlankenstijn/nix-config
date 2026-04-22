@@ -140,6 +140,8 @@
         sqls.enable = true;
         svelte.enable = true;
         tailwindcss.enable = true;
+        tinymist.enable = true;
+        typos_lsp.enable = true;
         vtsls.enable = true;
         yamlls.enable = true;
       };
