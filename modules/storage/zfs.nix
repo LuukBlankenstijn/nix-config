@@ -3,11 +3,20 @@ lib.mkIf config.cfg.impermanence.enable {
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.package = pkgs.zfs;
   boot.initrd.luks.devices."crypted".device = "/dev/disk/by-partlabel/disk-main-luks";
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    if ${pkgs.zfs}/bin/zfs list -H -t snapshot -o name rpool/root@blank >/dev/null 2>&1; then
-      ${pkgs.zfs}/bin/zfs rollback -r rpool/root@blank
-    fi
-  '';
+  boot.initrd.systemd.services.rollback-root = {
+    description = "Rollback ZFS root to blank snapshot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import-rpool.service" ];
+    before = [ "sysroot.mount" ];
+    path = [ pkgs.zfs ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      if zfs list -H -t snapshot -o name rpool/root@blank >/dev/null 2>&1; then
+        zfs rollback -r rpool/root@blank
+      fi
+    '';
+  };
 
   services.zfs.autoScrub.enable = true;
   environment.systemPackages = [ pkgs.zfs ];
