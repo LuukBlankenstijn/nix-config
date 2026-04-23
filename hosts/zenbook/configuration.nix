@@ -95,6 +95,10 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
+  hardware.graphics = {
+    extraPackages = [ pkgs.intel-compute-runtime ];
+  };
+
   system.stateVersion = "25.11";
 
   networking.hostName = "zenbook";
