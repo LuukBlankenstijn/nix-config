@@ -21,6 +21,10 @@ lib.mkMerge [
       qemu.vhostUserPackages = [ pkgs.virtiofsd ];
     };
 
+    environment.etc."qemu/bridge.conf".text = ''
+      allow virbr0
+    '';
+
     environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
       directories = [
         "/var/lib/libvirt"
