@@ -16,6 +16,7 @@
     ./noice.nix
     ./oil.nix
     ./persistence.nix
+    ./rustaceanvim.nix
     ./snacks-dashboard.nix
     ./snacks-image.nix
     ./snacks-scratch.nix
@@ -28,7 +29,6 @@
   ];
   config.plugins = {
     ts-comments.enable = true;
-    rustaceanvim.enable = true;
     helm.enable = true;
     typst-preview.enable = true;
     typst-vim.enable = true;
