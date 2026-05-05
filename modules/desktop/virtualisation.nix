@@ -27,6 +27,7 @@ lib.mkMerge [
 
     environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
       directories = [
+        "/var/lib/systemd"
         "/var/lib/libvirt"
       ];
     };

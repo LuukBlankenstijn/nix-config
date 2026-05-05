@@ -33,8 +33,9 @@ lib.mkIf config.cfg.networking.enable {
   systemd.services.NetworkManager-wait-online.enable = false;
 
   environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
-    directories =
-      [ "/etc/NetworkManager/system-connections" ]
-      ++ lib.optionals config.cfg.networking.wifi.enable [ "/var/lib/iwd" ];
+    directories = [
+      "/etc/NetworkManager/system-connections"
+    ]
+    ++ lib.optionals config.cfg.networking.wifi.enable [ "/var/lib/iwd" ];
   };
 }
