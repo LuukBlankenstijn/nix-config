@@ -179,9 +179,9 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       wayland.windowManager.hyprland.settings.windowrule = [
-        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), float 1"
-        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), size monitor_w*0.7 monitor_h*0.7"
-        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped), move monitor_w*0.15 monitor_h*0.15"
+        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped|xdg-desktop-portal-gtk), float 1"
+        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped|xdg-desktop-portal-gtk), size monitor_w*0.7 monitor_h*0.7"
+        "match:class (com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped|xdg-desktop-portal-gtk), move monitor_w*0.15 monitor_h*0.15"
       ];
     })
   ]

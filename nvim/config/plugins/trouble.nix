@@ -100,6 +100,32 @@
           desc = "Next: Trouble/Quickfix Item";
         };
       }
+      {
+        mode = "n";
+        key = "]e";
+        action.__raw = ''
+          function()
+            vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+          end
+        '';
+        options = {
+          silent = true;
+          desc = "Next: Error Diagnostic";
+        };
+      }
+      {
+        mode = "n";
+        key = "[e";
+        action.__raw = ''
+          function()
+            vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+          end
+        '';
+        options = {
+          silent = true;
+          desc = "Previous: Error Diagnostic";
+        };
+      }
     ];
   };
 }
