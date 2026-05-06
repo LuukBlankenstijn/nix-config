@@ -8,7 +8,7 @@ in
       enable = true;
       settings = {
         background = {
-          path = ../_assets/nature.jpg;
+          path = config.cfg.userConfig.desktop.wallpaper;
           fit = "Cover";
         };
         GTK = {

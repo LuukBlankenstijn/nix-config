@@ -19,8 +19,6 @@
     };
   };
 
-  networking.hostName = "headscale-box";
-
   boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = false;
 

@@ -7,32 +7,35 @@
   ];
 
   cfg = {
-    impermanence.enable = true;
-
-    desktop.enable = true;
-    desktop.displayManager.enable = true;
-    desktop.audio.enable = true;
-    desktop.hardware.enable = true;
+    impermanence.enable = false;
+    desktop = {
+      enable = true;
+      displayManager.enable = true;
+      audio.enable = true;
+      hardware.enable = true;
+    };
 
     bluetooth.enable = true;
     networking = {
       enable = true;
       wifi.enable = true;
-      tailscale.enable = true;
     };
     laptop.enable = true;
-    virtualisation.docker.enable = true;
-    virtualisation.libvirtd.enable = true;
-    virtualisation.virtManager.enable = true;
+    virtualisation = {
+      podman.enable = true;
+    };
 
     users.luuk = {
       desktop = {
         enable = true;
-
+        wallpaper = ../../assets/wallpapers/mountain-sunrise.jpg;
         hyprland = {
           enable = true;
           idle.enable = true;
-          lock.enable = true;
+          lock = {
+            enable = true;
+            wallpaper = ./../../assets/wallpapers/dreamy-night-landscape-mh.jpg;
+          };
           paper.enable = true;
           shell.enable = true;
           picker.enable = true;
@@ -48,11 +51,7 @@
 
         terminal.enable = true;
         browser.enable = true;
-        email.enable = true;
         bluetooth.enable = true;
-        tailscale.enable = true;
-
-        winapps.enable = false;
       };
 
       git.enable = true;
@@ -65,25 +64,19 @@
       };
 
       extraPackages = with pkgs; [
-        claude-code
         spotify
-        discord
         signal-desktop
-        eduvpn-client
-        jetbrains.datagrip
-        prismlauncher
-        zotero
         gnome-calculator
-        slack
       ];
-
-      gewis.enable = true;
     };
   };
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 20;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   system.stateVersion = "25.11";
 
-  networking.hostId = "6bbc35ad";
+  networking.hostId = "8b7f06be";
 }

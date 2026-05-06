@@ -14,7 +14,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
       background = [
         {
           monitor = "";
-          path = "${./_assets/wallpapers/nature.jpg}";
+          path = "${osConfig.cfg.userConfig.desktop.hyprland.lock.wallpaper}";
           blur_passes = 2;
           contrast = 1;
           brightness = 0.5;

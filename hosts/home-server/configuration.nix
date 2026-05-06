@@ -24,8 +24,6 @@
     };
   };
 
-  networking.hostName = "home-server";
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 

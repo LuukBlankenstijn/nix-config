@@ -18,7 +18,7 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/home/${osConfig.cfg.user}/.ssh/id_ed25519"
     ];
-    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFile = osConfig.cfg.secrets.file;
     defaultSopsFormat = "yaml";
   };
 

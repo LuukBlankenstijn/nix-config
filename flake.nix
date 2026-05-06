@@ -46,11 +46,6 @@
 
     neovim.url = "path:./nvim";
 
-    ranger-archives = {
-      url = "github:maximtrp/ranger-archives/0b1cfa9a77412c3b51da5b1b213c672227f9fbb4";
-      flake = false;
-    };
-
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -84,9 +79,10 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 extraSpecialArgs = { inherit inputs; };
-                users.${user} = import ./users/${user}/desktop.nix;
+                users.${user} = import ./users/${user}/home.nix;
               };
               cfg.user = user;
+              networking.hostName = hostname;
             }
             ./hosts/${hostname}/configuration.nix
             (_: {
@@ -104,6 +100,7 @@
         probook = mkHost { hostname = "probook"; };
         headscale-box = mkHost { hostname = "headscale-box"; };
         home-server = mkHost { hostname = "home-server"; };
+        work = mkHost { hostname = "work"; };
       };
     };
 }

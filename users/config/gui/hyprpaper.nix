@@ -7,7 +7,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
       wallpaper = [
         {
           monitor = "*";
-          path = "${./_assets/wallpapers/nature.jpg}";
+          path = "${osConfig.cfg.userConfig.desktop.wallpaper}";
         }
       ];
     };

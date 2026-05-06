@@ -36,11 +36,14 @@
     users.luuk = {
       desktop = {
         enable = true;
-
+        wallpaper = ../../assets/wallpapers/mountain-sunrise.jpg;
         hyprland = {
           enable = true;
           idle.enable = true;
-          lock.enable = true;
+          lock = {
+            enable = true;
+            wallpaper = ./../../assets/wallpapers/dreamy-night-landscape-mh.jpg;
+          };
           paper.enable = true;
           shell.enable = true;
           picker.enable = true;
@@ -65,7 +68,6 @@
 
       git.enable = true;
       neovim.enable = true;
-      ranger.enable = true;
       rbw.enable = true;
       shell.enable = true;
       clipboard = {
@@ -101,6 +103,5 @@
 
   system.stateVersion = "25.11";
 
-  networking.hostName = "zenbook";
   networking.hostId = "6bbc35ad";
 }

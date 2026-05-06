@@ -12,7 +12,20 @@ in
   options.cfg = {
 
     # ── infrastructure ──────────────────────────────────────────────────────────
-    impermanence.enable = mkEnableOption "ZFS impermanence (ephemeral root, /persist)";
+    impermanence = {
+      enable = mkEnableOption "ZFS impermanence (ephemeral root, /persist)";
+      rollback.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Roll back ZFS root to blank snapshot on every boot. Disable to set up a new system before committing to ephemeral state.";
+      };
+    };
+
+    secrets.file = mkOption {
+      type = types.path;
+      default = ../secrets/secrets.yaml;
+      description = "Path to the sops secrets file used by both NixOS and home-manager.";
+    };
 
     # ── system features ─────────────────────────────────────────────────────────
     desktop = {
@@ -73,17 +86,33 @@ in
       default = { };
       description = "Per-user configuration, keyed by username";
       type = types.attrsOf (
-        types.submodule (_: {
+        types.submodule (
+          { config, ... }:
+          {
           options = {
 
             # ── desktop ────────────────────────────────────────────────────────
             desktop = {
               enable = mkEnableOption "desktop environment (GUI apps, XDG, theming)";
 
+              wallpaper = mkOption {
+                type = types.path;
+                default = ../assets/wallpapers/nature.jpg;
+                description = "Wallpaper used by the display manager, hyprpaper, and (by default) hyprlock.";
+              };
+
               hyprland = {
                 enable = mkEnableOption "Hyprland window manager";
                 idle.enable = mkEnableOption "hypridle (auto screen dim / lock / suspend)";
-                lock.enable = mkEnableOption "hyprlock (lock screen)";
+                lock = {
+                  enable = mkEnableOption "hyprlock (lock screen)";
+                  wallpaper = mkOption {
+                    type = types.path;
+                    default = config.desktop.wallpaper;
+                    defaultText = lib.literalExpression "config.desktop.wallpaper";
+                    description = "Wallpaper for the lock screen. Defaults to desktop.wallpaper.";
+                  };
+                };
                 paper.enable = mkEnableOption "hyprpaper (wallpaper daemon)";
                 shell.enable = mkEnableOption "hyprshell (window overview / switcher)";
                 picker.enable = mkEnableOption "hyprpicker (screen colour picker)";
@@ -109,7 +138,6 @@ in
             # ── general tools ──────────────────────────────────────────────────
             git.enable = mkEnableOption "git configuration";
             neovim.enable = mkEnableOption "Neovim editor";
-            ranger.enable = mkEnableOption "Ranger file manager";
             rbw.enable = mkEnableOption "rbw Bitwarden CLI";
             shell.enable = mkEnableOption "zsh shell configuration";
             clipboard = {
@@ -126,7 +154,8 @@ in
 
             gewis.enable = mkEnableOption "GEWIS organisation configuration";
           };
-        })
+          }
+        )
       );
     };
 
