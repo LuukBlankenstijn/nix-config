@@ -8,6 +8,7 @@
 
   cfg = {
     impermanence.enable = false;
+    secrets.file = ../../secrets/work.yaml;
     desktop = {
       enable = true;
       displayManager.enable = true;
@@ -56,7 +57,6 @@
 
       git.enable = true;
       neovim.enable = true;
-      rbw.enable = true;
       shell.enable = true;
       clipboard = {
         enable = true;

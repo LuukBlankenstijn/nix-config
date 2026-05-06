@@ -3,6 +3,6 @@
   imports = [ ./base.nix ];
 
   users.users.${config.cfg.user} = {
-    hashedPasswordFile = config.sops.secrets.laptop-luuk-password.path;
+    hashedPasswordFile = config.sops.secrets.password.path;
   };
 }

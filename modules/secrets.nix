@@ -7,6 +7,6 @@
     ];
     defaultSopsFile = config.cfg.secrets.file;
     defaultSopsFormat = "yaml";
-    secrets.laptop-luuk-password.neededForUsers = true;
+    secrets.password.neededForUsers = true;
   };
 }
