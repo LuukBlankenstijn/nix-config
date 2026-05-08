@@ -21,6 +21,8 @@ in
       };
     };
 
+    gpg.enable = mkEnableOption "gpg key agent";
+
     secrets.file = mkOption {
       type = types.path;
       default = ../secrets/secrets.yaml;
@@ -89,71 +91,71 @@ in
         types.submodule (
           { config, ... }:
           {
-          options = {
+            options = {
 
-            # ── desktop ────────────────────────────────────────────────────────
-            desktop = {
-              enable = mkEnableOption "desktop environment (GUI apps, XDG, theming)";
+              # ── desktop ────────────────────────────────────────────────────────
+              desktop = {
+                enable = mkEnableOption "desktop environment (GUI apps, XDG, theming)";
 
-              wallpaper = mkOption {
-                type = types.path;
-                default = ../assets/wallpapers/nature.jpg;
-                description = "Wallpaper used by the display manager, hyprpaper, and (by default) hyprlock.";
-              };
-
-              hyprland = {
-                enable = mkEnableOption "Hyprland window manager";
-                idle.enable = mkEnableOption "hypridle (auto screen dim / lock / suspend)";
-                lock = {
-                  enable = mkEnableOption "hyprlock (lock screen)";
-                  wallpaper = mkOption {
-                    type = types.path;
-                    default = config.desktop.wallpaper;
-                    defaultText = lib.literalExpression "config.desktop.wallpaper";
-                    description = "Wallpaper for the lock screen. Defaults to desktop.wallpaper.";
-                  };
+                wallpaper = mkOption {
+                  type = types.path;
+                  default = ../assets/wallpapers/nature.jpg;
+                  description = "Wallpaper used by the display manager, hyprpaper, and (by default) hyprlock.";
                 };
-                paper.enable = mkEnableOption "hyprpaper (wallpaper daemon)";
-                shell.enable = mkEnableOption "hyprshell (window overview / switcher)";
-                picker.enable = mkEnableOption "hyprpicker (screen colour picker)";
-                mon.enable = mkEnableOption "hyprmon (monitor profile manager)";
-                pyprland.enable = mkEnableOption "pyprland scratchpad system";
+
+                hyprland = {
+                  enable = mkEnableOption "Hyprland window manager";
+                  idle.enable = mkEnableOption "hypridle (auto screen dim / lock / suspend)";
+                  lock = {
+                    enable = mkEnableOption "hyprlock (lock screen)";
+                    wallpaper = mkOption {
+                      type = types.path;
+                      default = config.desktop.wallpaper;
+                      defaultText = lib.literalExpression "config.desktop.wallpaper";
+                      description = "Wallpaper for the lock screen. Defaults to desktop.wallpaper.";
+                    };
+                  };
+                  paper.enable = mkEnableOption "hyprpaper (wallpaper daemon)";
+                  shell.enable = mkEnableOption "hyprshell (window overview / switcher)";
+                  picker.enable = mkEnableOption "hyprpicker (screen colour picker)";
+                  mon.enable = mkEnableOption "hyprmon (monitor profile manager)";
+                  pyprland.enable = mkEnableOption "pyprland scratchpad system";
+                };
+
+                cursor.enable = mkEnableOption "cursor theme (Adwaita)";
+                nautilus.enable = mkEnableOption "Nautilus file manager";
+                styling.enable = mkEnableOption "GTK/Qt dark theming (Adwaita)";
+                waybar.enable = mkEnableOption "Waybar status bar";
+                keyring.enable = mkEnableOption "Seahorse keyring GUI";
+
+                terminal.enable = mkEnableOption "Ghostty terminal emulator";
+                browser.enable = mkEnableOption "Zen browser";
+                email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
+                tailscale.enable = mkEnableOption "Tailscale system-tray applet";
+                bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
+
+                winapps.enable = mkEnableOption "WinApps – Windows applications via Docker/RDP";
               };
 
-              cursor.enable = mkEnableOption "cursor theme (Adwaita)";
-              nautilus.enable = mkEnableOption "Nautilus file manager";
-              styling.enable = mkEnableOption "GTK/Qt dark theming (Adwaita)";
-              waybar.enable = mkEnableOption "Waybar status bar";
-              keyring.enable = mkEnableOption "Seahorse keyring GUI";
+              # ── general tools ──────────────────────────────────────────────────
+              git.enable = mkEnableOption "git configuration";
+              neovim.enable = mkEnableOption "Neovim editor";
+              rbw.enable = mkEnableOption "rbw Bitwarden CLI";
+              shell.enable = mkEnableOption "zsh shell configuration";
+              clipboard = {
+                enable = mkEnableOption "clipboard tools (wl-clipboard, xclip, osc52)";
+                history.enable = mkEnableOption "clipboard history (cliphist)";
+              };
 
-              terminal.enable = mkEnableOption "Ghostty terminal emulator";
-              browser.enable = mkEnableOption "Zen browser";
-              email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
-              tailscale.enable = mkEnableOption "Tailscale system-tray applet";
-              bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
+              # ── extra packages ─────────────────────────────────────────────────
+              extraPackages = mkOption {
+                type = types.listOf types.package;
+                default = [ ];
+                description = "Extra packages to install for this user";
+              };
 
-              winapps.enable = mkEnableOption "WinApps – Windows applications via Docker/RDP";
+              gewis.enable = mkEnableOption "GEWIS organisation configuration";
             };
-
-            # ── general tools ──────────────────────────────────────────────────
-            git.enable = mkEnableOption "git configuration";
-            neovim.enable = mkEnableOption "Neovim editor";
-            rbw.enable = mkEnableOption "rbw Bitwarden CLI";
-            shell.enable = mkEnableOption "zsh shell configuration";
-            clipboard = {
-              enable = mkEnableOption "clipboard tools (wl-clipboard, xclip, osc52)";
-              history.enable = mkEnableOption "clipboard history (cliphist)";
-            };
-
-            # ── extra packages ─────────────────────────────────────────────────
-            extraPackages = mkOption {
-              type = types.listOf types.package;
-              default = [ ];
-              description = "Extra packages to install for this user";
-            };
-
-            gewis.enable = mkEnableOption "GEWIS organisation configuration";
-          };
           }
         )
       );

@@ -1,4 +1,9 @@
-{ osConfig, lib, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkIf osConfig.cfg.userConfig.git.enable {
   programs.git = {
     enable = true;
@@ -6,6 +11,12 @@ lib.mkIf osConfig.cfg.userConfig.git.enable {
       user = {
         name = "Luuk Blankenstijn";
         email = "git@luukblankenstijn.nl";
+      };
+      signing = {
+        format = "ssh";
+        key = "~/.ssh/id_ed25519";
+        signByDefault = true;
+        signer = "${pkgs.openssh}/bin/ssh-keygen";
       };
       core.autocrlf = false;
       push.autoSetupRemote = true;

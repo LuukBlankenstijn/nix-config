@@ -13,6 +13,7 @@ lib.mkMerge [
       gvfs.enable = true;
       tumbler.enable = true;
       upower.enable = true;
+      hardware.bolt.enable = true;
     };
   })
 

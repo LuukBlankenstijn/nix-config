@@ -8,6 +8,7 @@
 
   cfg = {
     impermanence.enable = true;
+    gpg.enable = true;
     desktop = {
       enable = true;
       displayManager.enable = true;
@@ -86,6 +87,7 @@
         zotero
         gnome-calculator
         slack
+        _1password-gui
       ];
 
       gewis.enable = true;

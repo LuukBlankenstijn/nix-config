@@ -10,5 +10,6 @@
     ./persistence.nix
     ./users/luuk/desktop.nix
     ./storage/zfs.nix
+    ./gpg.nix
   ];
 }
