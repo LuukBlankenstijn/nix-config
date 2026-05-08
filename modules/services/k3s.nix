@@ -21,6 +21,19 @@ in
       ];
     };
 
+    # stuff needed to make Longhorn
+    services.openiscsi = {
+      enable = true;
+      name = "${config.networking.hostName}-initiatorhost";
+    };
+    systemd.services.iscsid.serviceConfig = {
+      PrivateMounts = "yes";
+      BindPaths = "/run/current-system/sw/bin:/bin";
+    };
+    systemd.tmpfiles.rules = [
+      "L /usr/bin/mount - - - - /run/current-system/sw/bin/mount"
+    ];
+
     networking.firewall = {
       allowedTCPPorts = [
         6443 # k3s API
