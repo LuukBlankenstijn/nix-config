@@ -18,10 +18,9 @@
     };
     linters = {
       phpstan = {
-        # Only run if a config file is found
         condition.__raw = ''
           function(ctx)
-            return vim.fs.find({ "phpstan.neon", "phpstan.neon.dist", "phpstan.dist.neon" }, { path = ctx.filename, upward = true })[1] ~= nil
+            return vim.fs.find({ "vendor/bin/phpstan" }, { path = ctx.filename, upward = true })[1] ~= nil
           end
         '';
       };
@@ -41,16 +40,15 @@
 
   extraConfigLua = ''
     local phpstan = require('lint').linters.phpstan
-      
-      phpstan.cmd = function()
-        local local_bin = vim.fs.find({ "vendor/bin/phpstan" }, { path = vim.fn.expand("%:p:h"), upward = true })[1]
-        return local_bin or "phpstan"
-      end
 
-      phpstan.args = {
-        "analyze",
-        "--error-format=json",
-        "--no-progress",
-      }
+    phpstan.cmd = function()
+      return vim.fs.find({ "vendor/bin/phpstan" }, { path = vim.fn.expand("%:p:h"), upward = true })[1]
+    end
+
+    phpstan.args = {
+      "analyze",
+      "--error-format=json",
+      "--no-progress",
+    }
   '';
 }

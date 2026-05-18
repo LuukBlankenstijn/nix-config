@@ -10,7 +10,11 @@
   outputs = { self, nixpkgs, nixvim, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfreePredicate = pkg:
+          builtins.elem (nixpkgs.lib.getName pkg) [ "intelephense" ];
+      };
       configModule = import ./config;
     in {
       packages.${system}.default =

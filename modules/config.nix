@@ -154,6 +154,12 @@ in
                 description = "Extra packages to install for this user";
               };
 
+              extraGroups = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+                description = "Extra groups to add this user to, in addition to the defaults.";
+              };
+
               gewis.enable = mkEnableOption "GEWIS organisation configuration";
             };
           }

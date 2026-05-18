@@ -1,8 +1,10 @@
-{ osConfig, lib, inputs, ... }:
+{ osConfig, lib, pkgs, inputs, ... }:
 {
   imports = [ inputs.neovim.homeModules.default ];
 
   config = lib.mkIf osConfig.cfg.userConfig.neovim.enable {
+    home.packages = [ pkgs.intelephense ];
+
     xdg.desktopEntries.nvim = {
       name = "Neovim";
       genericName = "Text Editor";

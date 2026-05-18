@@ -130,10 +130,13 @@
         gopls.enable = true;
         helmls.enable = true;
         html.enable = true;
+        intelephense = {
+          enable = true;
+          package = null;
+        };
         jsonls.enable = true;
         marksman.enable = true;
         nil_ls.enable = true;
-        phpactor.enable = true;
         postgres_lsp.enable = true;
         pyright.enable = true;
         ruff.enable = true;

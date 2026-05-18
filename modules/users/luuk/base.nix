@@ -14,6 +14,7 @@
     ]
     ++ lib.optionals config.cfg.networking.enable [ "networkmanager" ]
     ++ lib.optionals config.cfg.virtualisation.docker.enable [ "docker" ]
-    ++ lib.optionals config.cfg.virtualisation.libvirtd.enable [ "libvirtd" ];
+    ++ lib.optionals config.cfg.virtualisation.libvirtd.enable [ "libvirtd" ]
+    ++ (config.cfg.userConfig.extraGroups or [ ]);
   };
 }

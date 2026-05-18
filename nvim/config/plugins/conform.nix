@@ -55,17 +55,14 @@
         };
         formatters = {
           php_cs_fixer = {
-            # Only run if a config file is found in the project root
             condition.__raw = ''
               function(self, ctx)
-                return vim.fs.find({ ".php-cs-fixer.php", ".php-cs-fixer.dist.php", ".php_cs", ".php_cs.dist" }, { path = ctx.filename, upward = true })[1] ~= nil
+                return vim.fs.find({ "vendor/bin/php-cs-fixer" }, { path = ctx.filename, upward = true })[1] ~= nil
               end
             '';
-            # Use the project's local binary if it exists, otherwise fall back to the one in your Nix path
             command.__raw = ''
               function(self, ctx)
-                local local_bin = vim.fs.find({ "vendor/bin/php-cs-fixer" }, { path = ctx.filename, upward = true })[1]
-                return local_bin or "php-cs-fixer"
+                return vim.fs.find({ "vendor/bin/php-cs-fixer" }, { path = ctx.filename, upward = true })[1]
               end
             '';
             args = [
@@ -87,7 +84,7 @@
             '';
             command.__raw = ''
               function(self, ctx)
-                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1] or "pint"
+                return vim.fs.find({ "vendor/bin/pint" }, { path = ctx.filename, upward = true })[1]
               end
             '';
             args = [ "$FILENAME" ];

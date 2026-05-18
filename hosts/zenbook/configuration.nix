@@ -90,6 +90,8 @@
         _1password-gui
       ];
 
+      extraGroups = [ "dialout" ];
+
       gewis.enable = true;
     };
   };
