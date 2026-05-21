@@ -4,14 +4,12 @@
     ./buffer-line.nix
     ./conform.nix
     ./flash.nix
-    ./fzf-lua.nix
     ./gitsigns.nix
     ./lint.nix
     ./lspconfig.nix
     ./lualine.nix
     ./markdown-preview.nix
     ./mini-pairs.nix
-    ./neo-tree.nix
     ./neotest.nix
     ./noice.nix
     ./oil.nix
@@ -19,6 +17,7 @@
     ./rustaceanvim.nix
     ./snacks-dashboard.nix
     ./snacks-image.nix
+    ./snacks-picker.nix
     ./snacks-scratch.nix
     ./snacks-terminal.nix
     ./snacks.nix

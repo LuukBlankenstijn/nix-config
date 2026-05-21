@@ -175,7 +175,7 @@
         }];
       };
 
-      extensions = [ "neo-tree" "lazy" "fzf" ];
+      extensions = [ "lazy" ];
     };
   };
 
