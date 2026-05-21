@@ -32,6 +32,7 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
     xwayland.enable = true;
 
     settings = {
+      exec-once = [ "systemctl --user start hyprpolkitagent" ];
       # monitors
       monitor = [ ",preferred,auto,auto" ];
 

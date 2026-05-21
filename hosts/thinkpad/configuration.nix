@@ -8,7 +8,8 @@
 
   cfg = {
     impermanence.enable = false;
-    secrets.file = ../../secrets/work.yaml;
+    secrets.file = ../../secrets/thinkpad.yaml;
+    gpg.enable = true;
     desktop = {
       enable = true;
       displayManager.enable = true;
@@ -24,6 +25,7 @@
     laptop.enable = true;
     virtualisation = {
       podman.enable = true;
+      docker.enable = true;
     };
 
     users.luuk = {
@@ -51,11 +53,47 @@
         keyring.enable = true;
 
         terminal.enable = true;
-        browser.enable = true;
+        browser = {
+          enable = true;
+          containers = {
+            work = {
+              color = "blue";
+              id = 1;
+            };
+          };
+          extensions = [
+            "onepassword-password-manager"
+            "multi-account-containers"
+          ];
+        };
         bluetooth.enable = true;
       };
 
-      git.enable = true;
+      git = {
+        enable = true;
+        extraSettings = {
+          user = {
+            email = "luuk@dutchcodingcompany.com";
+            signingkey = "60B9AA89C991A93B";
+          };
+          gpg.format = "openpgp";
+          commit.gpgsign = true;
+          tag.gpgsign = true;
+          core.pager = "delta";
+          interactive.diffFilter = "delta --color-only";
+          delta = {
+            navigate = true;
+            side-by-side = true;
+            line-numbers = true;
+          };
+          diff.tool = "difftastic";
+          difftool = {
+            prompt = false;
+            difftastic.cmd = ''difft "$LOCAL" "$REMOTE"'';
+          };
+          alias.dft = "difftool";
+        };
+      };
       neovim.enable = true;
       shell.enable = true;
       clipboard = {
@@ -67,6 +105,12 @@
         spotify
         signal-desktop
         gnome-calculator
+        slack
+        _1password-gui
+        github-copilot-cli
+        delta
+        difftastic
+        python3
       ];
     };
   };

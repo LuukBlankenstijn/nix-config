@@ -8,10 +8,10 @@
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
+  browserCfg = osConfig.cfg.userConfig.desktop.browser;
   addonsPkgs = import inputs.nixpkgs {
     inherit system;
-    config.allowUnfreePredicate =
-      pkg: builtins.elem (lib.getName pkg) [ "onepassword-password-manager" ];
+    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) browserCfg.extensions;
     overlays = [ inputs.firefox-addons.overlays.default ];
   };
   addons = addonsPkgs.firefox-addons;
@@ -48,23 +48,7 @@ in
               };
               profiles.default = {
                 containersForce = true;
-                containers = {
-                  m-account = {
-                    color = "green";
-                    icon = "fingerprint";
-                    id = 1;
-                  };
-                  a-account = {
-                    color = "red";
-                    icon = "fingerprint";
-                    id = 2;
-                  };
-                  work = {
-                    color = "blue";
-                    icon = "fingerprint";
-                    id = 3;
-                  };
-                };
+                containers = browserCfg.containers;
                 isDefault = true;
                 settings = {
                   "zen.welcome-screen.seen" = true;
@@ -76,11 +60,7 @@ in
                   "signon.rememberSignons" = false;
                   "devtools.toolbox.host" = "right";
                 };
-                extensions.packages = [
-                  addons.bitwarden
-                  addons.multi-account-containers
-                  addons.onepassword-password-manager
-                ];
+                extensions.packages = map (name: addons.${name}) browserCfg.extensions;
                 search = {
                   force = true;
                   default = "ddg";

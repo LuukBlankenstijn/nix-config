@@ -129,7 +129,37 @@ in
                 keyring.enable = mkEnableOption "Seahorse keyring GUI";
 
                 terminal.enable = mkEnableOption "Ghostty terminal emulator";
-                browser.enable = mkEnableOption "Zen browser";
+                browser = {
+                  enable = mkEnableOption "Zen browser";
+                  containers = mkOption {
+                    type = types.attrsOf (
+                      types.submodule {
+                        options = {
+                          color = mkOption {
+                            type = types.str;
+                            description = "Container colour (e.g. red, blue, green).";
+                          };
+                          icon = mkOption {
+                            type = types.str;
+                            default = "fingerprint";
+                            description = "Container icon.";
+                          };
+                          id = mkOption {
+                            type = types.int;
+                            description = "Container numeric id (must be unique within the profile).";
+                          };
+                        };
+                      }
+                    );
+                    default = { };
+                    description = "Zen browser containers for the default profile.";
+                  };
+                  extensions = mkOption {
+                    type = types.listOf types.str;
+                    default = [ ];
+                    description = "Firefox addon attribute names (from nur firefox-addons) to install.";
+                  };
+                };
                 email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
                 tailscale.enable = mkEnableOption "Tailscale system-tray applet";
                 bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
@@ -138,7 +168,14 @@ in
               };
 
               # ── general tools ──────────────────────────────────────────────────
-              git.enable = mkEnableOption "git configuration";
+              git = {
+                enable = mkEnableOption "git configuration";
+                extraSettings = mkOption {
+                  type = types.attrs;
+                  default = { };
+                  description = "Extra git settings, deep-merged into programs.git.settings (later wins on conflicts).";
+                };
+              };
               neovim.enable = mkEnableOption "Neovim editor";
               rbw.enable = mkEnableOption "rbw Bitwarden CLI";
               shell.enable = mkEnableOption "zsh shell configuration";

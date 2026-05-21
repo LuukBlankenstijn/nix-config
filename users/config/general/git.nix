@@ -7,7 +7,8 @@
 lib.mkIf osConfig.cfg.userConfig.git.enable {
   programs.git = {
     enable = true;
-    settings = {
+    ignores = [ ".direnv/" ];
+    settings = lib.recursiveUpdate {
       user = {
         name = "Luuk Blankenstijn";
         email = "git@luukblankenstijn.nl";
@@ -23,6 +24,6 @@ lib.mkIf osConfig.cfg.userConfig.git.enable {
       pull.rebase = true;
       init.defaultBranch = "main";
       fetch.prune = true;
-    };
+    } osConfig.cfg.userConfig.git.extraSettings;
   };
 }

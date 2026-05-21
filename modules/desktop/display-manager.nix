@@ -9,7 +9,6 @@ in
       settings = {
         background = {
           path = config.cfg.userConfig.desktop.wallpaper;
-          fit = "Cover";
         };
         GTK = {
           application_prefer_dark_theme = true;

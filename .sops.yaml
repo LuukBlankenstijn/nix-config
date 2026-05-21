@@ -1,12 +1,12 @@
 keys:
   - &luuk "age14aaw06ykpmrzgp56gyfhu2c0eh4w0k4aavq594tpym7j978hl5cs7qvccc"
-  - &work "age1vexqsuge2qeuftgyestu99tzq9ap0qf54v7lmwy3fp4pduyqxc3saxshhy"
+  - &thinkpad "age1vexqsuge2qeuftgyestu99tzq9ap0qf54v7lmwy3fp4pduyqxc3saxshhy"
 
 creation_rules:
-  - path_regex: secrets/work\.yaml$
+  - path_regex: secrets/thinkpad\.yaml$
     key_groups:
       - age:
-          - *work
+          - *thinkpad
   - path_regex: secrets/.*
     key_groups:
       - age:

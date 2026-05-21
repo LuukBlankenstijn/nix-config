@@ -100,7 +100,7 @@
         probook = mkHost { hostname = "probook"; };
         headscale-box = mkHost { hostname = "headscale-box"; };
         home-server = mkHost { hostname = "home-server"; };
-        work = mkHost { hostname = "work"; };
+        thinkpad = mkHost { hostname = "thinkpad"; };
       };
     };
 }

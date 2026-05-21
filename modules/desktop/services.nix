@@ -29,9 +29,24 @@ lib.mkMerge [
   })
 
   (lib.mkIf config.cfg.laptop.enable {
+    systemd.sleep.settings.Sleep = {
+      AllowHibernation = "no";
+      AllowSuspendThenHibernate = "no";
+      AllowHybridSleep = "no";
+    };
+
+    services.upower = {
+      enable = true;
+      criticalPowerAction = "Hibernate";
+      percentageAction = 3;
+    };
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend";
-      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchDocked = "suspend";
+      HandleLidSwitchExternalPower = "suspend";
+
+      HandlePowerKey = "lock";
+      HandlePowerKeyLongPress = "poweroff";
     };
   })
 ]

@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (lib) mkIf;
 in
@@ -7,6 +12,6 @@ in
     programs.hyprland.enable = true;
     programs.hyprlock.enable = true;
 
-    security.pam.services.hyprlock = { };
+    environment.systemPackages = [ pkgs.hyprpolkitagent ];
   };
 }

@@ -4,6 +4,7 @@
     ../common.nix
     ./hyprland.nix
     ./display-manager.nix
+    ./fingerprint-scanner.nix
     ./portals.nix
     ./hardware.nix
     ./bluetooth.nix

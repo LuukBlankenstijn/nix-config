@@ -8,7 +8,6 @@
 
   cfg = {
     impermanence.enable = true;
-    gpg.enable = true;
     desktop = {
       enable = true;
       displayManager.enable = true;
@@ -59,7 +58,23 @@
         keyring.enable = true;
 
         terminal.enable = true;
-        browser.enable = true;
+        browser = {
+          enable = true;
+          containers = {
+            m-account = {
+              color = "green";
+              id = 1;
+            };
+            a-account = {
+              color = "red";
+              id = 2;
+            };
+          };
+          extensions = [
+            "bitwarden"
+            "multi-account-containers"
+          ];
+        };
         email.enable = true;
         bluetooth.enable = true;
         tailscale.enable = true;
@@ -86,8 +101,6 @@
         prismlauncher
         zotero
         gnome-calculator
-        slack
-        _1password-gui
       ];
 
       extraGroups = [ "dialout" ];

@@ -2,6 +2,7 @@
 lib.mkIf config.cfg.networking.enable {
   networking = {
     dhcpcd.enable = false;
+    useDHCP = false;
 
     networkmanager = {
       enable = true;
