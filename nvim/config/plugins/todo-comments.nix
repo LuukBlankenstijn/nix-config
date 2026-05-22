@@ -23,7 +23,7 @@
       {
         mode = "n";
         key = "<leader>st";
-        action.__raw = "function() Snacks.picker.todo_comments() end";
+        action = "<cmd>TodoFzfLua<cr>";
         options = {
           silent = true;
           desc = "Search: Todo Comments (All)";
@@ -32,9 +32,7 @@
       {
         mode = "n";
         key = "<leader>sT";
-        action.__raw = ''
-          function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end
-        '';
+        action = "<cmd>TodoFzfLua keywords=TODO,FIX,FIXME<cr>";
         options = {
           silent = true;
           desc = "Search: Todo/Fix/Fixme";

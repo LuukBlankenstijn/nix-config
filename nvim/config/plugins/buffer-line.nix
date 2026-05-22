@@ -21,6 +21,7 @@
 
           offsets = [
             { filetype = "snacks_layout_box"; }
+            { filetype = "neo-tree"; }
           ];
         };
       };

@@ -42,7 +42,7 @@
           options.desc = "Signature Help";
         }
 
-        # --- Refactoring (Snacks) ---
+        # --- Refactoring (Snacks & Fzf-lua) ---
         {
           key = "<leader>cr";
           action = lib.nixvim.mkRaw "vim.lsp.buf.rename";
@@ -59,13 +59,13 @@
             "n"
             "v"
           ];
-          action = lib.nixvim.mkRaw "vim.lsp.buf.code_action";
+          action = lib.nixvim.mkRaw "function() require('fzf-lua').lsp_code_actions() end";
           options.desc = "Code Action";
         }
         {
           key = "<leader>cA";
           mode = "n";
-          action = lib.nixvim.mkRaw "function() vim.lsp.buf.code_action({ context = { only = { 'source' }, diagnostics = {} } }) end";
+          action = lib.nixvim.mkRaw "function() require('fzf-lua').lsp_code_actions({ context = { only = { 'source' }, diagnostics = {} } }) end";
           options.desc = "Source Action";
         }
 
@@ -220,7 +220,7 @@
           "v"
         ];
         key = "<leader>ca";
-        action.__raw = "vim.lsp.buf.code_action";
+        action.__raw = "function() require('fzf-lua').lsp_code_actions() end";
         options.desc = "Code Action";
       }
       {
