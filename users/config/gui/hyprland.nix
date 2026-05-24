@@ -73,7 +73,6 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       };
 
       dwindle = {
-        pseudotile = true;
         preserve_split = true;
       };
 
