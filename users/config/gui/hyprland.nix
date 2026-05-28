@@ -142,6 +142,9 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
         ", xf86audioPause, exec, playerctl play-pause"
         ", xf86audioPlay,  exec, playerctl play-pause"
         ", xf86audioPrev,  exec, playerctl previous"
+
+        ", switch:on:Lid Switch,  exec, hyprctl dispatch dpms off"
+        ", switch:off:Lid Switch, exec, hyprctl dispatch dpms on"
       ];
     };
   };

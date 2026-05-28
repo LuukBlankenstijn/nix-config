@@ -42,8 +42,8 @@ lib.mkMerge [
     };
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend";
-      HandleLidSwitchDocked = "suspend";
-      HandleLidSwitchExternalPower = "suspend";
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "ignore";
 
       HandlePowerKey = "lock";
       HandlePowerKeyLongPress = "poweroff";
