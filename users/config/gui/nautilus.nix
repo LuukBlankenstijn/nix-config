@@ -7,14 +7,21 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       wayland.windowManager.hyprland.settings = {
-        "$filemanager" = "${pkgs.nautilus}/bin/nautilus";
+        filemanager = { _var = "${pkgs.nautilus}/bin/nautilus"; };
+
         bind = [
-          "$mainmod, E, exec, $filemanager"
+          {
+            _args = [
+              (lib.generators.mkLuaInline ''mainmod .. " + E"'')
+              (lib.generators.mkLuaInline "hl.dsp.exec_cmd(filemanager)")
+            ];
+          }
         ];
-        windowrule = [
-          "match:class org.gnome.Nautilus, float 1"
-          "match:class org.gnome.Nautilus, size monitor_w*0.7 monitor_h*0.7"
-          "match:class org.gnome.Nautilus, move monitor_w*0.15 monitor_h*0.15"
+
+        window_rule = [
+          { match.class = "org.gnome.Nautilus"; float = true; }
+          { match.class = "org.gnome.Nautilus"; size = "monitor_w*0.7 monitor_h*0.7"; }
+          { match.class = "org.gnome.Nautilus"; move = "monitor_w*0.15 monitor_h*0.15"; }
         ];
       };
     })

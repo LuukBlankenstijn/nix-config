@@ -64,6 +64,11 @@ mkIf (userConfig.clipboard.enable || userConfig.clipboard.history.enable) {
   wayland.windowManager.hyprland.settings.bind =
     mkIf (userConfig.desktop.enable && userConfig.clipboard.history.enable)
       [
-        "$mainmod, H, exec, ${pkgs.cliphist}/bin/cliphist-fuzzel-img"
+        {
+          _args = [
+            (lib.generators.mkLuaInline ''mainmod .. " + H"'')
+            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${pkgs.cliphist}/bin/cliphist-fuzzel-img")'')
+          ];
+        }
       ];
 }

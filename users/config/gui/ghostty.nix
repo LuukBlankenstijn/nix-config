@@ -43,10 +43,36 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       wayland.windowManager.hyprland.settings = {
-        "$terminal" = "${pkgs.ghostty}/bin/ghostty";
-        exec-once = [ "$terminal" ];
-        windowrule = [ "match:class com.mitchellh.ghostty, workspace 1" ];
-        bind = [ "$mainmod, Q, exec, $terminal" ];
+        terminal = { _var = "${pkgs.ghostty}/bin/ghostty"; };
+
+        on = [
+          {
+            _args = [
+              "hyprland.start"
+              (lib.generators.mkLuaInline ''
+                function()
+                  hl.exec_cmd(terminal)
+                end
+              '')
+            ];
+          }
+        ];
+
+        window_rule = [
+          {
+            match.class = "com.mitchellh.ghostty";
+            workspace = 1;
+          }
+        ];
+
+        bind = [
+          {
+            _args = [
+              (lib.generators.mkLuaInline ''mainmod .. " + Q"'')
+              (lib.generators.mkLuaInline "hl.dsp.exec_cmd(terminal)")
+            ];
+          }
+        ];
       };
     })
   ]

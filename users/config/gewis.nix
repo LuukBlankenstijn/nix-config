@@ -48,7 +48,12 @@ in
   ];
 
   wayland.windowManager.hyprland.settings.bind = lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable [
-    "$mainmod, g, exec, ${rdp}/bin/rdp"
+    {
+      _args = [
+        (lib.generators.mkLuaInline ''mainmod .. " + g"'')
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${rdp}/bin/rdp")'')
+      ];
+    }
   ];
 
   accounts.email.accounts."gewis m-account" = {

@@ -43,12 +43,31 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
   };
 
   wayland.windowManager.hyprland.settings = {
-    exec-once = [ "pypr" ];
-    bind = [
-      "$mainmod, Z, exec, pypr toggle term"
-      "$mainmod, W, exec, pypr toggle whatsapp"
-      "$mainmod, S, exec, pypr toggle signal"
-      "$mainmod, D, exec, pypr toggle spotify"
+    on = [
+      {
+        _args = [
+          "hyprland.start"
+          (lib.generators.mkLuaInline ''
+            function()
+              hl.exec_cmd("pypr")
+            end
+          '')
+        ];
+      }
     ];
+
+    bind = builtins.map
+      (b: {
+        _args = [
+          (lib.generators.mkLuaInline ''mainmod .. " + ${b.key}"'')
+          (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pypr toggle ${b.target}")'')
+        ];
+      })
+      [
+        { key = "Z"; target = "term"; }
+        { key = "W"; target = "whatsapp"; }
+        { key = "S"; target = "signal"; }
+        { key = "D"; target = "spotify"; }
+      ];
   };
 }

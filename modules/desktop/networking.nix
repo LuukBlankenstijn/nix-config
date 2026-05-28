@@ -1,5 +1,10 @@
 { config, lib, ... }:
 lib.mkIf config.cfg.networking.enable {
+  # facter auto-populates networking.interfaces.<iface>.useDHCP, which generates
+  # network-addresses-<iface>.service bound to the device unit and stalls boot
+  # for up to 90s when the wlan device is slow. NetworkManager handles DHCP.
+  hardware.facter.detected.dhcp.enable = lib.mkDefault false;
+
   networking = {
     dhcpcd.enable = false;
     useDHCP = false;

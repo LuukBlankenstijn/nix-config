@@ -72,18 +72,39 @@ in
 
           (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
             wayland.windowManager.hyprland.settings = {
-              "$browser" = "${
-                inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-              }/bin/zen-beta";
+              browser = {
+                _var = "${
+                  inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+                }/bin/zen-beta";
+              };
 
-              exec-once = [ "$browser" ];
+              on = [
+                {
+                  _args = [
+                    "hyprland.start"
+                    (lib.generators.mkLuaInline ''
+                      function()
+                        hl.exec_cmd(browser)
+                      end
+                    '')
+                  ];
+                }
+              ];
 
-              windowrule = [
-                "match:class zen-beta, workspace 2"
+              window_rule = [
+                {
+                  match.class = "zen-beta";
+                  workspace = 2;
+                }
               ];
 
               bind = [
-                "$mainmod, B, exec, $browser"
+                {
+                  _args = [
+                    (lib.generators.mkLuaInline ''mainmod .. " + B"'')
+                    (lib.generators.mkLuaInline "hl.dsp.exec_cmd(browser)")
+                  ];
+                }
               ];
             };
           })

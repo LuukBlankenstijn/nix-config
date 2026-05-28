@@ -5,7 +5,17 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
   ];
 
   wayland.windowManager.hyprland.settings.bind = [
-    "$mainmod, f1, exec, ${pkgs.ghostty}/bin/ghostty -e hyprmon -profiles"
-    "$mainmod, f2, exec, ${pkgs.ghostty}/bin/ghostty -e hyprmon"
+    {
+      _args = [
+        (lib.generators.mkLuaInline ''mainmod .. " + F1"'')
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${pkgs.ghostty}/bin/ghostty -e hyprmon -profiles")'')
+      ];
+    }
+    {
+      _args = [
+        (lib.generators.mkLuaInline ''mainmod .. " + F2"'')
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${pkgs.ghostty}/bin/ghostty -e hyprmon")'')
+      ];
+    }
   ];
 }

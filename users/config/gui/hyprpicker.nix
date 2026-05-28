@@ -5,6 +5,11 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
   ];
 
   wayland.windowManager.hyprland.settings.bind = [
-    "$mainmod, p, exec, ${pkgs.hyprpicker}/bin/hyprpicker"
+    {
+      _args = [
+        (lib.generators.mkLuaInline ''mainmod .. " + p"'')
+        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${pkgs.hyprpicker}/bin/hyprpicker")'')
+      ];
+    }
   ];
 }

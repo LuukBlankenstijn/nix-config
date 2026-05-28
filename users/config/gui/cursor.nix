@@ -18,8 +18,17 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
     }
 
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
-      wayland.windowManager.hyprland.settings.exec-once = [
-        "hyprctl setcursor Adwaita 24"
+      wayland.windowManager.hyprland.settings.on = [
+        {
+          _args = [
+            "hyprland.start"
+            (lib.generators.mkLuaInline ''
+              function()
+                hl.exec_cmd("hyprctl setcursor Adwaita 24")
+              end
+            '')
+          ];
+        }
       ];
     })
   ]

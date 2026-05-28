@@ -114,6 +114,11 @@ lib.mkIf
       };
     };
     wayland.windowManager.hyprland.settings.bind = [
-      "$mainmod, escape, exec, pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock"
+      {
+        _args = [
+          (lib.generators.mkLuaInline ''mainmod .. " + escape"'')
+          (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock")'')
+        ];
+      }
     ];
   }
