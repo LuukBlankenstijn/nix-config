@@ -21,11 +21,35 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       silent = true;
     };
 
-    oh-my-posh = {
-      enable = true;
-      enableZshIntegration = true;
-      useTheme = if osConfig.cfg.desktop.enable then "multiverse-neon" else "blue-owl";
-    };
+    oh-my-posh =
+      let
+        themeName = if osConfig.cfg.desktop.enable then "multiverse-neon" else "blue-owl";
+        baseTheme = builtins.fromJSON (builtins.unsafeDiscardStringContext (builtins.readFile
+          "${pkgs.oh-my-posh}/share/oh-my-posh/themes/${themeName}.omp.json"));
+        sshBlock = {
+          type = "prompt";
+          alignment = "left";
+          segments = [{
+            type = "session";
+            style = "plain";
+            background = "#FFAB40";
+            foreground = "#1a1a1a";
+            template = "{{ if .SSHSession }}  {{ .HostName }} {{ end }}";
+          }];
+        };
+        stripSessionFromRight = builtins.map (b:
+          if (b.alignment or "") == "right" && (b.type or "") == "prompt"
+          then b // { segments = builtins.filter (s: (s.type or "") != "session") b.segments; }
+          else b
+        );
+      in
+      {
+        enable = true;
+        enableZshIntegration = true;
+        settings = baseTheme // {
+          blocks = [ sshBlock ] ++ (stripSessionFromRight baseTheme.blocks);
+        };
+      };
 
     zsh = {
       enable = true;
