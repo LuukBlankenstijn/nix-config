@@ -22,6 +22,7 @@
       tailscale = {
         enable = true;
         loginServer = "https://headscale.luukblankenstijn.nl";
+        ssh.enable = true;
       };
       netbird.enable = true;
     };

@@ -51,6 +51,7 @@ in
           default = null;
           description = "Optional login server for Tailscale (e.g. Headscale URL)";
         };
+        ssh.enable = mkEnableOption "OpenSSH server reachable only via the tailscale0 interface";
       };
       netbird.enable = mkEnableOption "Netbird mesh VPN";
       nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
