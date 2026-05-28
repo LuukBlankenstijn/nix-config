@@ -116,6 +116,7 @@
         delta
         difftastic
         python3
+        glab
       ];
     };
   };
