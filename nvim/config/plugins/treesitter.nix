@@ -10,9 +10,11 @@
         diff
         go
         html
+        java
         javascript
         jsdoc
         json
+        kotlin
         make
         markdown
         markdown_inline

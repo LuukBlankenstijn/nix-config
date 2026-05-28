@@ -10,6 +10,7 @@
       nixpkgs-fmt
       sql-formatter
       buf
+      ktfmt
     ];
 
     plugins.conform-nvim = {
@@ -42,6 +43,7 @@
           javascriptreact = [ "prettierd" ];
           typescriptreact = [ "prettierd" ];
           html = [ "prettierd" ];
+          jave = [ "google-java-format" ];
           json = [ "prettierd" ];
           markdown = [ "prettierd" ];
           dockerfile = [ "prettierd" ];
@@ -52,8 +54,16 @@
             "php_cs_fixer"
             "pint"
           ];
+          kotlin = [ "ktfmt" ];
         };
         formatters = {
+          google-java-format = {
+            command = "${pkgs.google-java-format}/bin/google-java-format";
+            args = [
+              "--aosp"
+              "-"
+            ];
+          };
           php_cs_fixer = {
             condition.__raw = ''
               function(self, ctx)

@@ -134,7 +134,9 @@
           enable = true;
           package = null;
         };
+        jdtls.enable = true;
         jsonls.enable = true;
+        kotlin_language_server.enable = true;
         marksman.enable = true;
         nil_ls.enable = true;
         postgres_lsp.enable = true;
