@@ -34,7 +34,12 @@ let
   workspaceToMonitorBinds = builtins.map (i: {
     _args = [
       (mkLuaInline ''mainmod .. " + CTRL + ${toString i}"'')
-      (mkLuaInline ''hl.dsp.exec_cmd("hyprctl dispatch moveworkspacetomonitor ${toString i} current && hyprctl dispatch workspace ${toString i}")'')
+      (mkLuaInline ''
+        function()
+          hl.dispatch(hl.dsp.workspace.move({ workspace = ${toString i}, monitor = "current" }))
+          hl.dispatch(hl.dsp.focus({ workspace = ${toString i} }))
+        end
+      '')
     ];
   }) (lib.range 1 9);
 
@@ -196,8 +201,8 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
         (mediaBindLocked "XF86AudioPrev" "playerctl previous")
 
         # lid switch
-        { _args = [ "switch:on:Lid Switch" (mkLuaInline ''hl.dsp.exec_cmd("hyprctl dispatch dpms off")'') { locked = true; } ]; }
-        { _args = [ "switch:off:Lid Switch" (mkLuaInline ''hl.dsp.exec_cmd("hyprctl dispatch dpms on")'') { locked = true; } ]; }
+        { _args = [ "switch:on:Lid Switch" (mkLuaInline ''hl.dsp.dpms("off")'') { locked = true; } ]; }
+        { _args = [ "switch:off:Lid Switch" (mkLuaInline ''hl.dsp.dpms("on")'') { locked = true; } ]; }
       ]
       ++ workspaceFocusBinds
       ++ workspaceMoveBinds
