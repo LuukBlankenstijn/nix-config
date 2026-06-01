@@ -1,5 +1,9 @@
 { config, lib, pkgs, ... }:
 lib.mkMerge [
+  {
+    boot.zfs.forceImportRoot = false;
+  }
+
   (lib.mkIf config.cfg.impermanence.enable {
     boot.supportedFilesystems = [ "zfs" ];
     boot.zfs.package = pkgs.zfs;

@@ -102,6 +102,7 @@
         prismlauncher
         zotero
         gnome-calculator
+        slack
       ];
 
       extraGroups = [ "dialout" ];
