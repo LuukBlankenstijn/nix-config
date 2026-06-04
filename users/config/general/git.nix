@@ -4,7 +4,10 @@
   pkgs,
   ...
 }:
-lib.mkIf osConfig.cfg.userConfig.git.enable {
+let
+  gitCfg = osConfig.cfg.userConfig.git;
+in
+lib.mkIf gitCfg.enable {
   programs.git = {
     enable = true;
     ignores = [ ".direnv/" ];
@@ -24,6 +27,10 @@ lib.mkIf osConfig.cfg.userConfig.git.enable {
       pull.rebase = true;
       init.defaultBranch = "main";
       fetch.prune = true;
-    } osConfig.cfg.userConfig.git.extraSettings;
+    } gitCfg.extraSettings;
+
+    includes = lib.mapAttrsToList (condition: contents: {
+      inherit condition contents;
+    }) gitCfg.dirSettings;
   };
 }

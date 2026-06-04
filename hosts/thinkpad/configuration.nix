@@ -69,6 +69,7 @@
           extensions = [
             "onepassword-password-manager"
             "multi-account-containers"
+            "bitwarden"
           ];
         };
         bluetooth.enable = true;
@@ -76,7 +77,7 @@
 
       git = {
         enable = true;
-        extraSettings = {
+        dirSettings."gitdir:~/code/" = {
           user = {
             email = "luuk@dutchcodingcompany.com";
             signingkey = "60B9AA89C991A93B";

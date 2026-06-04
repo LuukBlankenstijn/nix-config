@@ -176,6 +176,21 @@ in
                   default = { };
                   description = "Extra git settings, deep-merged into programs.git.settings (later wins on conflicts).";
                 };
+                dirSettings = mkOption {
+                  type = types.attrsOf types.attrs;
+                  default = { };
+                  example = {
+                    "gitdir:~/code/" = {
+                      user.email = "me@work.example";
+                    };
+                  };
+                  description = ''
+                    Per-directory git settings. Each attribute name is a git
+                    `includeIf` condition (e.g. `gitdir:~/code/`) and the value
+                    is an attrset of settings that will only apply when that
+                    condition matches.
+                  '';
+                };
               };
               neovim.enable = mkEnableOption "Neovim editor";
               rbw.enable = mkEnableOption "rbw Bitwarden CLI";
