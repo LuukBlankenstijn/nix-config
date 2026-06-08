@@ -24,7 +24,10 @@
         loginServer = "https://headscale.luukblankenstijn.nl";
         ssh.enable = true;
       };
-      netbird.enable = true;
+      netbird = {
+        enable = true;
+        ssh.enable = true;
+      };
     };
     laptop.enable = true;
     virtualisation = {
@@ -57,6 +60,7 @@
         styling.enable = true;
         waybar.enable = true;
         keyring.enable = true;
+        notifications.enable = true;
 
         terminal.enable = true;
         browser = {

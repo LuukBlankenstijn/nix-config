@@ -1,14 +1,19 @@
 { config, lib, inputs, ... }:
 let
   inherit (lib) mkIf;
-  cfg = config.cfg.networking.tailscale.ssh;
+  tsSsh = config.cfg.networking.tailscale.ssh;
+  nbSsh = config.cfg.networking.netbird.ssh;
 in
 {
-  config = mkIf cfg.enable {
+  config = mkIf (tsSsh.enable || nbSsh.enable) {
     assertions = [
       {
-        assertion = config.cfg.networking.tailscale.enable;
+        assertion = tsSsh.enable -> config.cfg.networking.tailscale.enable;
         message = "cfg.networking.tailscale.ssh.enable requires cfg.networking.tailscale.enable";
+      }
+      {
+        assertion = nbSsh.enable -> config.cfg.networking.netbird.enable;
+        message = "cfg.networking.netbird.ssh.enable requires cfg.networking.netbird.enable";
       }
     ];
 
@@ -25,7 +30,7 @@ in
       inputs.ssh-keys.outPath
     ];
 
-    networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 22 ];
-    networking.firewall.interfaces."nb-netbird".allowedTCPPorts = mkIf config.cfg.networking.netbird.enable [ 22 ];
+    networking.firewall.interfaces."tailscale0".allowedTCPPorts = mkIf tsSsh.enable [ 22 ];
+    networking.firewall.interfaces."nb-netbird".allowedTCPPorts = mkIf nbSsh.enable [ 22 ];
   };
 }

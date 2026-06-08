@@ -53,7 +53,10 @@ in
         };
         ssh.enable = mkEnableOption "OpenSSH server reachable only via the tailscale0 interface";
       };
-      netbird.enable = mkEnableOption "Netbird mesh VPN";
+      netbird = {
+        enable = mkEnableOption "Netbird mesh VPN";
+        ssh.enable = mkEnableOption "OpenSSH server reachable only via the nb-netbird interface";
+      };
       nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
     };
 

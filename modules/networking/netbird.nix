@@ -12,6 +12,10 @@ in
       };
     };
 
+    services.resolved.enable = true;
+
+    users.users.${config.cfg.user}.extraGroups = [ "netbird" ];
+
     environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
       directories = [
         "/var/lib/netbird"
