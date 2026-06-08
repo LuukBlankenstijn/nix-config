@@ -56,6 +56,7 @@
         styling.enable = true;
         waybar.enable = true;
         keyring.enable = true;
+        notifications.enable = true;
 
         terminal.enable = true;
         browser = {
@@ -118,6 +119,7 @@
         difftastic
         python3
         glab
+        claude-code
       ];
     };
   };

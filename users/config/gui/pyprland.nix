@@ -15,8 +15,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
         hide_delay = 0;
       };
       whatsapp = {
-        # use x11 because wayland does not allow setting class
-        command = "${pkgs.chromium}/bin/chromium --app=https://web.whatsapp.com --class=pypr-whatsapp --user-data-dir=$HOME/.cache/pypr/whatsapp --ozone-platform=x11";
+        command = "${pkgs.chromium}/bin/chromium --app=https://web.whatsapp.com --class=pypr-whatsapp --user-data-dir=$HOME/.cache/pypr/whatsapp --ozone-platform=wayland";
         animation = "fromRight";
         position = "39% 3%";
         size = "60% 96%";

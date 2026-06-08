@@ -14,6 +14,7 @@
     ./nautilus.nix
     ./pyprland.nix
     ./styling.nix
+    ./swaync.nix
     ./tailscale.nix
     ./thunderbird.nix
     ./waybar.nix

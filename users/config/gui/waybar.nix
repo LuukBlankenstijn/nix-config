@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  notifEnabled = osConfig.cfg.userConfig.desktop.notifications.enable;
+in
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.waybar.enable) (
   lib.mkMerge [
     {
@@ -12,103 +15,128 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         systemd.enable = true;
 
         settings = [
-          {
-            layer = "top";
-            position = "top";
-            margin-top = 0;
-            margin-left = 0;
-            margin-right = 0;
-            spacing = 4;
+          (
+            {
+              layer = "top";
+              position = "top";
+              margin-top = 0;
+              margin-left = 0;
+              margin-right = 0;
+              spacing = 4;
 
-            modules-left = [
-              "hyprland/workspaces"
-              "hyprland/window"
-            ];
-            modules-center = [ "clock" ];
-            modules-right = [
-              "pulseaudio"
-              "bluetooth"
-              "network"
-              "battery"
-              "tray"
-            ];
+              modules-left = [
+                "hyprland/workspaces"
+                "hyprland/window"
+              ];
+              modules-center = [ "clock" ];
+              modules-right = [
+                "pulseaudio"
+                "bluetooth"
+                "network"
+                "battery"
+              ]
+              ++ lib.optional notifEnabled "custom/notification"
+              ++ [ "tray" ];
 
-            "hyprland/workspaces" = {
-              format = "{name}";
-              on-click = "activate";
-            };
+              "hyprland/workspaces" = {
+                format = "{name}";
+                on-click = "activate";
+              };
 
-            "hyprland/window" = {
-              format = "{class}";
-              icon = true;
-            };
+              "hyprland/window" = {
+                format = "{class}";
+                icon = true;
+              };
 
-            "clock" = {
-              interval = 1;
-              format = "{:%I:%M:%S %p  |  %a, %b %e}";
-              tooltip-format = "<tt><small>{calendar}</small></tt>";
-            };
+              "clock" = {
+                interval = 1;
+                format = "{:%I:%M:%S %p  |  %a, %b %e}";
+                tooltip-format = "<tt><small>{calendar}</small></tt>";
+              };
 
-            "network" = {
-              format-wifi = " {essid}";
-              format-ethernet = "󰈀";
-              format-disconnected = "󰖪";
-              tooltip-format = "{essid} ({signalStrength}%)";
-              on-click = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-            };
+              "network" = {
+                format-wifi = " {essid}";
+                format-ethernet = "󰈀";
+                format-disconnected = "󰖪";
+                tooltip-format = "{essid} ({signalStrength}%)";
+                on-click = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+              };
 
-            "bluetooth" = {
-              format = "";
-              format-connected = " {device_alias}";
-              format-connected-battery = " {device_alias} {device_battery_percentage}%";
-              tooltip-format = ''
-                {controller_alias}	{controller_address}
+              "bluetooth" = {
+                format = "";
+                format-connected = " {device_alias}";
+                format-connected-battery = " {device_alias} {device_battery_percentage}%";
+                tooltip-format = ''
+                  {controller_alias}	{controller_address}
 
-                {num_connections} connected'';
-              tooltip-format-connected = ''
-                {controller_alias}	{controller_address}
+                  {num_connections} connected'';
+                tooltip-format-connected = ''
+                  {controller_alias}	{controller_address}
 
-                {num_connections} connected
+                  {num_connections} connected
 
-                {device_enumerate}'';
-              tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
-              on-click = "${pkgs.overskride}/bin/overskride";
-            };
+                  {device_enumerate}'';
+                tooltip-format-enumerate-connected = "{device_alias}	{device_address}";
+                on-click = "${pkgs.overskride}/bin/overskride";
+              };
 
-            pulseaudio = {
-              format = "{icon} {volume}%";
-              format-muted = "󰝟";
-              format-icons = {
-                headphone = "";
-                hands-free = "󱡒";
-                headset = "󰋎";
-                phone = "";
-                portable = "";
-                car = "";
-                default = [
-                  "󰕿"
-                  "󰖀"
-                  "󰕾"
+              pulseaudio = {
+                format = "{icon} {volume}%";
+                format-muted = "󰝟";
+                format-icons = {
+                  headphone = "";
+                  hands-free = "󱡒";
+                  headset = "󰋎";
+                  phone = "";
+                  portable = "";
+                  car = "";
+                  default = [
+                    "󰕿"
+                    "󰖀"
+                    "󰕾"
+                  ];
+                };
+                on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
+              };
+
+              "battery" = {
+                states = {
+                  "warning" = 30;
+                  "critical" = 15;
+                };
+                format = "{icon} {capacity}%";
+                format-icons = [
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
                 ];
               };
-              on-click = "${pkgs.pwvucontrol}/bin/pwvucontrol";
-            };
-
-            "battery" = {
-              states = {
-                "warning" = 30;
-                "critical" = 15;
+            }
+            // lib.optionalAttrs notifEnabled {
+              "custom/notification" = {
+              tooltip = false;
+              format = " {}";
+              format-icons = {
+                notification              = "";
+                none                      = "";
+                dnd-notification          = "";
+                dnd-none                  = "";
+                inhibited-notification    = "";
+                inhibited-none            = "";
+                dnd-inhibited-notification = "";
+                dnd-inhibited-none        = "";
               };
-              format = "{icon} {capacity}%";
-              format-icons = [
-                ""
-                ""
-                ""
-                ""
-                ""
-              ];
+              return-type = "json";
+              exec-if = "which swaync-client";
+              exec = "swaync-client -swb";
+              on-click = "swaync-client -t -sw";
+              on-click-right = "swaync-client -d -sw";
+              escape = true;
             };
-          }
+            }
+          )
         ];
 
         style = ''
@@ -137,12 +165,19 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               border-bottom: 2px solid #bb9af7;
           }
 
-          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #tray {
+          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #tray, #custom-notification {
               padding: 0 12px;
               margin: 4px 2px;
               border-radius: 8px;
               background-color: rgba(255, 255, 255, 0.1);
           }
+
+          #custom-notification.notification,
+          #custom-notification.inhibited-notification { color: #f7768e; }
+          #custom-notification.dnd-none,
+          #custom-notification.dnd-inhibited-none { color: #565f89; }
+          #custom-notification.dnd-notification,
+          #custom-notification.dnd-inhibited-notification { color: #bb9af7; }
 
           #clock {
               color: #e0af68;
@@ -183,9 +218,18 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
           classRegex = "(com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped|xdg-desktop-portal-gtk)";
         in
         [
-          { match.class = classRegex; float = true; }
-          { match.class = classRegex; size = "monitor_w*0.7 monitor_h*0.7"; }
-          { match.class = classRegex; move = "monitor_w*0.15 monitor_h*0.15"; }
+          {
+            match.class = classRegex;
+            float = true;
+          }
+          {
+            match.class = classRegex;
+            size = "monitor_w*0.7 monitor_h*0.7";
+          }
+          {
+            match.class = classRegex;
+            move = "monitor_w*0.15 monitor_h*0.15";
+          }
         ];
     })
   ]

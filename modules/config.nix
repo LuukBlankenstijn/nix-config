@@ -128,6 +128,7 @@ in
                 styling.enable = mkEnableOption "GTK/Qt dark theming (Adwaita)";
                 waybar.enable = mkEnableOption "Waybar status bar";
                 keyring.enable = mkEnableOption "Seahorse keyring GUI";
+                notifications.enable = mkEnableOption "swaync notification daemon (and waybar widget)";
 
                 terminal.enable = mkEnableOption "Ghostty terminal emulator";
                 browser = {
