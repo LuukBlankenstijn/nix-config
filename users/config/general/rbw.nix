@@ -59,9 +59,11 @@ in
 
     programs.zsh = {
       enable = true;
-      shellAliases = {
-        sudo = "sudo -A";
-      };
+      initContent = ''
+        if [ -z "$SSH_CONNECTION" ] && [ -z "$SSH_TTY" ]; then
+          alias sudo='sudo -A'
+        fi
+      '';
     };
 
     programs.rbw = {
