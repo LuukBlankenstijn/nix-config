@@ -90,19 +90,6 @@
           gpg.format = "openpgp";
           commit.gpgsign = true;
           tag.gpgsign = true;
-          core.pager = "delta";
-          interactive.diffFilter = "delta --color-only";
-          delta = {
-            navigate = true;
-            side-by-side = true;
-            line-numbers = true;
-          };
-          diff.tool = "difftastic";
-          difftool = {
-            prompt = false;
-            difftastic.cmd = ''difft "$LOCAL" "$REMOTE"'';
-          };
-          alias.dft = "difftool";
         };
       };
       neovim.enable = true;
@@ -119,8 +106,6 @@
         slack
         _1password-gui
         github-copilot-cli
-        delta
-        difftastic
         python3
         glab
         claude-code

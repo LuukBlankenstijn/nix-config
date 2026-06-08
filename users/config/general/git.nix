@@ -8,6 +8,11 @@ let
   gitCfg = osConfig.cfg.userConfig.git;
 in
 lib.mkIf gitCfg.enable {
+  home.packages = with pkgs; [
+    delta
+    difftastic
+  ];
+
   programs.git = {
     enable = true;
     ignores = [ ".direnv/" ];
@@ -22,7 +27,22 @@ lib.mkIf gitCfg.enable {
         signByDefault = true;
         signer = "${pkgs.openssh}/bin/ssh-keygen";
       };
-      core.autocrlf = false;
+      core = {
+        autocrlf = false;
+        pager = "delta";
+      };
+      interactive.diffFilter = "delta --color-only";
+      delta = {
+        navigate = true;
+        side-by-side = true;
+        line-numbers = true;
+      };
+      diff.tool = "difftastic";
+      difftool = {
+        prompt = false;
+        difftastic.cmd = ''difft "$LOCAL" "$REMOTE"'';
+      };
+      alias.dft = "difftool";
       push.autoSetupRemote = true;
       pull.rebase = true;
       init.defaultBranch = "main";
