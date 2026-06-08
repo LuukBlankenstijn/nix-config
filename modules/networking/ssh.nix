@@ -26,5 +26,6 @@ in
     ];
 
     networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 22 ];
+    networking.firewall.interfaces."nb-netbird".allowedTCPPorts = mkIf config.cfg.networking.netbird.enable [ 22 ];
   };
 }
