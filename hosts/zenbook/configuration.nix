@@ -103,6 +103,7 @@
         zotero
         gnome-calculator
         slack
+        gh
       ];
 
       extraGroups = [ "dialout" ];
