@@ -108,6 +108,7 @@
         gnome-calculator
         slack
         gh
+        gh-dash
       ];
 
       extraGroups = [ "dialout" ];
