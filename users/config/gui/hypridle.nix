@@ -1,13 +1,4 @@
 { osConfig, lib, pkgs, ... }:
-let
-  suspendIfOnBattery = pkgs.writeShellScript "suspend-if-on-battery" ''
-    for ps in /sys/class/power_supply/*; do
-      [ "$(cat "$ps/type" 2>/dev/null)" = "Mains" ] || continue
-      [ "$(cat "$ps/online" 2>/dev/null)" = "1" ] && exit 0
-    done
-    exec ${pkgs.systemd}/bin/systemctl suspend
-  '';
-in
 lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userConfig.desktop.hyprland.idle.enable) {
   services.hypridle = {
     enable = true;
@@ -43,7 +34,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
         }
         {
           timeout = 1800;
-          on-timeout = "${suspendIfOnBattery}";
+          on-timeout = "${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
     };

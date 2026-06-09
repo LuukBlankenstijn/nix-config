@@ -199,10 +199,6 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
         (mediaBindLocked "XF86AudioPause" "playerctl play-pause")
         (mediaBindLocked "XF86AudioPlay" "playerctl play-pause")
         (mediaBindLocked "XF86AudioPrev" "playerctl previous")
-
-        # lid switch
-        { _args = [ "switch:on:Lid Switch" (mkLuaInline ''hl.dsp.dpms("off")'') { locked = true; } ]; }
-        { _args = [ "switch:off:Lid Switch" (mkLuaInline ''hl.dsp.dpms("on")'') { locked = true; } ]; }
       ]
       ++ workspaceFocusBinds
       ++ workspaceMoveBinds
