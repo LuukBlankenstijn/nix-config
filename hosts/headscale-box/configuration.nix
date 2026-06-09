@@ -7,7 +7,14 @@
 
   cfg = {
     server.enable = true;
-    networking.tailscale.enable = true;
+    networking = {
+      tailscale.enable = true;
+      netbird = {
+        enable = true;
+        managementUrl = "https://netbird.luukblankenstijn.nl";
+        setupKey.enable = true;
+      };
+    };
     services.headscale.enable = true;
     services.traefik.enable = true;
 

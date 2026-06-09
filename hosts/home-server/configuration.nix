@@ -12,6 +12,11 @@
         enable = true;
         loginServer = "https://headscale.luukblankenstijn.nl";
       };
+      netbird = {
+        enable = true;
+        managementUrl = "https://netbird.luukblankenstijn.nl";
+        setupKey.enable = true;
+      };
       nftables.enable = true;
     };
     services.k3s.enable = true;

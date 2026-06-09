@@ -55,6 +55,12 @@ in
       };
       netbird = {
         enable = mkEnableOption "Netbird mesh VPN";
+        managementUrl = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "Optional management server URL for Netbird (e.g. self-hosted instance)";
+        };
+        setupKey.enable = mkEnableOption "Netbird setup key from sops (secret named netbird-setupkey)";
         ssh.enable = mkEnableOption "OpenSSH server reachable only via the nb-netbird interface";
       };
       nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
