@@ -9,12 +9,26 @@ let
   screenShotScript = pkgs.writeShellScriptBin "screenshot" ''
     export PATH=$PATH:${pkgs.hyprshot}/bin
 
+    mkdir -p ~/screenshots
+
+    clipboard_only=0
+    for a in "$@"; do
+      [ "$a" = "--clipboard-only" ] && clipboard_only=1
+    done
+
+    before=$(ls -t ~/screenshots 2>/dev/null | head -n1)
+
     if command -v hyproled >/dev/null 2>&1; then
         hyproled off
         trap 'hyproled' EXIT
     fi
 
     hyprshot -m region -o ~/screenshots -z -s "$@"
+
+    after=$(ls -t ~/screenshots 2>/dev/null | head -n1)
+    if [ "$clipboard_only" -eq 0 ] && [ -n "$after" ] && [ "$before" != "$after" ]; then
+      ${pkgs.libnotify}/bin/notify-send -a Screenshot -i "$HOME/screenshots/$after" "Screenshot saved" "$HOME/screenshots/$after"
+    fi
   '';
 
   workspaceFocusBinds = builtins.map (i: {
