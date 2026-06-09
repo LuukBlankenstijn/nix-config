@@ -15,6 +15,11 @@ let
       printf "\033]52;c;$(base64 | tr -d '\n')\a"
     fi
   '';
+
+  cliphistFuzzel = pkgs.writeShellScriptBin "cliphist-fuzzel" ''
+    output=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
+    ${pkgs.cliphist}/bin/cliphist list | ${pkgs.fuzzel}/bin/fuzzel --dmenu --output "$output" | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
+  '';
 in
 mkIf (userConfig.clipboard.enable || userConfig.clipboard.history.enable) {
   home.packages = mkMerge [
@@ -66,8 +71,8 @@ mkIf (userConfig.clipboard.enable || userConfig.clipboard.history.enable) {
       [
         {
           _args = [
-            (lib.generators.mkLuaInline ''mainmod .. " + H"'')
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${pkgs.cliphist}/bin/cliphist-fuzzel-img")'')
+            (lib.generators.mkLuaInline ''mainmod .. " + SHIFT + H"'')
+            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${cliphistFuzzel}/bin/cliphist-fuzzel")'')
           ];
         }
       ];
