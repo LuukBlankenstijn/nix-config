@@ -6,6 +6,7 @@ in
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.notifications.enable) {
   wayland.windowManager.hyprland.settings.bind = lib.mkIf hyprEnabled [
     { _args = [ (mkLuaInline ''mainmod .. " + N"'') (mkLuaInline ''hl.dsp.exec_cmd("swaync-client -t -sw")'') ]; }
+    { _args = [ (mkLuaInline ''mainmod .. " + SHIFT + N"'') (mkLuaInline ''hl.dsp.exec_cmd("swaync-client -C")'') ]; }
   ];
 
   services.swaync = {
