@@ -28,7 +28,10 @@
       };
       netbird = {
         enable = true;
-        ssh.enable = true;
+        profiles.netbird = {
+          ssh.enable = true;
+          managementUrl = "https://netbird.luukblankenstijn.nl";
+        };
       };
     };
     laptop.enable = true;

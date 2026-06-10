@@ -1,45 +1,51 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkIf optionalAttrs;
+  inherit (lib)
+    mkIf
+    mapAttrs
+    mapAttrs'
+    nameValuePair
+    filterAttrs
+    optionalAttrs
+    ;
   cfg = config.cfg.networking.netbird;
+  setupKeyProfiles = filterAttrs (_: p: p.setupKey.enable) cfg.profiles;
 in
 {
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.setupKey.enable -> cfg.enable;
-        message = "cfg.networking.netbird.setupKey.enable requires cfg.networking.netbird.enable";
-      }
-    ];
-
-    sops.secrets = mkIf cfg.setupKey.enable {
-      netbird-setupkey.mode = "0400";
-    };
+    sops.secrets = mapAttrs' (
+      _: p: nameValuePair p.setupKey.secretName { mode = "0400"; }
+    ) setupKeyProfiles;
 
     services.netbird = {
       ui.enable = true;
-      clients.default = {
-        name = "netbird";
-        port = 51820;
-        environment = optionalAttrs (cfg.managementUrl != null) {
-          NB_MANAGEMENT_URL = cfg.managementUrl;
+      clients = mapAttrs (profileName: p: {
+        name = profileName;
+        port = p.port;
+        environment = optionalAttrs (p.managementUrl != null) {
+          NB_MANAGEMENT_URL = p.managementUrl;
         };
-        login = mkIf cfg.setupKey.enable {
+        login = mkIf p.setupKey.enable {
           enable = true;
-          setupKeyFile = config.sops.secrets.netbird-setupkey.path;
+          setupKeyFile = config.sops.secrets.${p.setupKey.secretName}.path;
           systemdDependencies = [ "sops-install-secrets.service" ];
         };
-      };
+      }) cfg.profiles;
     };
 
     services.resolved.enable = true;
 
-    users.users.${config.cfg.user}.extraGroups = [ "netbird" ];
+    users.users.${config.cfg.user}.extraGroups = map (c: c.user.group) (
+      lib.attrValues config.services.netbird.clients
+    );
+
+    environment.shellAliases = mapAttrs' (
+      profileName: _:
+      nameValuePair profileName config.services.netbird.clients.${profileName}.wrapper.meta.mainProgram
+    ) (filterAttrs (n: _: n != "netbird") cfg.profiles);
 
     environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
-      directories = [
-        "/var/lib/netbird"
-      ];
+      directories = map (c: c.dir.state) (lib.attrValues config.services.netbird.clients);
     };
   };
 }

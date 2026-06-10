@@ -55,13 +55,39 @@ in
       };
       netbird = {
         enable = mkEnableOption "Netbird mesh VPN";
-        managementUrl = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          description = "Optional management server URL for Netbird (e.g. self-hosted instance)";
+        profiles = mkOption {
+          type = types.attrsOf (
+            types.submodule (
+              { name, ... }:
+              {
+                options = {
+                  port = mkOption {
+                    type = types.port;
+                    default = 51820;
+                    description = "WireGuard port this profile listens on. Must be unique across profiles on the same host.";
+                  };
+                  managementUrl = mkOption {
+                    type = types.nullOr types.str;
+                    default = null;
+                    description = "Optional management server URL (sets NB_MANAGEMENT_URL).";
+                  };
+                  ssh.enable = mkEnableOption "OpenSSH server reachable via this profile's nb-${name} interface";
+                  setupKey = {
+                    enable = mkEnableOption "Netbird setup key from sops";
+                    secretName = mkOption {
+                      type = types.str;
+                      default = "netbird-setupkey-${name}";
+                      defaultText = lib.literalExpression "\"netbird-setupkey-\${profileName}\"";
+                      description = "Name of the sops secret holding the setup key for this profile.";
+                    };
+                  };
+                };
+              }
+            )
+          );
+          default = { };
+          description = "Netbird profiles. Each entry becomes a separate `services.netbird.clients.<name>` entry — i.e. a separate netbird daemon, interface (`nb-<name>`), and state file.";
         };
-        setupKey.enable = mkEnableOption "Netbird setup key from sops (secret named netbird-setupkey)";
-        ssh.enable = mkEnableOption "OpenSSH server reachable only via the nb-netbird interface";
       };
       nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
     };
