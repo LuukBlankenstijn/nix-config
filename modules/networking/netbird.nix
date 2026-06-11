@@ -39,6 +39,7 @@ in
           name = profileName;
           port = p.port;
           hardened = mkIf p.ssh.netbirdSsh false;
+          config = mkIf p.ssh.netbirdSsh { ServerSSHAllowed = true; };
           environment = optionalAttrs (p.managementUrl != null) {
             NB_MANAGEMENT_URL = p.managementUrl;
           };
