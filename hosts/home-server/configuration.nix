@@ -17,8 +17,9 @@
       netbird = {
         enable = true;
         profiles.netbird = {
-          ssh.enable = true;
           managementUrl = "https://netbird.luukblankenstijn.nl";
+          ssh.enable = true;
+          ssh.netbirdSsh = true;
           setupKey.path = config.sops.secrets.netbird-setupkey.path;
         };
       };
