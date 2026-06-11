@@ -12,7 +12,17 @@ let
   setupKeyProfiles = filterAttrs (_: p: p.setupKey.enable) cfg.profiles;
 in
 {
-  config = mkIf cfg.enable {
+  config = lib.mkMerge [
+    {
+      assertions = [
+        {
+          assertion = cfg.enable || !(lib.any (p: p.ssh.netbirdSsh) (lib.attrValues cfg.profiles));
+          message = "cfg.networking.netbird.profiles.<name>.ssh.netbirdSsh requires cfg.networking.netbird.enable";
+        }
+      ];
+    }
+
+    (mkIf cfg.enable {
     sops.secrets = mapAttrs' (
       _: p: nameValuePair p.setupKey.secretName { mode = "0400"; }
     ) setupKeyProfiles;
@@ -22,6 +32,7 @@ in
       clients = mapAttrs (profileName: p: {
         name = profileName;
         port = p.port;
+        hardened = mkIf p.ssh.netbirdSsh false;
         environment = optionalAttrs (p.managementUrl != null) {
           NB_MANAGEMENT_URL = p.managementUrl;
         };
@@ -47,5 +58,6 @@ in
     environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
       directories = map (c: c.dir.state) (lib.attrValues config.services.netbird.clients);
     };
-  };
+    })
+  ];
 }

@@ -31,6 +31,7 @@
             port = 51820;
             managementUrl = "https://netbird.luukblankenstijn.nl";
             ssh.enable = true;
+            ssh.netbirdSsh = true;
           };
           nbg = {
             port = 51821;

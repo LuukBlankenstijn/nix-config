@@ -71,7 +71,10 @@ in
                     default = null;
                     description = "Optional management server URL (sets NB_MANAGEMENT_URL).";
                   };
-                  ssh.enable = mkEnableOption "OpenSSH server reachable via this profile's nb-${name} interface";
+                  ssh = {
+                    enable = mkEnableOption "OpenSSH server reachable via this profile's nb-${name} interface";
+                    netbirdSsh = mkEnableOption "Netbird's built-in SSH server (JWT/SSO login, usable from the web dashboard). Runs this client unhardened/as root so it can switch into the login user";
+                  };
                   setupKey = {
                     enable = mkEnableOption "Netbird setup key from sops";
                     secretName = mkOption {
