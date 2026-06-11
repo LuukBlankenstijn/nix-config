@@ -193,7 +193,7 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
         { _args = [ (mkLuaInline ''mainmod .. " + j"'') (mkLuaInline ''hl.dsp.focus({ direction = "down" })'') ]; }
 
         # screenshots
-        { _args = [ "Print" (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot) --clipboard-only")'') ]; }
+        { _args = [ "Print" (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot --clipboard-only)")'') ]; }
         { _args = [ "SHIFT + Print" (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot)")'') ]; }
 
         # mouse move/resize
