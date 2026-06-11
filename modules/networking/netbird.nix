@@ -9,7 +9,6 @@ let
     optionalAttrs
     ;
   cfg = config.cfg.networking.netbird;
-  setupKeyProfiles = filterAttrs (_: p: p.setupKey.enable) cfg.profiles;
 in
 {
   config = lib.mkMerge [
@@ -23,10 +22,6 @@ in
     }
 
     (mkIf cfg.enable {
-    sops.secrets = mapAttrs' (
-      _: p: nameValuePair p.setupKey.secretName { mode = "0400"; }
-    ) setupKeyProfiles;
-
     services.netbird = {
       ui.enable = true;
       clients = mapAttrs (profileName: p: {
@@ -36,9 +31,9 @@ in
         environment = optionalAttrs (p.managementUrl != null) {
           NB_MANAGEMENT_URL = p.managementUrl;
         };
-        login = mkIf p.setupKey.enable {
+        login = mkIf (p.setupKey.path != null) {
           enable = true;
-          setupKeyFile = config.sops.secrets.${p.setupKey.secretName}.path;
+          setupKeyFile = p.setupKey.path;
           systemdDependencies = [ "sops-install-secrets.service" ];
         };
       }) cfg.profiles;

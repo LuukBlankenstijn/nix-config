@@ -1,9 +1,11 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ../../modules
   ];
+
+  sops.secrets.netbird-setupkey.mode = "0400";
 
   cfg = {
     server.enable = true;
@@ -17,7 +19,7 @@
         profiles.netbird = {
           ssh.enable = true;
           managementUrl = "https://netbird.luukblankenstijn.nl";
-          setupKey.enable = true;
+          setupKey.path = config.sops.secrets.netbird-setupkey.path;
         };
       };
       nftables.enable = true;

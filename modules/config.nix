@@ -75,14 +75,10 @@ in
                     enable = mkEnableOption "OpenSSH server reachable via this profile's nb-${name} interface";
                     netbirdSsh = mkEnableOption "Netbird's built-in SSH server (JWT/SSO login, usable from the web dashboard). Runs this client unhardened/as root so it can switch into the login user";
                   };
-                  setupKey = {
-                    enable = mkEnableOption "Netbird setup key from sops";
-                    secretName = mkOption {
-                      type = types.str;
-                      default = "netbird-setupkey-${name}";
-                      defaultText = lib.literalExpression "\"netbird-setupkey-\${profileName}\"";
-                      description = "Name of the sops secret holding the setup key for this profile.";
-                    };
+                  setupKey.path = mkOption {
+                    type = types.nullOr types.path;
+                    default = null;
+                    description = "Path to a file holding the setup key for this profile (e.g. a sops secret path). When set, the client logs in with this key.";
                   };
                 };
               }
