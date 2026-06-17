@@ -18,6 +18,7 @@ in
         "--write-kubeconfig-mode=0644"
         "--etcd-expose-metrics=true"
         "--disable=traefik"
+        "--disable-network-policy"
       ];
     };
 
