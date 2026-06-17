@@ -43,7 +43,7 @@
           javascriptreact = [ "prettierd" ];
           typescriptreact = [ "prettierd" ];
           html = [ "prettierd" ];
-          jave = [ "google-java-format" ];
+          java = [ "google-java-format" ];
           json = [ "prettierd" ];
           markdown = [ "prettierd" ];
           dockerfile = [ "prettierd" ];

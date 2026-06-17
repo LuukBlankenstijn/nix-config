@@ -10,17 +10,19 @@
             "cmp.entry.get_documentation" = true;
           };
         };
-        routes = [{
-          filter = {
-            event = "msg_show";
-            any = [
-              { find = "%d+L, %d+B"; }
-              { find = "; after #%d+"; }
-              { find = "; before #%d+"; }
-            ];
-          };
-          view = "mini";
-        }];
+        routes = [
+          {
+            filter = {
+              event = "msg_show";
+              any = [
+                { find = "%d+L, %d+B"; }
+                { find = "; after #%d+"; }
+                { find = "; before #%d+"; }
+              ];
+            };
+            view = "mini";
+          }
+        ];
         presets = {
           bottom_search = true;
           command_palette = true;
@@ -34,8 +36,7 @@
       {
         mode = "c";
         key = "<S-Enter>";
-        action.__raw =
-          "function() require('noice').redirect(vim.fn.getcmdline()) end";
+        action.__raw = "function() require('noice').redirect(vim.fn.getcmdline()) end";
         options.desc = "Redirect Cmdline";
       }
       {
@@ -57,10 +58,13 @@
         options.desc = "Dismiss All";
       }
       {
-        mode = [ "i" "n" "s" ];
+        mode = [
+          "i"
+          "n"
+          "s"
+        ];
         key = "<c-f>";
-        action.__raw =
-          "function() if not require('noice.lsp').scroll(4) then return '<c-f>' end end";
+        action.__raw = "function() if not require('noice.lsp').scroll(4) then return '<c-f>' end end";
         options = {
           silent = true;
           expr = true;
@@ -68,10 +72,13 @@
         };
       }
       {
-        mode = [ "i" "n" "s" ];
+        mode = [
+          "i"
+          "n"
+          "s"
+        ];
         key = "<c-b>";
-        action.__raw =
-          "function() if not require('noice.lsp').scroll(-4) then return '<c-b>' end end";
+        action.__raw = "function() if not require('noice.lsp').scroll(-4) then return '<c-b>' end end";
         options = {
           silent = true;
           expr = true;
