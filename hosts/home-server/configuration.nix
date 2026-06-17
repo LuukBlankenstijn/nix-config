@@ -21,7 +21,6 @@
           setupKey.enable = true;
         };
       };
-      nftables.enable = true;
     };
     services.k3s.enable = true;
 
