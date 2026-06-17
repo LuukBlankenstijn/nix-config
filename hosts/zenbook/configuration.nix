@@ -134,7 +134,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.graphics = {
-    extraPackages = [ pkgs.intel-compute-runtime ];
+    extraPackages = [
+      pkgs.intel-compute-runtime
+      pkgs.intel-media-driver
+    ];
   };
 
   system.stateVersion = "25.11";
