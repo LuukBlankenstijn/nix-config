@@ -11,6 +11,7 @@
     extraGroups = [
       "seat"
       "wheel"
+      "systemd-journal"
     ]
     ++ lib.optionals config.cfg.networking.enable [ "networkmanager" ]
     ++ lib.optionals config.cfg.virtualisation.docker.enable [ "docker" ]
