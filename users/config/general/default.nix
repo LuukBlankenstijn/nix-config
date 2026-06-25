@@ -9,5 +9,6 @@
     ./nvim.nix
     ./shell.nix
     ./rbw.nix
+    ./omp.nix
   ];
 }

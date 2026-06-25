@@ -101,6 +101,7 @@
       git.enable = true;
       neovim.enable = true;
       rbw.enable = true;
+      omp.enable = true;
       shell.enable = true;
       clipboard = {
         enable = true;
