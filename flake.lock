@@ -390,7 +390,7 @@
     "ssh-keys": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-3Qm1kXlCMVDt4gHfZZpfGSaafNzk1H4+M7DVbXHMsw8=",
+        "narHash": "sha256-qff6xerJBFiPXtkb+6z25hPcx0DD1XimNHfywvJbAos=",
         "type": "file",
         "url": "https://github.com/LuukBlankenstijn.keys"
       },
