@@ -22,7 +22,10 @@
         };
       };
     };
-    services.k3s.enable = true;
+    services.k3s = {
+      enable = true;
+      gpu.enable = true;
+    };
 
     users.luuk = {
       git.enable = true;

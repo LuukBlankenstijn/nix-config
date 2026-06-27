@@ -113,6 +113,7 @@ in
       k3s = {
         enable = mkEnableOption "K3s – lightweight Kubernetes distribution";
         clusterInit = mkEnableOption "initialize a new cluster with embedded etcd";
+        gpu.enable = mkEnableOption "NVIDIA GPU passthrough for k3s (driver, container toolkit, containerd nvidia runtime, gpu node label/taint)";
       };
     };
 
