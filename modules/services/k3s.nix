@@ -80,26 +80,21 @@ in
     })
 
     (mkIf (cfg.enable && cfg.gpu.enable) {
-      # Proprietary NVIDIA driver; safest on Ampere mobile / headless.
       hardware.graphics.enable = true;
-      services.xserver.videoDrivers = [ "nvidia" ]; # loads kernel module even headless
+      services.xserver.videoDrivers = [ "nvidia" ];
       hardware.nvidia = {
         modesetting.enable = true;
         open = false;
         nvidiaSettings = false;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
-        powerManagement.enable = true; # mobile chip; suspend/resume stability
+        powerManagement.enable = true;
       };
 
-      # CDI generator + nvidia-container-runtime. UUID strategy so the
-      # device plugin advertises `nvidia.com/gpu` by stable id.
       hardware.nvidia-container-toolkit = {
         enable = true;
         device-name-strategy = "uuid";
       };
 
-      # Register the nvidia runtime in k3s's embedded containerd without
-      # making it default. Pods opt in via `runtimeClassName: nvidia`.
       services.k3s.containerdConfigTemplate = ''
         {{ template "base" . }}
 
@@ -112,11 +107,9 @@ in
           BinaryName = "${pkgs.nvidia-container-toolkit.tools}/bin/nvidia-container-runtime.cdi"
       '';
 
-      # Confine inference workloads to this node.
       services.k3s.extraFlags = [
         "--node-label=gpu=true"
         "--node-label=workload=ai"
-        "--node-taint=nvidia.com/gpu=present:NoSchedule"
       ];
     })
   ];
