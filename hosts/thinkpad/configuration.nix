@@ -89,9 +89,9 @@
         dirSettings."gitdir:~/code/" = {
           user = {
             email = "luuk@dutchcodingcompany.com";
-            signingkey = "60B9AA89C991A93B";
+            signingkey = "~/.ssh/id_ed25519";
           };
-          gpg.format = "openpgp";
+          gpg.format = "ssh";
           commit.gpgsign = true;
           tag.gpgsign = true;
         };
