@@ -97,6 +97,7 @@
         };
       };
       neovim.enable = true;
+      omp.enable = true;
       shell.enable = true;
       clipboard = {
         enable = true;
