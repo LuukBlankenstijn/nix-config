@@ -6,7 +6,7 @@
     ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
-    ./hyprmon.nix
+    ./displays.nix
     ./hyprpaper.nix
     ./hyprpicker.nix
     ./hyprshell.nix

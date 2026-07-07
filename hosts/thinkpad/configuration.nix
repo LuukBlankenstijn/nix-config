@@ -55,7 +55,7 @@
           paper.enable = true;
           shell.enable = true;
           picker.enable = true;
-          mon.enable = true;
+          displays.enable = true;
           pyprland.enable = true;
         };
 

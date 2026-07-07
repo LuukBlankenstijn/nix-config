@@ -158,7 +158,7 @@ in
                   paper.enable = mkEnableOption "hyprpaper (wallpaper daemon)";
                   shell.enable = mkEnableOption "hyprshell (window overview / switcher)";
                   picker.enable = mkEnableOption "hyprpicker (screen colour picker)";
-                  mon.enable = mkEnableOption "hyprmon (monitor profile manager)";
+                  displays.enable = mkEnableOption "monitor layout management (shikane auto-profiles + wdisplays GUI)";
                   pyprland.enable = mkEnableOption "pyprland scratchpad system";
                 };
 
