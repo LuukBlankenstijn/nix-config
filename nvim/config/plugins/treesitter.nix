@@ -1,10 +1,15 @@
 { pkgs, ... }:
 {
   config = {
+    # Laravel Blade templates (*.blade.php) are not a builtin Neovim filetype,
+    # so register the pattern for the treesitter parser / formatter to attach.
+    filetype.pattern.".*%.blade%.php" = "blade";
+
     plugins.treesitter = {
       enable = true;
       grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
         bash
+        blade
         c
         cpp
         diff

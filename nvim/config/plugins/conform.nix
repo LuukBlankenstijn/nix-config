@@ -3,6 +3,7 @@
 
   config = {
     extraPackages = with pkgs; [
+      blade-formatter
       prettierd
       gofumpt
       goimports-reviser
@@ -33,6 +34,7 @@
 
         formatters_by_ft = {
           nix = [ "nixpkgs-fmt" ];
+          blade = [ "blade-formatter" ];
           go = [
             "gofumpt"
             "goimports-reviser"
