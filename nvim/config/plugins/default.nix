@@ -2,6 +2,7 @@
   imports = [
     ./blink.nix
     ./buffer-line.nix
+    ./codesettings.nix
     ./conform.nix
     ./flash.nix
     ./fzf-lua.nix

@@ -30,5 +30,17 @@
       action = "<cmd>RustAnalyzer restart<cr>";
       options.desc = "Restart rust-analyzer";
     }
+    {
+      mode = "n";
+      key = "<leader>rm";
+      action = "<cmd>RustLsp expandMacro<cr>";
+      options.desc = "Expand macro";
+    }
+    {
+      mode = "n";
+      key = "<leader>rd";
+      action = "<cmd>RustLsp relatedDiagnostics<cr>";
+      options.desc = "Related diagnostics";
+    }
   ];
 }
