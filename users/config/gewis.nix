@@ -1,4 +1,10 @@
-{ osConfig, lib, pkgs, config, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   rdp = pkgs.writeShellScriptBin "rdp" ''
     export P=$(${config.get-pass}/bin/get-pass "gewis-m-account")
@@ -45,16 +51,19 @@ in
   home.packages = [
     pkgs.freerdp
     pkgs.krb5
+    pkgs.winbox
   ];
 
-  wayland.windowManager.hyprland.settings.bind = lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable [
-    {
-      _args = [
-        (lib.generators.mkLuaInline ''mainmod .. " + g"'')
-        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${rdp}/bin/rdp")'')
+  wayland.windowManager.hyprland.settings.bind =
+    lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable
+      [
+        {
+          _args = [
+            (lib.generators.mkLuaInline ''mainmod .. " + g"'')
+            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${rdp}/bin/rdp")'')
+          ];
+        }
       ];
-    }
-  ];
 
   accounts.email.accounts."gewis m-account" = {
     address = "m10878@gewis.nl";
