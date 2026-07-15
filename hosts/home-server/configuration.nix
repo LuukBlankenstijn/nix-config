@@ -52,5 +52,14 @@
     AllowSuspendThenHibernate = "no";
   };
 
+  boot.kernel.sysctl."net.ipv6.conf.enp3s0.disable_ipv6" = 1;
+  networking.dhcpcd.extraConfig = "noipv6rs";
+
+  environment.etc."k3s-resolv.conf".text = ''
+    nameserver 1.1.1.1
+    nameserver 8.8.8.8
+  '';
+  services.k3s.extraFlags = [ "--resolv-conf=/etc/k3s-resolv.conf" ];
+
   system.stateVersion = "25.05";
 }
