@@ -10,13 +10,14 @@ let
     ;
   cfg = config.cfg.networking.netbird;
   setupKeyProfiles = filterAttrs (_: p: p.setupKey.enable) cfg.profiles;
+  netbirdSshEnabled = lib.any (p: p.ssh.netbirdSsh) (lib.attrValues cfg.profiles);
 in
 {
   config = lib.mkMerge [
     {
       assertions = [
         {
-          assertion = cfg.enable || !(lib.any (p: p.ssh.netbirdSsh) (lib.attrValues cfg.profiles));
+          assertion = cfg.enable || !netbirdSshEnabled;
           message = "cfg.networking.netbird.profiles.<name>.ssh.netbirdSsh requires cfg.networking.netbird.enable";
         }
       ];
@@ -51,6 +52,10 @@ in
       };
 
       services.resolved.enable = true;
+
+      programs.ssh.extraConfig = lib.mkIf netbirdSshEnabled ''
+        Include /etc/ssh/ssh_config.d/99-netbird.conf
+      '';
 
       users.users.${config.cfg.user}.extraGroups = map (c: c.user.group) (
         lib.attrValues config.services.netbird.clients
