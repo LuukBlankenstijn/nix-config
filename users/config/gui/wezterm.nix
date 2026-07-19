@@ -9,16 +9,23 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
       local config = wezterm.config_builder()
 
       -- session save/restore across reboots (resurrect.wezterm).
-      -- Guarded with pcall so a failed plugin fetch (e.g. no network on the
-      -- very first launch) cannot break the entire config.
-      local resurrect_ok, resurrect = pcall(
-        wezterm.plugin.require,
-        "https://github.com/MLFlexer/resurrect.wezterm"
-      )
-      if resurrect_ok then
-        -- snapshot open workspaces every 15 minutes so there is a recent
-        -- state to restore after a reboot
-        resurrect.state_manager.periodic_save()
+      -- Only load the plugin in the GUI process: the mux server evaluates this
+      -- same config, and if both processes fetch the plugin they race on the
+      -- same install directory (the "Failed to rename ... plugins/..." error).
+      -- wezterm.gui is nil in the headless mux server, so this gate skips it
+      -- there. The pcall guards against a failed fetch (e.g. no network on the
+      -- very first launch) breaking the entire config.
+      local resurrect_ok, resurrect = false, nil
+      if wezterm.gui then
+        resurrect_ok, resurrect = pcall(
+          wezterm.plugin.require,
+          "https://github.com/MLFlexer/resurrect.wezterm"
+        )
+        if resurrect_ok then
+          -- snapshot open workspaces every 15 minutes so there is a recent
+          -- state to restore after a reboot
+          resurrect.state_manager.periodic_save()
+        end
       end
 
       -- theme = "Snazzy"
