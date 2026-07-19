@@ -23,6 +23,14 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
       -- confirm-close-surface = false
       config.window_close_confirmation = "NeverPrompt"
 
+      -- tmux-like session persistence: run panes inside a local mux server so
+      -- they survive the GUI window closing/restarting, and connect the GUI to
+      -- it on startup (reattach with `wezterm connect unix`).
+      config.unix_domains = {
+        { name = "unix" },
+      }
+      config.default_gui_startup_args = { "connect", "unix" }
+
       config.keys = {
         -- performable:ctrl+c=copy_to_clipboard
         -- copy when there is a selection, otherwise pass ctrl+c through
@@ -45,6 +53,9 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
         -- ctrl+x=close_surface
         { key = "x", mods = "CTRL", action = act.CloseCurrentPane({ confirm = false }) },
+
+        -- detach the GUI from the mux server, leaving the session running
+        { key = "d", mods = "CTRL|ALT", action = act.DetachDomain("CurrentPaneDomain") },
 
         -- Navigate splits
         { key = "h", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Left") },
