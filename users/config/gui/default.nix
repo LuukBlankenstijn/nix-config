@@ -18,6 +18,7 @@
     ./tailscale.nix
     ./thunderbird.nix
     ./waybar.nix
+    ./wezterm.nix
     ./winapps.nix
     ./zen-browser.nix
   ];
