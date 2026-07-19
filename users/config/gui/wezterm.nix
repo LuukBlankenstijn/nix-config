@@ -57,6 +57,14 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         -- detach the GUI from the mux server, leaving the session running
         { key = "d", mods = "CTRL|ALT", action = act.DetachDomain("CurrentPaneDomain") },
 
+        -- Create splits / tabs (ghostty defaults)
+        -- ctrl+shift+o=new_split:right
+        { key = "o", mods = "CTRL|SHIFT", action = act.SplitPane({ direction = "Right" }) },
+        -- ctrl+shift+e=new_split:down
+        { key = "e", mods = "CTRL|SHIFT", action = act.SplitPane({ direction = "Down" }) },
+        -- ctrl+shift+t=new_tab
+        { key = "t", mods = "CTRL|SHIFT", action = act.SpawnTab("CurrentPaneDomain") },
+
         -- Navigate splits
         { key = "h", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Left") },
         { key = "j", mods = "CTRL|ALT", action = act.ActivatePaneDirection("Down") },
