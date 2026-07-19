@@ -70,6 +70,19 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         -- detach the GUI from the mux server, leaving the session running
         { key = "d", mods = "CTRL|ALT", action = act.DetachDomain("CurrentPaneDomain") },
 
+        -- save the current session on demand (resurrect.wezterm)
+        {
+          key = "s",
+          mods = "CTRL|SHIFT",
+          action = wezterm.action_callback(function(win, pane)
+            if not resurrect_ok then
+              return
+            end
+            resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
+            win:toast_notification("wezterm", "session saved", nil, 4000)
+          end),
+        },
+
         -- restore a previously saved session (resurrect.wezterm)
         {
           key = "r",
