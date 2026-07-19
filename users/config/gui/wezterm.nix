@@ -1,4 +1,4 @@
-{ osConfig, lib, ... }:
+{ osConfig, lib, pkgs, ... }:
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.terminal.enable) {
   programs.wezterm = {
     enable = true;
@@ -7,6 +7,19 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
       local wezterm = require("wezterm")
       local act = wezterm.action
       local config = wezterm.config_builder()
+
+      -- session save/restore across reboots (resurrect.wezterm).
+      -- Guarded with pcall so a failed plugin fetch (e.g. no network on the
+      -- very first launch) cannot break the entire config.
+      local resurrect_ok, resurrect = pcall(
+        wezterm.plugin.require,
+        "https://github.com/MLFlexer/resurrect.wezterm"
+      )
+      if resurrect_ok then
+        -- snapshot open workspaces every 15 minutes so there is a recent
+        -- state to restore after a reboot
+        resurrect.state_manager.periodic_save()
+      end
 
       -- theme = "Snazzy"
       config.color_scheme = "Snazzy"
@@ -57,6 +70,37 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         -- detach the GUI from the mux server, leaving the session running
         { key = "d", mods = "CTRL|ALT", action = act.DetachDomain("CurrentPaneDomain") },
 
+        -- restore a previously saved session (resurrect.wezterm)
+        {
+          key = "r",
+          mods = "CTRL|SHIFT",
+          action = wezterm.action_callback(function(win, pane)
+            if not resurrect_ok then
+              return
+            end
+            resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id)
+              local kind = string.match(id, "^([^/]+)")
+              id = string.match(id, "([^/]+)$")
+              id = string.match(id, "(.+)%..+$")
+              local opts = {
+                relative = true,
+                restore_text = true,
+                on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+              }
+              if kind == "workspace" then
+                local state = resurrect.state_manager.load_state(id, "workspace")
+                resurrect.workspace_state.restore_workspace(state, opts)
+              elseif kind == "window" then
+                local state = resurrect.state_manager.load_state(id, "window")
+                resurrect.window_state.restore_window(pane:window(), state, opts)
+              elseif kind == "tab" then
+                local state = resurrect.state_manager.load_state(id, "tab")
+                resurrect.tab_state.restore_tab(pane:tab(), state, opts)
+              end
+            end)
+          end),
+        },
+
         -- Create splits / tabs (ghostty defaults)
         -- ctrl+shift+o=new_split:right
         { key = "o", mods = "CTRL|SHIFT", action = act.SplitPane({ direction = "Right" }) },
@@ -84,5 +128,25 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
 
       return config
     '';
+  };
+
+  # Run the multiplexer server as a user service so terminal sessions persist
+  # across GUI restarts regardless of how wezterm is launched. Connecting from
+  # the GUI is supposed to auto-start it, but a bare `wezterm start` from an app
+  # launcher ignores default_gui_startup_args and never spins the server up, so
+  # we start it explicitly here. Runs in the foreground (no --daemonize) under
+  # Type=simple, and is bound to the user session rather than the graphical
+  # session so it survives compositor restarts.
+  systemd.user.services.wezterm-mux-server = {
+    Unit = {
+      Description = "wezterm multiplexer server";
+      Documentation = [ "https://wezterm.org/multiplexing.html" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.wezterm}/bin/wezterm-mux-server";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "default.target" ];
   };
 }
