@@ -51,6 +51,13 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         bottom = 0,
       }
 
+      -- ghostty used mouse-scroll-multiplier = 1. Match that for full-screen
+      -- apps that do NOT do their own mouse reporting (many TUIs): wezterm
+      -- otherwise sends 3 arrow presses per wheel notch (the default), which
+      -- makes them scroll far too fast. Apps that handle the mouse themselves
+      -- (e.g. neovim) are unaffected and scroll at their own configured rate.
+      config.alternate_buffer_wheel_scroll_speed = 1
+
       -- tmux-like session persistence: run panes inside a local mux server so
       -- they survive the GUI window closing/restarting, and connect the GUI to
       -- it on startup (reattach with `wezterm connect unix`).
