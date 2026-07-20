@@ -6,7 +6,9 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
       general = {
         lock_cmd = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
         before_sleep_cmd = "${pkgs.systemd}/bin/loginctl lock-session";
-        after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+        # Give outputs time to settle after resume (DP/HDMI link retraining)
+        # before re-enabling them, so the locker doesn't redraw mid-hotplug.
+        after_sleep_cmd = "${pkgs.coreutils}/bin/sleep 2 && ${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       };
 
       listener = [
