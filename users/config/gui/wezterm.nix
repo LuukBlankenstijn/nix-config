@@ -158,26 +158,6 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
     '';
   };
 
-  # Run the multiplexer server as a user service so terminal sessions persist
-  # across GUI restarts regardless of how wezterm is launched. Connecting from
-  # the GUI is supposed to auto-start it, but a bare `wezterm start` from an app
-  # launcher ignores default_gui_startup_args and never spins the server up, so
-  # we start it explicitly here. Runs in the foreground (no --daemonize) under
-  # Type=simple, and is bound to the user session rather than the graphical
-  # session so it survives compositor restarts.
-  systemd.user.services.wezterm-mux-server = {
-    Unit = {
-      Description = "wezterm multiplexer server";
-      Documentation = [ "https://wezterm.org/multiplexing.html" ];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.wezterm}/bin/wezterm-mux-server";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = [ "default.target" ];
-  };
-
   # `mod + t` (SUPER+T) opens a wezterm window attached to the mux server, so it
   # rejoins the persistent session. Every other launch (app launcher, the
   # packaged `wezterm start`) stays a plain local window -- this keybind is the
