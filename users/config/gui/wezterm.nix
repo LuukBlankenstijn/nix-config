@@ -177,4 +177,27 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
     };
     Install.WantedBy = [ "default.target" ];
   };
+
+  # The packaged wezterm.desktop launches `wezterm start`, which opens a fresh
+  # local window and ignores default_gui_startup_args, so app-launcher/menu
+  # launches never attach to the mux server. Override the entry to connect to
+  # the unix domain instead, so a window opened from the launcher rejoins the
+  # persistent session. (`connect` auto-starts the mux server if it is not
+  # already running.)
+  xdg.desktopEntries."org.wezfurlong.wezterm" = {
+    name = "WezTerm";
+    genericName = "Terminal Emulator";
+    comment = "Wez's Terminal Emulator";
+    exec = "${pkgs.wezterm}/bin/wezterm connect unix";
+    icon = "org.wezfurlong.wezterm";
+    type = "Application";
+    terminal = false;
+    categories = [ "System" "TerminalEmulator" "Utility" ];
+    startupNotify = true;
+    settings = {
+      TryExec = "${pkgs.wezterm}/bin/wezterm";
+      StartupWMClass = "org.wezfurlong.wezterm";
+      Keywords = "shell;prompt;command;commandline;cmd;";
+    };
+  };
 }
