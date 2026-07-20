@@ -43,6 +43,14 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
       -- confirm-close-surface = false
       config.window_close_confirmation = "NeverPrompt"
 
+      -- drop the default 8px window padding for a tight, ghostty-like look
+      config.window_padding = {
+        left = 0,
+        right = 0,
+        top = 0,
+        bottom = 0,
+      }
+
       -- tmux-like session persistence: run panes inside a local mux server so
       -- they survive the GUI window closing/restarting, and connect the GUI to
       -- it on startup (reattach with `wezterm connect unix`).
