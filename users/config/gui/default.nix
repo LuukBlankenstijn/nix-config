@@ -19,6 +19,7 @@
     ./thunderbird.nix
     ./waybar.nix
     ./winapps.nix
+    ./zellij.nix
     ./zen-browser.nix
   ];
 
