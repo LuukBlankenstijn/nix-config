@@ -3,6 +3,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
   lib.mkMerge [
     {
       home.pointerCursor = {
+        enable = true;
         name = "Adwaita";
         size = 24;
         package = pkgs.adwaita-icon-theme;
