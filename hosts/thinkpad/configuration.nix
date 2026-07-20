@@ -115,6 +115,8 @@
         glab
         claude-code
       ];
+
+      extraGroups = [ "dialout" ];
     };
   };
   boot.loader.systemd-boot = {
