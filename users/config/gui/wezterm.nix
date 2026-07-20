@@ -94,7 +94,6 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               return
             end
             resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
-            win:toast_notification("wezterm", "session saved", nil, 4000)
           end),
         },
 
