@@ -28,6 +28,10 @@ let
     export BUN_INSTALL="$HOME/.bun"
     export PATH="${lib.makeBinPath runtimeDeps}:$BUN_INSTALL/bin:$PATH"
     export LD_LIBRARY_PATH="${lib.makeLibraryPath runtimeLibs}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    # omp's browser tool uses Puppeteer, whose bundled Chromium is dynamically
+    # linked against FHS paths and can't run on NixOS. Point it at a Nix-built
+    # Chromium instead (officially supported override, browser tool only).
+    export PUPPETEER_EXECUTABLE_PATH="${lib.getExe pkgs.chromium}"
     bin="$BUN_INSTALL/bin/omp"
     pkg="@oh-my-pi/pi-coding-agent${lib.optionalString (cfg.version != null) "@${cfg.version}"}"
     if [ ! -x "$bin" ]; then
