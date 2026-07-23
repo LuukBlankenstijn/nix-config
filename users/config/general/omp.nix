@@ -20,14 +20,17 @@ let
     pkgs.nodejs_22
     pkgs.git
   ];
-  runtimeLibs = (with pkgs; [
-    stdenv.cc.cc.lib
-    zlib
-  ]) ++ (cfg.extraLibraries pkgs);
+  runtimeLibs =
+    (with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+    ])
+    ++ (cfg.extraLibraries pkgs);
   omp = pkgs.writeShellScriptBin "omp" ''
     export BUN_INSTALL="$HOME/.bun"
     export PATH="${lib.makeBinPath runtimeDeps}:$BUN_INSTALL/bin:$PATH"
     export LD_LIBRARY_PATH="${lib.makeLibraryPath runtimeLibs}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export PUPPETEER_EXECUTABLE_PATH="${lib.getExe pkgs.chromium}"
     bin="$BUN_INSTALL/bin/omp"
     pkg="@oh-my-pi/pi-coding-agent${lib.optionalString (cfg.version != null) "@${cfg.version}"}"
     if [ ! -x "$bin" ]; then
