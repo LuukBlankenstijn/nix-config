@@ -15,7 +15,6 @@
     ./neo-tree.nix
     ./neotest.nix
     ./noice.nix
-    ./oil.nix
     ./persistence.nix
     ./rustaceanvim.nix
     ./snacks-dashboard.nix
