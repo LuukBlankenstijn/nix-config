@@ -5,7 +5,8 @@
   ...
 }:
 lib.mkIf osConfig.cfg.userConfig.shell.enable {
-  home.packages = [ pkgs.tirith ];
+  home.packages = [ pkgs.tirith ]
+    ++ lib.optional osConfig.cfg.userConfig.shell.inshellisense.enable pkgs.inshellisense;
 
   programs = {
     zoxide = {
@@ -77,10 +78,25 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       shellAliases = {
         ls = "ls -Ahl";
       };
-      initContent = lib.mkBefore ''
-        DISABLE_AUTO_UPDATE="true"
-        eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
-      '';
+      initContent = lib.mkMerge [
+        (lib.mkBefore ''
+          DISABLE_AUTO_UPDATE="true"
+          eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
+        '')
+        # inshellisense hands the interactive shell off to `is`, which re-spawns
+        # zsh inside its autocomplete runtime. ISTERM is set inside that session
+        # so the nested shell skips this guard instead of recursing. Kept last in
+        # the init as upstream requires.
+        (lib.mkIf osConfig.cfg.userConfig.shell.inshellisense.enable (lib.mkAfter ''
+          if [[ -z "''${ISTERM}" && "$-" = *i* && "$-" != *c* && -z "''${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
+            if [[ -o login ]]; then
+              ${pkgs.inshellisense}/bin/is -s zsh --login ; exit
+            else
+              ${pkgs.inshellisense}/bin/is -s zsh ; exit
+            fi
+          fi
+        ''))
+      ];
       completionInit = ''
         autoload -Uz compinit
         if [[ ~/.zcompdump -ot /run/current-system ]]; then
