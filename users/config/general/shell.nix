@@ -8,6 +8,16 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
   home.packages = [ pkgs.tirith ]
     ++ lib.optional osConfig.cfg.userConfig.shell.inshellisense.enable pkgs.inshellisense;
 
+  # `is` stores its completion specs + a version marker under ~/.inshellisense and
+  # bails on launch if they're missing or stale. `is init` unpacks them; running it
+  # on every activation keeps version.txt in sync with the packaged binary across
+  # updates. `|| true` so a hiccup here never fails the whole switch.
+  home.activation = lib.mkIf osConfig.cfg.userConfig.shell.inshellisense.enable {
+    inshellisenseUnpack = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run ${pkgs.inshellisense}/bin/is init zsh > /dev/null 2>&1 || true
+    '';
+  };
+
   programs = {
     zoxide = {
       enable = true;
@@ -87,12 +97,18 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
         # zsh inside its autocomplete runtime. ISTERM is set inside that session
         # so the nested shell skips this guard instead of recursing. Kept last in
         # the init as upstream requires.
+        #
+        # `is` refuses to start unless its resources are unpacked into
+        # ~/.inshellisense (done by the activation step below), so we only hand
+        # off once version.txt exists, and use `&&` rather than `;` so a failing
+        # `is` falls through to a normal shell instead of exiting it — otherwise a
+        # broken/outdated install would close every terminal on launch.
         (lib.mkIf osConfig.cfg.userConfig.shell.inshellisense.enable (lib.mkAfter ''
-          if [[ -z "''${ISTERM}" && "$-" = *i* && "$-" != *c* && -z "''${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
+          if [[ -z "''${ISTERM}" && "$-" = *i* && "$-" != *c* && -z "''${VSCODE_RESOLVING_ENVIRONMENT}" && -f "''${HOME}/.inshellisense/version.txt" ]]; then
             if [[ -o login ]]; then
-              ${pkgs.inshellisense}/bin/is -s zsh --login ; exit
+              ${pkgs.inshellisense}/bin/is -s zsh --login && exit
             else
-              ${pkgs.inshellisense}/bin/is -s zsh ; exit
+              ${pkgs.inshellisense}/bin/is -s zsh && exit
             fi
           fi
         ''))
