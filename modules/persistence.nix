@@ -10,15 +10,16 @@ lib.mkIf config.cfg.impermanence.enable {
       "/etc/ssh"
       "/var/lib/systemd/coredump"
       "/var/log"
+      {
+        directory = "/home/${config.cfg.user}";
+        user = config.cfg.user;
+        group = config.users.users.${config.cfg.user}.group;
+        mode = "0700";
+      }
     ];
     files = [
       "/etc/machine-id"
       "/etc/adjtime"
     ];
-    users.${config.cfg.user} = {
-      directories = [
-        { directory = ""; }
-      ];
-    };
   };
 }
