@@ -9,11 +9,15 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
     ++ lib.optional osConfig.cfg.userConfig.shell.inshellisense.enable pkgs.inshellisense;
 
   # `is` stores its completion specs + a version marker under ~/.inshellisense and
-  # bails on launch if they're missing or stale. `is init` unpacks them; running it
-  # on every activation keeps version.txt in sync with the packaged binary across
-  # updates. `|| true` so a hiccup here never fails the whole switch.
+  # bails on launch ("resources out of date, run is reinit") when version.txt does
+  # not match the packaged binary. `is init` won't refresh an existing (stale)
+  # copy, and `is reinit` renders an interactive UI that isn't safe to run
+  # headless — so wipe the dir and let `is init` re-unpack cleanly on every
+  # activation, keeping it in lockstep with the binary across updates. `|| true`
+  # so a hiccup here never fails the whole switch.
   home.activation = lib.mkIf osConfig.cfg.userConfig.shell.inshellisense.enable {
     inshellisenseUnpack = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run rm -rf "$HOME/.inshellisense"
       run ${pkgs.inshellisense}/bin/is init zsh > /dev/null 2>&1 || true
     '';
   };
