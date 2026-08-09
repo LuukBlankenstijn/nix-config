@@ -55,17 +55,17 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               };
 
               "network" = {
+                interval = 1;
                 format-wifi = " {essid}";
                 format-ethernet = "󰈀";
                 format-disconnected = "󰖪";
-                tooltip-format = "{essid} ({signalStrength}%)";
+                tooltip-format = "{essid} ({signalStrength}%)  {bandwidthDownBits}  {bandwidthUpBits}";
                 on-click = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
               };
 
               "bluetooth" = {
                 format = "";
-                format-connected = " {device_alias}";
-                format-connected-battery = " {device_alias} {device_battery_percentage}%";
+                format-connected = " {num_connections}";
                 tooltip-format = ''
                   {controller_alias}	{controller_address}
 
@@ -165,7 +165,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               border-bottom: 2px solid #bb9af7;
           }
 
-          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #tray, #custom-notification {
+          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #bluetooth, #tray, #custom-notification {
               padding: 0 12px;
               margin: 4px 2px;
               border-radius: 8px;
