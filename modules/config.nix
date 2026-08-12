@@ -235,7 +235,10 @@ in
               neovim.enable = mkEnableOption "Neovim editor";
               rbw.enable = mkEnableOption "rbw Bitwarden CLI";
               omp.enable = mkEnableOption "Oh my Pi (terminal coding agent)";
-              shell.enable = mkEnableOption "zsh shell configuration";
+              shell = {
+                enable = mkEnableOption "zsh shell configuration";
+                inshellisense.enable = mkEnableOption "inshellisense (IDE-style inline shell autocomplete)";
+              };
               clipboard = {
                 enable = mkEnableOption "clipboard tools (wl-clipboard, xclip, osc52)";
                 history.enable = mkEnableOption "clipboard history (cliphist)";

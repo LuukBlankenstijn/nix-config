@@ -59,6 +59,7 @@
       neovim.enable = true;
       rbw.enable = true;
       shell.enable = true;
+      shell.inshellisense.enable = true;
       clipboard = {
         enable = true;
         history.enable = true;
