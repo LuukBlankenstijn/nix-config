@@ -41,6 +41,10 @@
               group = "Git Hunks";
             }
             {
+              __unkeyed-1 = "<leader>l";
+              group = "Live Share";
+            }
+            {
               __unkeyed-1 = "<leader>q";
               group = "Quit";
             }
