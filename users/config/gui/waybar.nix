@@ -6,6 +6,45 @@
 }:
 let
   notifEnabled = osConfig.cfg.userConfig.desktop.notifications.enable;
+
+  claudebar = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+    pname = "claudebar";
+    version = "0.8.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "mryll";
+      repo = "claudebar";
+      rev = "v${finalAttrs.version}";
+      sha256 = "137fabzxlzw7vvmkqmwp4ln9wbhmpxn4w3aiabdl2imhfsvf9vxm";
+    };
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    dontBuild = true;
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 claudebar $out/bin/claudebar
+      runHook postInstall
+    '';
+    # Self-contained: don't rely on curl/jq/flock being on the systemd user
+    # service's PATH, even though they happen to be in the system baseline.
+    postFixup = ''
+      wrapProgram $out/bin/claudebar \
+        --prefix PATH : ${
+          lib.makeBinPath [
+            pkgs.curl
+            pkgs.jq
+            pkgs.coreutils
+            pkgs.gnused
+            pkgs.util-linux
+          ]
+        }
+    '';
+    meta = with lib; {
+      description = "Waybar widget for Claude AI plan usage (session/weekly limits)";
+      homepage = "https://github.com/mryll/claudebar";
+      license = licenses.mit;
+      mainProgram = "claudebar";
+      platforms = platforms.linux;
+    };
+  });
 in
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.waybar.enable) (
   lib.mkMerge [
@@ -30,6 +69,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               ];
               modules-center = [ "clock" ];
               modules-right = [
+                "custom/claude"
                 "pulseaudio"
                 "bluetooth"
                 "network"
@@ -113,6 +153,15 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
                   ""
                 ];
               };
+
+              "custom/claude" = {
+                exec = "${lib.getExe claudebar} --icon '󰚩' --color-low '#9ece6a' --color-mid '#e0af68' --color-high '#ff9e64' --color-critical '#f7768e'";
+                return-type = "json";
+                interval = 300;
+                signal = 13;
+                tooltip = true;
+                on-click = "xdg-open https://claude.ai/settings/usage";
+              };
             }
             // lib.optionalAttrs notifEnabled {
               "custom/notification" = {
@@ -165,7 +214,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               border-bottom: 2px solid #bb9af7;
           }
 
-          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #bluetooth, #tray, #custom-notification {
+          #clock, #cpu, #memory, #battery, #pulseaudio, #network, #bluetooth, #tray, #custom-notification, #custom-claude {
               padding: 0 12px;
               margin: 4px 2px;
               border-radius: 8px;
