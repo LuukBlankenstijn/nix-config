@@ -7,7 +7,6 @@
     ./flash.nix
     ./fzf-lua.nix
     ./gitsigns.nix
-    ./live-share.nix
     ./lint.nix
     ./lspconfig.nix
     ./lualine.nix
