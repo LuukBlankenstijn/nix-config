@@ -61,7 +61,10 @@ let
     _args = [
       key
       (mkLuaInline ''hl.dsp.exec_cmd("${cmd}")'')
-      { locked = true; repeating = true; }
+      {
+        locked = true;
+        repeating = true;
+      }
     ];
   };
 
@@ -90,7 +93,9 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
     configType = "lua";
 
     settings = {
-      mainmod = { _var = "SUPER"; };
+      mainmod = {
+        _var = "SUPER";
+      };
 
       on = [
         {
@@ -163,42 +168,183 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
           {
             type = "bezier";
             points = [
-              [ 0.05 0.9 ]
-              [ 0.1 1.05 ]
+              [
+                0.05
+                0.9
+              ]
+              [
+                0.1
+                1.05
+              ]
             ];
           }
         ];
       };
 
+      gesture = [
+        {
+          fingers = 3;
+          direction = "horizontal";
+          action = "workspace";
+        }
+        {
+          fingers = 3;
+          direction = "up";
+          action = "fullscreen";
+        }
+        {
+          fingers = 3;
+          direction = "down";
+          action = "fullscreen";
+        }
+      ];
+
       animation = [
-        { _args = [ { leaf = "windows"; enabled = true; speed = 7; bezier = "myBezier"; } ]; }
-        { _args = [ { leaf = "windowsOut"; enabled = true; speed = 7; bezier = "default"; style = "popin 80%"; } ]; }
-        { _args = [ { leaf = "border"; enabled = true; speed = 10; bezier = "default"; } ]; }
-        { _args = [ { leaf = "borderangle"; enabled = true; speed = 8; bezier = "default"; } ]; }
-        { _args = [ { leaf = "fade"; enabled = true; speed = 7; bezier = "default"; } ]; }
-        { _args = [ { leaf = "workspaces"; enabled = true; speed = 6; bezier = "default"; } ]; }
+        {
+          _args = [
+            {
+              leaf = "windows";
+              enabled = true;
+              speed = 7;
+              bezier = "myBezier";
+            }
+          ];
+        }
+        {
+          _args = [
+            {
+              leaf = "windowsOut";
+              enabled = true;
+              speed = 7;
+              bezier = "default";
+              style = "popin 80%";
+            }
+          ];
+        }
+        {
+          _args = [
+            {
+              leaf = "border";
+              enabled = true;
+              speed = 10;
+              bezier = "default";
+            }
+          ];
+        }
+        {
+          _args = [
+            {
+              leaf = "borderangle";
+              enabled = true;
+              speed = 8;
+              bezier = "default";
+            }
+          ];
+        }
+        {
+          _args = [
+            {
+              leaf = "fade";
+              enabled = true;
+              speed = 7;
+              bezier = "default";
+            }
+          ];
+        }
+        {
+          _args = [
+            {
+              leaf = "workspaces";
+              enabled = true;
+              speed = 6;
+              bezier = "default";
+            }
+          ];
+        }
       ];
 
       bind = [
         # window mgmt
-        { _args = [ (mkLuaInline ''mainmod .. " + C"'') (mkLuaInline "hl.dsp.window.close()") ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + M"'') (mkLuaInline "hl.dsp.exit()") ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + V"'') (mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'') ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + F"'') (mkLuaInline "hl.dsp.window.fullscreen()") ]; }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + C"'')
+            (mkLuaInline "hl.dsp.window.close()")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + M"'')
+            (mkLuaInline "hl.dsp.exit()")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + V"'')
+            (mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'')
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + F"'')
+            (mkLuaInline "hl.dsp.window.fullscreen()")
+          ];
+        }
 
         # focus
-        { _args = [ (mkLuaInline ''mainmod .. " + h"'') (mkLuaInline ''hl.dsp.focus({ direction = "left" })'') ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + l"'') (mkLuaInline ''hl.dsp.focus({ direction = "right" })'') ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + k"'') (mkLuaInline ''hl.dsp.focus({ direction = "up" })'') ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + j"'') (mkLuaInline ''hl.dsp.focus({ direction = "down" })'') ]; }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + h"'')
+            (mkLuaInline ''hl.dsp.focus({ direction = "left" })'')
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + l"'')
+            (mkLuaInline ''hl.dsp.focus({ direction = "right" })'')
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + k"'')
+            (mkLuaInline ''hl.dsp.focus({ direction = "up" })'')
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + j"'')
+            (mkLuaInline ''hl.dsp.focus({ direction = "down" })'')
+          ];
+        }
 
         # screenshots
-        { _args = [ "Print" (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot --clipboard-only)")'') ]; }
-        { _args = [ "SHIFT + Print" (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot)")'') ]; }
+        {
+          _args = [
+            "Print"
+            (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot --clipboard-only)")'')
+          ];
+        }
+        {
+          _args = [
+            "SHIFT + Print"
+            (mkLuaInline ''hl.dsp.exec_cmd("$(${screenShotScript}/bin/screenshot)")'')
+          ];
+        }
 
         # mouse move/resize
-        { _args = [ (mkLuaInline ''mainmod .. " + mouse:272"'') (mkLuaInline "hl.dsp.window.drag()") { mouse = true; } ]; }
-        { _args = [ (mkLuaInline ''mainmod .. " + mouse:273"'') (mkLuaInline "hl.dsp.window.resize()") { mouse = true; } ]; }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + mouse:272"'')
+            (mkLuaInline "hl.dsp.window.drag()")
+            { mouse = true; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + mouse:273"'')
+            (mkLuaInline "hl.dsp.window.resize()")
+            { mouse = true; }
+          ];
+        }
 
         # volume / brightness (locked + repeating)
         (mediaBind "XF86AudioRaiseVolume" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")
