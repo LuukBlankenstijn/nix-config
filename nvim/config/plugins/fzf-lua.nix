@@ -28,7 +28,8 @@
             ];
           };
         };
-        ui_select = true;
+        # `true` is deprecated; an empty table means "register with defaults"
+        ui_select.__empty = null;
         keymap = {
           fzf = {
             "ctrl-q" = "select-all+accept";
@@ -41,10 +42,6 @@
         };
       };
     };
-
-    extraConfigLua = ''
-      require("fzf-lua").register_ui_select()
-    '';
 
     keymaps = [
       # --- File & Buffer Search ---
