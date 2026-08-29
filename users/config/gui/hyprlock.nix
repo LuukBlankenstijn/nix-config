@@ -5,6 +5,8 @@
   ...
 }:
 let
+  internalDisplay = osConfig.cfg.laptop.internalDisplay;
+
   whatsongScript = pkgs.writeShellScriptBin "whatsong" ''
     export PATH=$PATH:${pkgs.playerctl}/bin
     ${builtins.readFile ./_assets/scripts/hyprlock/whatsong.sh}
@@ -46,7 +48,7 @@ lib.mkIf
         # INPUT FIELD
         "input-field" = [
           {
-            monitor = "eDP-1";
+            monitor = internalDisplay;
             size = "250, 60";
             outline_thickness = 0;
             dots_size = 0.2;
@@ -91,7 +93,7 @@ lib.mkIf
           }
           # CURRENT SONG
           {
-            monitor = "eDP-1";
+            monitor = internalDisplay;
             text = ''cmd[update:1000] echo "$(${whatsongScript}/bin/whatsong)"'';
             color = "rgb(205, 214, 244)";
             font_size = 18;
@@ -101,8 +103,8 @@ lib.mkIf
           }
           # BATTERY PERCENTAGE
           {
-            monitor = "eDP-1";
-            text = ''cmd[update:1000] echo "$(cat /sys/class/power_supply/BAT0/capacity)%"'';
+            monitor = internalDisplay;
+            text = ''cmd[update:1000] echo "$(cat /sys/class/power_supply/${osConfig.cfg.laptop.battery}/capacity)%"'';
             color = "rgb(205, 214, 244)";
             font_size = 24;
             font_family = "JetBrains Mono";
@@ -113,11 +115,14 @@ lib.mkIf
         ];
       };
     };
+    wayland.windowManager.hyprland.settings.config.misc.allow_session_lock_restore = true;
+
     wayland.windowManager.hyprland.settings.bind = [
       {
         _args = [
           (lib.generators.mkLuaInline ''mainmod .. " + escape"'')
           (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock")'')
+          { locked = true; }
         ];
       }
     ];

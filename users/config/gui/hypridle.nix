@@ -16,7 +16,7 @@ lib.mkIf
         general = {
           lock_cmd = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
           before_sleep_cmd = "${pkgs.systemd}/bin/loginctl lock-session";
-          after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+          after_sleep_cmd = "${pkgs.wlopm}/bin/wlopm --on '*'";
         };
 
         listener = [
@@ -27,8 +27,8 @@ lib.mkIf
           }
           {
             timeout = 300;
-            on-timeout = "${pkgs.brightnessctl}/bin/brightnessctl -sd rgb:kbd_backlight set 0";
-            on-resume = "${pkgs.brightnessctl}/bin/brightnessctl -rd rgb:kbd_backlight";
+            on-timeout = "${pkgs.brightnessctl}/bin/brightnessctl -sd '*kbd_backlight' set 0";
+            on-resume = "${pkgs.brightnessctl}/bin/brightnessctl -rd '*kbd_backlight'";
           }
           {
             timeout = 600;
@@ -36,8 +36,12 @@ lib.mkIf
           }
           {
             timeout = 660;
-            on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-            on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on && ${pkgs.brightnessctl}/bin/brightnessctl -r";
+            on-timeout = "${pkgs.wlopm}/bin/wlopm --off '*'";
+            on-resume = "${pkgs.wlopm}/bin/wlopm --on '*' && ${pkgs.brightnessctl}/bin/brightnessctl -r";
+          }
+          {
+            timeout = 1800;
+            on-timeout = "${pkgs.systemd}/bin/systemctl suspend";
           }
         ];
       };

@@ -95,7 +95,27 @@ in
       nftables.enable = mkEnableOption "nftables backend (instead of iptables)";
     };
 
-    laptop.enable = mkEnableOption "laptop features (TLP power management, lid-switch handling)";
+    laptop = {
+      enable = mkEnableOption "laptop features (TLP power management, lid-switch handling)";
+
+      battery = mkOption {
+        type = types.str;
+        default = "BAT0";
+        description = "Battery under /sys/class/power_supply that the status bar reads. Run `ls /sys/class/power_supply` on the host to find it.";
+      };
+
+      adapter = mkOption {
+        type = types.str;
+        default = "AC0";
+        description = "AC adapter under /sys/class/power_supply that the status bar reads. Run `ls /sys/class/power_supply` on the host to find it.";
+      };
+
+      internalDisplay = mkOption {
+        type = types.str;
+        default = "eDP-1";
+        description = "Connector name of the built-in panel. Run `hyprctl monitors` on the host to find it.";
+      };
+    };
 
     virtualisation = {
       docker.enable = mkEnableOption "Docker container runtime";
@@ -158,7 +178,24 @@ in
                   paper.enable = mkEnableOption "hyprpaper (wallpaper daemon)";
                   shell.enable = mkEnableOption "hyprshell (window overview / switcher)";
                   picker.enable = mkEnableOption "hyprpicker (screen colour picker)";
-                  displays.enable = mkEnableOption "monitor layout management (shikane auto-profiles + wdisplays GUI)";
+                  displays = {
+                    enable = mkEnableOption "monitor layout management (shikane auto-profiles + wdisplays GUI)";
+                    profiles = mkOption {
+                      type = types.listOf types.attrs;
+                      default = [ ];
+                      example = lib.literalExpression ''
+                        [
+                          {
+                            name = "docked";
+                            output = [
+                              { search = "n=eDP-1"; enable = true; mode = "2880x1800@120Hz"; position = "0,0"; scale = 2.0; }
+                            ];
+                          }
+                        ]
+                      '';
+                      description = "shikane profiles for this host's monitor layouts. Generate one with `shikanectl export` while the monitors are attached.";
+                    };
+                  };
                   pyprland.enable = mkEnableOption "pyprland scratchpad system";
                 };
 

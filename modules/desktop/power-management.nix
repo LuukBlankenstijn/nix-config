@@ -3,8 +3,8 @@ lib.mkIf config.cfg.laptop.enable {
   services.tlp = {
     enable = true;
     settings = {
-      STOP_CHARGE_THRESH_BAT0 = 80;
-      START_CHARGE_THRESH_BAT0 = 75;
+      "STOP_CHARGE_THRESH_${config.cfg.laptop.battery}" = 80;
+      "START_CHARGE_THRESH_${config.cfg.laptop.battery}" = 75;
 
       CPU_SCALING_GOVERNOR_ON_AC = "powersave";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";

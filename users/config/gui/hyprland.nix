@@ -31,6 +31,49 @@ let
     fi
   '';
 
+  blackoutScript = pkgs.writeShellScriptBin "blackout" ''
+    hyprctl=${pkgs.hyprland}/bin/hyprctl
+    brightnessctl=${pkgs.brightnessctl}/bin/brightnessctl
+
+    anyDisplayOn() {
+      $hyprctl monitors | ${pkgs.gnugrep}/bin/grep -q 'dpmsStatus: 1'
+    }
+
+    restore() {
+      anyDisplayOn || $hyprctl dispatch 'hl.dsp.dpms({})'
+      $brightnessctl -rd '*kbd_backlight'
+    }
+
+    hold() {
+      trap 'restore; exit 0' EXIT TERM INT
+      $brightnessctl -sd '*kbd_backlight' set 0
+      ${pkgs.systemd}/bin/loginctl lock-session
+      ${pkgs.coreutils}/bin/sleep 1
+      $hyprctl dispatch 'hl.dsp.dpms({})'
+
+      while ${pkgs.coreutils}/bin/sleep 0.5; do
+        anyDisplayOn && return
+      done
+    }
+
+    if [ "$1" = "hold" ]; then
+      hold
+      exit
+    fi
+
+    if ${pkgs.systemd}/bin/systemctl --user --quiet is-active blackout.service; then
+      ${pkgs.systemd}/bin/systemctl --user stop blackout.service
+    else
+      ${pkgs.systemd}/bin/systemd-run --user --unit=blackout \
+        --description="displays off, machine stays awake" \
+        ${pkgs.systemd}/bin/systemd-inhibit \
+          --what=idle:sleep:handle-lid-switch \
+          --why="blackout" \
+          --mode=block \
+          "$0" hold
+    fi
+  '';
+
   workspaceFocusBinds = builtins.map (i: {
     _args = [
       (mkLuaInline ''mainmod .. " + ${toString i}"'')
@@ -77,14 +120,17 @@ let
   };
 in
 lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
-  home.packages = with pkgs; [
+  home.packages = [
+    blackoutScript
+  ]
+  ++ (with pkgs; [
     qt5.qtwayland
     qt6.qtwayland
     wireplumber
     pipewire
     brightnessctl
     playerctl
-  ];
+  ]);
 
   wayland.windowManager.hyprland = {
     systemd.variables = [ "--all" ];
@@ -148,6 +194,8 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
         misc = {
           force_default_wallpaper = 1;
           disable_hyprland_logo = false;
+          key_press_enables_dpms = true;
+          mouse_move_enables_dpms = true;
         };
 
         input = {
@@ -287,6 +335,15 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
           _args = [
             (mkLuaInline ''mainmod .. " + F"'')
             (mkLuaInline "hl.dsp.window.fullscreen()")
+          ];
+        }
+
+        # blackout
+        {
+          _args = [
+            (mkLuaInline ''mainmod .. " + SHIFT + B"'')
+            (mkLuaInline ''hl.dsp.exec_cmd("${blackoutScript}/bin/blackout")'')
+            { locked = true; }
           ];
         }
 

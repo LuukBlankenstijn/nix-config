@@ -30,7 +30,7 @@ lib.mkMerge [
 
   (lib.mkIf config.cfg.laptop.enable {
     services.logind.settings.Login = {
-      HandleLidSwitch = "lock";
+      HandleLidSwitch = "suspend";
       HandleLidSwitchDocked = "ignore";
     };
   })

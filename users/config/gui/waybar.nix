@@ -6,6 +6,7 @@
 }:
 let
   notifEnabled = osConfig.cfg.userConfig.desktop.notifications.enable;
+  laptop = osConfig.cfg.laptop.enable;
 
   claudebar = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "claudebar";
@@ -73,8 +74,8 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
                 "pulseaudio"
                 "bluetooth"
                 "network"
-                "battery"
               ]
+              ++ lib.optional laptop "battery"
               ++ lib.optional notifEnabled "custom/notification"
               ++ [ "tray" ];
 
@@ -140,6 +141,8 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
               };
 
               "battery" = {
+                bat = osConfig.cfg.laptop.battery;
+                adapter = osConfig.cfg.laptop.adapter;
                 states = {
                   "warning" = 30;
                   "critical" = 15;

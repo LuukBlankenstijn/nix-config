@@ -11,6 +11,5 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.hyprland.enable && osConfig.cfg.userCo
         }
       ];
     };
-
   };
 }
