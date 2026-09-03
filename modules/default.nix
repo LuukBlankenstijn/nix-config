@@ -3,6 +3,7 @@
   imports = [
     ./config.nix
     ./secrets.nix
+    ./boot.nix
     ./desktop
     ./server.nix
     ./networking

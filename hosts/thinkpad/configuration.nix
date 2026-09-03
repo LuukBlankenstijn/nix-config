@@ -18,6 +18,7 @@
     };
 
     bluetooth.enable = true;
+    boot.splash.enable = true;
     networking = {
       enable = true;
       wifi.enable = true;

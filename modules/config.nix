@@ -41,6 +41,8 @@ in
 
     bluetooth.enable = mkEnableOption "Bluetooth hardware + blueman";
 
+    boot.splash.enable = mkEnableOption "Plymouth boot splash (Catppuccin Mocha, systemd stage 1)";
+
     networking = {
       enable = mkEnableOption "NetworkManager";
       wifi.enable = mkEnableOption "Wi-Fi support (iwd)";

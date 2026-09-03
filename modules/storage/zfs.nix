@@ -14,6 +14,8 @@ lib.mkMerge [
   })
 
   (lib.mkIf (config.cfg.impermanence.enable && config.cfg.impermanence.rollback.enable) {
+    boot.initrd.systemd.enable = true;
+
     boot.initrd.systemd.services.rollback-root = {
       description = "Rollback ZFS root to blank snapshot";
       wantedBy = [ "initrd.target" ];
