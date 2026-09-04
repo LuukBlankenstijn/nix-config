@@ -164,6 +164,7 @@
         slack
         gh
         gh-dash
+        remmina
       ];
 
       extraGroups = [ "dialout" ];
