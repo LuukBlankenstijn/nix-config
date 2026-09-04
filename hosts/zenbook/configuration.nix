@@ -165,6 +165,7 @@
         gh
         gh-dash
         remmina
+        bitwarden-desktop
       ];
 
       extraGroups = [ "dialout" ];
