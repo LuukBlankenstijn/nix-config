@@ -8,44 +8,7 @@ let
   notifEnabled = osConfig.cfg.userConfig.desktop.notifications.enable;
   laptop = osConfig.cfg.laptop.enable;
 
-  claudebar = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-    pname = "claudebar";
-    version = "0.8.1";
-    src = pkgs.fetchFromGitHub {
-      owner = "mryll";
-      repo = "claudebar";
-      rev = "v${finalAttrs.version}";
-      sha256 = "137fabzxlzw7vvmkqmwp4ln9wbhmpxn4w3aiabdl2imhfsvf9vxm";
-    };
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    dontBuild = true;
-    installPhase = ''
-      runHook preInstall
-      install -Dm755 claudebar $out/bin/claudebar
-      runHook postInstall
-    '';
-    # Self-contained: don't rely on curl/jq/flock being on the systemd user
-    # service's PATH, even though they happen to be in the system baseline.
-    postFixup = ''
-      wrapProgram $out/bin/claudebar \
-        --prefix PATH : ${
-          lib.makeBinPath [
-            pkgs.curl
-            pkgs.jq
-            pkgs.coreutils
-            pkgs.gnused
-            pkgs.util-linux
-          ]
-        }
-    '';
-    meta = with lib; {
-      description = "Waybar widget for Claude AI plan usage (session/weekly limits)";
-      homepage = "https://github.com/mryll/claudebar";
-      license = licenses.mit;
-      mainProgram = "claudebar";
-      platforms = platforms.linux;
-    };
-  });
+  claudebar = pkgs.callPackage ./_assets/claudebar.nix { };
 in
 lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desktop.waybar.enable) (
   lib.mkMerge [
@@ -168,25 +131,25 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
             }
             // lib.optionalAttrs notifEnabled {
               "custom/notification" = {
-              tooltip = false;
-              format = " {}";
-              format-icons = {
-                notification              = "";
-                none                      = "";
-                dnd-notification          = "";
-                dnd-none                  = "";
-                inhibited-notification    = "";
-                inhibited-none            = "";
-                dnd-inhibited-notification = "";
-                dnd-inhibited-none        = "";
+                tooltip = false;
+                format = " {}";
+                format-icons = {
+                  notification = "";
+                  none = "";
+                  dnd-notification = "";
+                  dnd-none = "";
+                  inhibited-notification = "";
+                  inhibited-none = "";
+                  dnd-inhibited-notification = "";
+                  dnd-inhibited-none = "";
+                };
+                return-type = "json";
+                exec-if = "which swaync-client";
+                exec = "swaync-client -swb";
+                on-click = "swaync-client -t -sw";
+                on-click-right = "swaync-client -d -sw";
+                escape = true;
               };
-              return-type = "json";
-              exec-if = "which swaync-client";
-              exec = "swaync-client -swb";
-              on-click = "swaync-client -t -sw";
-              on-click-right = "swaync-client -d -sw";
-              escape = true;
-            };
             }
           )
         ];
@@ -267,7 +230,7 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       wayland.windowManager.hyprland.settings.window_rule =
         let
-          classRegex = "(com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|.blueman-manager-wrapped|xdg-desktop-portal-gtk)";
+          classRegex = "(com.saivert.pwvucontrol|io.github.kaii_lb.Overskride|nm-connection-editor|xdg-desktop-portal-gtk)";
         in
         [
           {

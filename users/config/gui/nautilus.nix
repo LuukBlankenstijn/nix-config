@@ -3,20 +3,16 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
   lib.mkMerge [
     {
       home.packages = [ pkgs.nautilus ];
+
+      desktop.binds.fileManager = {
+        key = "E";
+        command = [ "${pkgs.nautilus}/bin/nautilus" ];
+      };
     }
 
     (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       wayland.windowManager.hyprland.settings = {
         filemanager = { _var = "${pkgs.nautilus}/bin/nautilus"; };
-
-        bind = [
-          {
-            _args = [
-              (lib.generators.mkLuaInline ''mainmod .. " + E"'')
-              (lib.generators.mkLuaInline "hl.dsp.exec_cmd(filemanager)")
-            ];
-          }
-        ];
 
         window_rule = [
           { match.class = "org.gnome.Nautilus"; float = true; }

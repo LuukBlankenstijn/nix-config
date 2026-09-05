@@ -68,14 +68,27 @@ in
               };
             };
 
+            desktop.binds.browser = {
+              key = "B";
+              command = [
+                "${inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/zen-beta"
+              ];
+            };
+
+            desktop.pinnedApps.browser = {
+              command = [
+                "${inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/zen-beta"
+              ];
+              appId = "zen-beta";
+              workspace = "web";
+              columnWidth = 1.0;
+            };
           }
 
           (lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
             wayland.windowManager.hyprland.settings = {
               browser = {
-                _var = "${
-                  inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-                }/bin/zen-beta";
+                _var = "${inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/zen-beta";
               };
 
               on = [
@@ -95,15 +108,6 @@ in
                 {
                   match.class = "zen-beta";
                   workspace = 2;
-                }
-              ];
-
-              bind = [
-                {
-                  _args = [
-                    (lib.generators.mkLuaInline ''mainmod .. " + B"'')
-                    (lib.generators.mkLuaInline "hl.dsp.exec_cmd(browser)")
-                  ];
                 }
               ];
             };

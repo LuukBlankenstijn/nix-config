@@ -54,16 +54,10 @@ in
     pkgs.winbox
   ];
 
-  wayland.windowManager.hyprland.settings.bind =
-    lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable
-      [
-        {
-          _args = [
-            (lib.generators.mkLuaInline ''mainmod .. " + g"'')
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${rdp}/bin/rdp")'')
-          ];
-        }
-      ];
+  desktop.binds.gewisRdp = lib.mkIf osConfig.cfg.userConfig.desktop.enable {
+    key = "G";
+    command = [ "${rdp}/bin/rdp" ];
+  };
 
   accounts.email.accounts."gewis m-account" = {
     address = "m10878@gewis.nl";

@@ -21,35 +21,61 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       silent = true;
     };
 
-    oh-my-posh =
-      let
-        themeName = if osConfig.cfg.desktop.enable then "multiverse-neon" else "blue-owl";
-        baseTheme = builtins.fromJSON (builtins.unsafeDiscardStringContext (builtins.readFile
-          "${pkgs.oh-my-posh}/share/oh-my-posh/themes/${themeName}.omp.json"));
-        sshBlock = {
-          type = "prompt";
-          alignment = "left";
-          segments = [{
-            type = "session";
-            style = "plain";
-            background = "#FFAB40";
-            foreground = "#1a1a1a";
-            template = "{{ if .SSHSession }}  {{ .HostName }} {{ end }}";
-          }];
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        add_newline = false;
+        format = lib.concatStrings [
+          "$username$hostname"
+          "$directory"
+          "$git_branch$git_status"
+          "$nix_shell"
+          "$cmd_duration"
+          "$line_break"
+          "$character"
+        ];
+
+        username = {
+          show_always = false;
+          format = "[$user]($style)@";
+          style_user = "bold yellow";
         };
-        stripSessionFromRight = builtins.map (b:
-          if (b.alignment or "") == "right" && (b.type or "") == "prompt"
-          then b // { segments = builtins.filter (s: (s.type or "") != "session") b.segments; }
-          else b
-        );
-      in
-      {
-        enable = true;
-        enableZshIntegration = true;
-        settings = baseTheme // {
-          blocks = [ sshBlock ] ++ (stripSessionFromRight baseTheme.blocks);
+
+        hostname = {
+          ssh_only = true;
+          format = "[$hostname]($style) ";
+          style = "bold yellow";
+        };
+
+        directory = {
+          truncation_length = 3;
+          truncate_to_repo = true;
+          style = "bold blue";
+          read_only = " ";
+        };
+
+        git_branch.style = "bold magenta";
+        git_status.style = "bold red";
+
+        nix_shell = {
+          format = "[$symbol$name]($style) ";
+          symbol = " ";
+          style = "bold cyan";
+        };
+
+        cmd_duration = {
+          min_time = 2000;
+          format = "[$duration]($style) ";
+          style = "dimmed white";
+        };
+
+        character = {
+          success_symbol = "[❯](bold green)";
+          error_symbol = "[❯](bold red)";
         };
       };
+    };
 
     zsh = {
       enable = true;
@@ -70,7 +96,6 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
         plugins = [
           "getantidote/use-omz"
           "ohmyzsh/ohmyzsh path:lib"
-          "ohmyzsh/ohmyzsh path:themes/robbyrussell.zsh-theme"
           "ohmyzsh/ohmyzsh path:plugins/git"
         ];
       };

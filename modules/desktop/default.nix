@@ -3,6 +3,7 @@
   imports = [
     ../common.nix
     ./hyprland.nix
+    ./niri.nix
     ./display-manager.nix
     ./fingerprint-scanner.nix
     ./portals.nix

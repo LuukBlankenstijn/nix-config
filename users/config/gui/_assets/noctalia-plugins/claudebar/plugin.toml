@@ -1,0 +1,23 @@
+id = "luuk/claudebar"
+name = "Claude Usage"
+version = "1.0.0"
+plugin_api = 8
+author = "luuk"
+license = "MIT"
+icon = "brain"
+description = "Claude plan usage in the bar, read from the claudebar CLI."
+tags = ["bar", "ai", "indicator"]
+dependencies = ["claudebar"]
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
+
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+width = 360
+height = 260
+placement = "attached"
+position = "auto"
+open_near_click = true

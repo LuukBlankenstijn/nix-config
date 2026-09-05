@@ -5,8 +5,6 @@ lib.mkIf config.cfg.bluetooth.enable {
     powerOnBoot = true;
   };
 
-  services.blueman.enable = true;
-
   environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
     directories = [
       "/etc/bluetooth"

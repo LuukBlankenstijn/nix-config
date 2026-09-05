@@ -12,7 +12,10 @@
     gpg.enable = true;
     desktop = {
       enable = true;
-      displayManager.enable = true;
+      displayManager = {
+        enable = true;
+        defaultSession = "Hyprland";
+      };
       audio.enable = true;
       hardware.enable = true;
     };
@@ -58,6 +61,10 @@
           picker.enable = true;
           displays.enable = true;
           pyprland.enable = true;
+        };
+
+        niri = {
+          enable = true;
         };
 
         cursor.enable = true;

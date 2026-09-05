@@ -32,14 +32,23 @@ in
     # ── system features ─────────────────────────────────────────────────────────
     desktop = {
       enable = mkEnableOption "desktop environment (Hyprland, portals, etc.)";
-      displayManager.enable = mkEnableOption "display manager (ReGreet)";
+      displayManager = {
+        enable = mkEnableOption "display manager (noctalia-greeter)";
+        defaultSession = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          example = "Hyprland";
+          description = "Session pre-selected in the greeter's picker. This is the picker label, not the desktop file id — list them with `noctalia-greeter sessions` (`Hyprland`, `Niri`). Null lets the greeter remember the last pick.";
+        };
+      };
       audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, JACK, PulseAudio compat)";
       hardware.enable = mkEnableOption "desktop hardware support (firmware, GPU drivers)";
+      niri.enable = mkEnableOption "niri scrolling-tiling compositor as a second session (per-user config lives under users.<name>.desktop.niri)";
     };
 
     server.enable = mkEnableOption "server-specific features (OpenSSH, wheel passwordless sudo)";
 
-    bluetooth.enable = mkEnableOption "Bluetooth hardware + blueman";
+    bluetooth.enable = mkEnableOption "Bluetooth hardware (the GUI is per-user under users.<name>.desktop.bluetooth)";
 
     boot.splash.enable = mkEnableOption "Plymouth boot splash (Catppuccin Mocha, systemd stage 1)";
 
@@ -201,6 +210,28 @@ in
                   pyprland.enable = mkEnableOption "pyprland scratchpad system";
                 };
 
+                niri = {
+                  enable = mkEnableOption "niri session for this user (requires desktop.niri.enable on the host)";
+                  noctalia.enable = mkOption {
+                    type = types.bool;
+                    default = true;
+                    description = "Noctalia shell inside the niri session: bar, notifications, launcher, lock screen, wallpaper and OSDs. Disable to leave niri bare.";
+                  };
+                  outputs = mkOption {
+                    type = types.attrsOf types.attrs;
+                    default = { };
+                    example = lib.literalExpression ''
+                      {
+                        "eDP-1" = {
+                          mode = { width = 2880; height = 1800; refresh = 120.0; };
+                          scale = 2.0;
+                        };
+                      }
+                    '';
+                    description = "niri output configuration, keyed by connector name. Run `niri msg outputs` on the host to find the names and modes.";
+                  };
+                };
+
                 cursor.enable = mkEnableOption "cursor theme (Adwaita)";
                 nautilus.enable = mkEnableOption "Nautilus file manager";
                 styling.enable = mkEnableOption "GTK/Qt dark theming (Adwaita)";
@@ -314,6 +345,10 @@ in
     cfg.virtualisation.libvirtd.enable = mkIf config.cfg.virtualisation.virtManager.enable (
       mkDefault true
     );
+
+    cfg.desktop.niri.enable = mkIf (builtins.any (u: u.desktop.niri.enable) (
+      builtins.attrValues config.cfg.users
+    )) (mkDefault true);
 
     # winapps (any user) requires docker or podman
     cfg.virtualisation.docker.enable = mkIf (

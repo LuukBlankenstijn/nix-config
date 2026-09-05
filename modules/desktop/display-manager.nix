@@ -1,19 +1,41 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf optionalAttrs;
+  userCfg = config.cfg.userConfig;
 in
 {
+  imports = [ inputs.noctalia-greeter.nixosModules.default ];
+
   config = mkIf (config.cfg.desktop.enable && config.cfg.desktop.displayManager.enable) {
-    programs.regreet = {
+    programs.noctalia-greeter = {
       enable = true;
+
       settings = {
-        background = {
-          path = config.cfg.userConfig.desktop.wallpaper;
+        appearance = {
+          scheme = "Catppuccin";
+          theme_mode = "dark";
+          wallpaper = {
+            path = "${userCfg.desktop.wallpaper}";
+            fill_mode = "crop";
+          };
         };
-        GTK = {
-          application_prefer_dark_theme = true;
-          cursor_blink = false;
+
+        cursor = {
+          theme = "Adwaita";
+          size = 24;
+          path = "${pkgs.adwaita-icon-theme}/share/icons";
         };
+
+        keyboard.layout = "us";
+      }
+      // optionalAttrs (config.cfg.desktop.displayManager.defaultSession != null) {
+        session.default = config.cfg.desktop.displayManager.defaultSession;
       };
     };
 

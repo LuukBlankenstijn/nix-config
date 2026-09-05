@@ -66,14 +66,15 @@ mkIf (userConfig.clipboard.enable || userConfig.clipboard.history.enable) {
     };
   };
 
-  wayland.windowManager.hyprland.settings.bind =
+  desktop.binds.clipboardHistory =
     mkIf (userConfig.desktop.enable && userConfig.clipboard.history.enable)
-      [
-        {
-          _args = [
-            (lib.generators.mkLuaInline ''mainmod .. " + SHIFT + H"'')
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("${cliphistFuzzel}/bin/cliphist-fuzzel")'')
-          ];
-        }
-      ];
+      {
+        key = "H";
+        mods = [
+          "mod"
+          "shift"
+        ];
+        command = [ "${cliphistFuzzel}/bin/cliphist-fuzzel" ];
+        sessions = [ "hyprland" ];
+      };
 }

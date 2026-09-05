@@ -10,7 +10,10 @@
     impermanence.enable = true;
     desktop = {
       enable = true;
-      displayManager.enable = true;
+      displayManager = {
+        enable = true;
+        defaultSession = "Hyprland";
+      };
       audio.enable = true;
       hardware.enable = true;
     };
@@ -107,6 +110,18 @@
             ];
           };
           pyprland.enable = true;
+        };
+
+        niri = {
+          enable = true;
+          outputs."eDP-1" = {
+            mode = {
+              width = 2880;
+              height = 1800;
+              refresh = 120.0;
+            };
+            scale = 2.0;
+          };
         };
 
         cursor.enable = true;

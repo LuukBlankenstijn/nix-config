@@ -9,6 +9,7 @@
     inputs.sops-nix.homeManagerModules.sops
     ../config/general
     ../config/ssh-client.nix
+    ../config/binds.nix
   ]
   ++ lib.optionals osConfig.cfg.userConfig.gewis.enable [ ../config/gewis.nix ]
   ++ lib.optionals osConfig.cfg.userConfig.desktop.enable [ ../config/gui ];

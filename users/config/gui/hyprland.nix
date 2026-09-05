@@ -1,11 +1,31 @@
 {
   osConfig,
+  config,
   lib,
   pkgs,
   ...
 }:
 let
   inherit (lib.generators) mkLuaInline;
+
+  hyprModNames = {
+    mod = "SUPER";
+    shift = "SHIFT";
+    ctrl = "CTRL";
+    alt = "ALT";
+  };
+
+  registryBinds = lib.mapAttrsToList (_: bind: {
+    _args = [
+      (lib.concatStringsSep " + " (map (m: hyprModNames.${m}) bind.mods ++ [ bind.key ]))
+      (mkLuaInline ''hl.dsp.exec_cmd("${lib.escapeShellArgs bind.command}")'')
+    ]
+    ++ lib.optional (bind.whenLocked || bind.repeat) {
+      locked = bind.whenLocked;
+      repeating = bind.repeat;
+    };
+  }) (lib.filterAttrs (_: bind: builtins.elem "hyprland" bind.sessions) config.desktop.binds);
+
   screenShotScript = pkgs.writeShellScriptBin "screenshot" ''
     export PATH=$PATH:${pkgs.hyprshot}/bin
 
@@ -131,6 +151,27 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
     brightnessctl
     playerctl
   ]);
+
+  wayland.systemd.target = "hyprland-session.target";
+
+  systemd.user.services =
+    lib.genAttrs
+      [
+        "waybar"
+        "swaync"
+        "hyprpaper"
+        "hyprshell"
+        "hypridle"
+        "shikane"
+        "cliphist"
+        "cliphist-images"
+      ]
+      (_: {
+        Unit.ConditionEnvironment = lib.mkForce [
+          "WAYLAND_DISPLAY"
+          "XDG_CURRENT_DESKTOP=Hyprland"
+        ];
+      });
 
   wayland.windowManager.hyprland = {
     systemd.variables = [ "--all" ];
@@ -419,7 +460,8 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       ]
       ++ workspaceFocusBinds
       ++ workspaceMoveBinds
-      ++ workspaceToMonitorBinds;
+      ++ workspaceToMonitorBinds
+      ++ registryBinds;
     };
   };
 }

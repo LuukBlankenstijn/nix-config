@@ -32,5 +32,12 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
         }
       ];
     })
+
+    (lib.mkIf osConfig.cfg.userConfig.desktop.niri.enable {
+      programs.niri.settings.cursor = {
+        theme = "Adwaita";
+        size = 24;
+      };
+    })
   ]
 )
