@@ -59,7 +59,38 @@
           paper.enable = true;
           shell.enable = true;
           picker.enable = true;
-          displays.enable = true;
+          displays = {
+            enable = true;
+            profiles = [
+              {
+                name = "desk-3mon";
+                output = [
+                  {
+                    search = "s=N9LMDW011793";
+                    enable = true;
+                    mode = "preferred";
+                    position = "0,200";
+                    scale = 1.0;
+                  }
+                  {
+                    search = "s=0x00016811";
+                    enable = true;
+                    mode = "preferred";
+                    position = "3840,0";
+                    scale = 1.5;
+                    transform = "270";
+                  }
+                  {
+                    search = "n=eDP-1";
+                    enable = true;
+                    mode = "preferred";
+                    position = "960,2360";
+                    scale = 2.0;
+                  }
+                ];
+              }
+            ];
+          };
           pyprland.enable = true;
         };
 
