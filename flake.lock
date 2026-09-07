@@ -466,6 +466,29 @@
         "type": "github"
       }
     },
+    "pi": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788618855,
+        "narHash": "sha256-1WMIpS/e3Nk0AYOe78ukNv2Y4y7GEeyMm3t2bgn273A=",
+        "owner": "ChauDucToan",
+        "repo": "pi-flake",
+        "rev": "e73ea8ea2aa071c2f83158885894bade63f57492",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ChauDucToan",
+        "repo": "pi-flake",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -478,6 +501,7 @@
         "nixpkgs": "nixpkgs_4",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
+        "pi": "pi",
         "sops-nix": "sops-nix",
         "ssh-keys": "ssh-keys",
         "winapps": "winapps",

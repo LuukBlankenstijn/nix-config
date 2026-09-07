@@ -10,5 +10,6 @@
     ./shell.nix
     ./rbw.nix
     ./omp.nix
+    ./pi.nix
   ];
 }
