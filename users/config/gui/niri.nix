@@ -66,33 +66,48 @@ let
 
   pinnedByWorkspace = lib.groupBy (app: app.workspace) (lib.attrValues config.desktop.pinnedApps);
 
-  workspaceKeys = {
-    chat = "W";
-  };
-
-  ensureRunning = app: ''
-    if ! printf '%s\n' "$running" | ${lib.getExe' pkgs.gnugrep "grep"} -qxF ${lib.escapeShellArg app.appId}; then
-      ${lib.getExe' pkgs.util-linux "setsid"} ${lib.escapeShellArgs app.command} >/dev/null 2>&1 &
-    fi
-  '';
-
-  summonWorkspace =
-    name: apps:
+  summonApp =
+    name: app:
     pkgs.writeShellScript "niri-summon-${name}" ''
       set -u
-      running=$(${lib.getExe pkgs.niri} msg --json windows | ${lib.getExe pkgs.jq} -r '.[].app_id')
-      ${lib.concatMapStrings ensureRunning apps}
-      exec ${lib.getExe pkgs.niri} msg action focus-workspace ${lib.escapeShellArg name}
+
+      niri=${lib.getExe pkgs.niri}
+      sleep=${lib.getExe' pkgs.coreutils "sleep"}
+
+      window_id() {
+        $niri msg --json windows \
+          | ${lib.getExe pkgs.jq} -r --arg app ${lib.escapeShellArg app.appId} \
+            'first(.[] | select(.app_id == $app) | .id) // empty'
+      }
+
+      window=$(window_id)
+
+      if [ -z "$window" ]; then
+        ${lib.getExe' pkgs.util-linux "setsid"} ${lib.escapeShellArgs app.command} >/dev/null 2>&1 &
+
+        tries=0
+        while [ -z "$window" ] && [ "$tries" -lt 50 ]; do
+          $sleep 0.2
+          tries=$((tries + 1))
+          window=$(window_id)
+        done
+      fi
+
+      if [ -n "$window" ]; then
+        exec $niri msg action focus-window --id "$window"
+      fi
+
+      exec $niri msg action focus-workspace ${lib.escapeShellArg app.workspace}
     '';
 
   pinnedBinds = lib.mapAttrs' (
-    name: apps:
-    lib.nameValuePair "Mod+${workspaceKeys.${name}}" {
-      action.spawn = [ "${summonWorkspace name apps}" ];
+    name: app:
+    lib.nameValuePair "Mod+${app.key}" {
+      action.spawn = [ "${summonApp name app}" ];
       repeat = false;
       hotkey-overlay.title = humanize name;
     }
-  ) (lib.filterAttrs (name: _: workspaceKeys ? ${name}) pinnedByWorkspace);
+  ) (lib.filterAttrs (_: app: app.key != null) config.desktop.pinnedApps);
 
   blackout = pkgs.writeShellScript "niri-blackout" ''
     set -u

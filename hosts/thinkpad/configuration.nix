@@ -69,14 +69,14 @@
                     search = "s=N9LMDW011793";
                     enable = true;
                     mode = "preferred";
-                    position = "0,200";
-                    scale = 1.0;
+                    position = "3307,1662";
+                    scale = 1.25;
                   }
                   {
                     search = "s=0x00016811";
                     enable = true;
                     mode = "preferred";
-                    position = "3840,0";
+                    position = "6379,830";
                     scale = 1.5;
                     transform = "270";
                   }
@@ -84,7 +84,7 @@
                     search = "n=eDP-1";
                     enable = true;
                     mode = "preferred";
-                    position = "960,2360";
+                    position = "3898,3390";
                     scale = 2.0;
                   }
                 ];
@@ -96,6 +96,43 @@
 
         niri = {
           enable = true;
+          outputs = {
+            "ASUSTek COMPUTER INC VP32UQ N9LMDW011793" = {
+              mode = {
+                width = 3840;
+                height = 2160;
+              };
+              scale = 1.25;
+              position = {
+                x = 3307;
+                y = 1662;
+              };
+            };
+            "LG Electronics LG HDR 4K 0x00016811" = {
+              mode = {
+                width = 3840;
+                height = 2160;
+              };
+              scale = 1.5;
+              transform.rotation = 270;
+              position = {
+                x = 6379;
+                y = 830;
+              };
+            };
+            "eDP-1" = {
+              mode = {
+                width = 3840;
+                height = 2400;
+                refresh = 60.0;
+              };
+              scale = 2.0;
+              position = {
+                x = 3898;
+                y = 3390;
+              };
+            };
+          };
         };
 
         cursor.enable = true;
@@ -137,6 +174,7 @@
       };
       neovim.enable = true;
       omp.enable = true;
+      pi.enable = true;
       shell.enable = true;
       clipboard = {
         enable = true;

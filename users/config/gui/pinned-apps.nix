@@ -33,6 +33,12 @@ in
             description = "Named niri workspace this app opens on. Apps sharing a name share the workspace.";
           };
 
+          key = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+            description = "Key that, together with Mod, summons this app's window and starts it when it is not running. Null gives the app no bind.";
+          };
+
           columnWidth = mkOption {
             type = types.nullOr types.float;
             default = null;
@@ -54,6 +60,7 @@ in
       ];
       appId = "chrome-web.whatsapp.com__-Default";
       workspace = "chat";
+      key = "W";
       columnWidth = 2.0 / 3.0;
     };
 
@@ -61,6 +68,7 @@ in
       command = [ "${pkgs.signal-desktop}/bin/signal-desktop" ];
       appId = "signal";
       workspace = "chat";
+      key = "S";
       columnWidth = 2.0 / 3.0;
     };
   };

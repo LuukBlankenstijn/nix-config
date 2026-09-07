@@ -184,7 +184,7 @@ in
         "control-center"
       ]
       // {
-        key = "S";
+        key = "A";
       };
     shellSettings = msg [ "settings-toggle" ] // {
       key = "Comma";
