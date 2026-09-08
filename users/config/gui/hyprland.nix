@@ -8,6 +8,8 @@
 let
   inherit (lib.generators) mkLuaInline;
 
+  touch = osConfig.cfg.desktop.touchscreen;
+
   hyprModNames = {
     mod = "SUPER";
     shift = "SHIFT";
@@ -248,6 +250,11 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
             natural_scroll = false;
             scroll_factor = 0.8;
           };
+        }
+        // lib.optionalAttrs touch.enable {
+          # Hyprland's default is to guess; once a second monitor shows up the
+          # guess is wrong and taps land on the wrong screen.
+          touchdevice.output = touch.output;
         };
       };
 

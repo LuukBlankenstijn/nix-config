@@ -14,6 +14,7 @@
     ./virtualisation.nix
     ./services.nix
     ./shell.nix
+    ./touchscreen.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

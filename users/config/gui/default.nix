@@ -21,6 +21,7 @@ in
     ./swaync.nix
     ./tailscale.nix
     ./thunderbird.nix
+    ./touchscreen.nix
     ./waybar.nix
     ./winapps.nix
     ./zen-browser.nix

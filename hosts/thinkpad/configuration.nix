@@ -18,6 +18,14 @@
       };
       audio.enable = true;
       hardware.enable = true;
+      touchscreen = {
+        enable = true;
+        device = "ELAN901C:00 04F3:413B";
+        size = {
+          width = 3840;
+          height = 2400;
+        };
+      };
     };
 
     bluetooth.enable = true;

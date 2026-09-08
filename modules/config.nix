@@ -44,6 +44,123 @@ in
       audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, JACK, PulseAudio compat)";
       hardware.enable = mkEnableOption "desktop hardware support (firmware, GPU drivers)";
       niri.enable = mkEnableOption "niri scrolling-tiling compositor as a second session (per-user config lives under users.<name>.desktop.niri)";
+
+      touchscreen = {
+        enable = mkEnableOption "touchscreen (touch pinned to its own panel, on-screen keyboard, edge gestures)";
+
+        device = mkOption {
+          type = types.str;
+          example = "ELAN901C:00 04F3:413B";
+          description = ''
+            evdev name of the touch panel, as printed by
+            `grep Name /proc/bus/input/devices`. A udev rule matches it exactly,
+            so the "... UNKNOWN" siblings that digitizers register alongside the
+            real node are left alone.
+          '';
+        };
+
+        output = mkOption {
+          type = types.str;
+          defaultText = lib.literalExpression "config.cfg.laptop.internalDisplay";
+          example = "eDP-1";
+          description = ''
+            Connector the panel is part of. Both compositors pin touch input to
+            it. Left unset they spread touch over whichever output they happen to
+            pick, so the moment you dock, a tap on the laptop screen moves the
+            pointer on an external monitor instead.
+          '';
+        };
+
+        size = {
+          width = mkOption {
+            type = types.int;
+            default = 1920;
+            description = "Panel width in pixels. Only used to turn gestures.threshold into a distance, so it need not match the mode you actually run.";
+          };
+
+          height = mkOption {
+            type = types.int;
+            default = 1200;
+            description = "Panel height in pixels. See size.width.";
+          };
+        };
+
+        keyboard = {
+          enable = mkOption {
+            type = types.bool;
+            default = true;
+            description = "wvkbd on-screen keyboard, raised by Mod+I or by swiping up from the bottom edge.";
+          };
+
+          autoShow = mkOption {
+            type = types.bool;
+            default = false;
+            description = ''
+              Let wvkbd raise itself whenever a client asks for text input
+              (zwp_input_method_v2). This is meant for phones, and on a laptop it
+              overreaches: Ghostty advertises text input for the whole time it has
+              focus, so the keyboard sits on screen permanently and eats
+              landscapeHeight pixels of every terminal. Worth turning on only if
+              you use the machine without its keyboard.
+            '';
+          };
+
+          height = mkOption {
+            type = types.int;
+            default = 480;
+            description = "Keyboard height in logical pixels while the panel is taller than it is wide.";
+          };
+
+          landscapeHeight = mkOption {
+            type = types.int;
+            default = 340;
+            description = "Keyboard height in logical pixels in the usual landscape orientation.";
+          };
+
+          extraArgs = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            example = [
+              "--fn"
+              "JetBrainsMono Nerd Font 14"
+            ];
+            description = "Extra arguments for wvkbd-mobintl.";
+          };
+        };
+
+        gestures = {
+          enable = mkOption {
+            type = types.bool;
+            default = true;
+            description = ''
+              Edge and multi-finger gestures, via lisgd. Neither compositor can do
+              this on its own: niri only reads touch inside the overview, and
+              hyprgrass — the usual answer on Hyprland — does not build against
+              the pinned 0.56. lisgd reads the panel's evdev node directly, which
+              is what the udev rule's uaccess tag is for.
+            '';
+          };
+
+          threshold = mkOption {
+            type = types.float;
+            default = 0.1;
+            description = "Fraction of the panel's short side a finger must travel before a gesture fires.";
+          };
+
+          timeoutMs = mkOption {
+            type = types.int;
+            default = 700;
+            description = "Time a gesture has to finish in. Slower swipes are ignored, so a drag inside an app does not trip one.";
+          };
+
+          extra = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            example = [ "2,LR,*,*,R,playerctl next" ];
+            description = "Extra lisgd gesture specs, appended to the defaults. The format is `fingers,direction,edge,distance,mode,command` — see lisgd(1).";
+          };
+        };
+      };
     };
 
     server.enable = mkEnableOption "server-specific features (OpenSSH, wheel passwordless sudo)";
@@ -346,6 +463,9 @@ in
     cfg.virtualisation.libvirtd.enable = mkIf config.cfg.virtualisation.virtManager.enable (
       mkDefault true
     );
+
+    # the touchscreen is glued to the built-in panel on every machine that has one
+    cfg.desktop.touchscreen.output = mkDefault config.cfg.laptop.internalDisplay;
 
     cfg.desktop.niri.enable = mkIf (builtins.any (u: u.desktop.niri.enable) (
       builtins.attrValues config.cfg.users

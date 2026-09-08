@@ -64,6 +64,8 @@ let
     };
   };
 
+  touch = osConfig.cfg.desktop.touchscreen;
+
   pinnedByWorkspace = lib.groupBy (app: app.workspace) (lib.attrValues config.desktop.pinnedApps);
 
   summonApp =
@@ -183,6 +185,11 @@ in
         natural-scroll = false;
         scroll-factor = 1.2;
       };
+    }
+    // lib.optionalAttrs touch.enable {
+      # Unset, niri spreads touch across whichever output it picked, so docking
+      # sends taps on the laptop panel to an external monitor.
+      touch.map-to-output = touch.output;
     };
 
     outputs = osConfig.cfg.userConfig.desktop.niri.outputs;
@@ -197,6 +204,14 @@ in
         { proportion = 0.5; }
         { proportion = 2.0 / 3.0; }
       ];
+    };
+
+    # The overview is the only part of niri that reads touch directly, and
+    # dragging a window there is where the edge zones matter. The defaults are
+    # sized for a pointer, which is a good deal more precise than a fingertip.
+    gestures = lib.mkIf touch.enable {
+      dnd-edge-view-scroll.trigger-width = 60;
+      dnd-edge-workspace-switch.trigger-height = 60;
     };
 
     workspaces = lib.genAttrs (lib.attrNames pinnedByWorkspace) (_: { });
