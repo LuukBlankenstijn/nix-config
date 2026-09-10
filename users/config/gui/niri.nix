@@ -256,6 +256,12 @@ in
         up = "move-column-to-monitor-up";
         right = "move-column-to-monitor-right";
       })
+      (directional "Mod+Alt" {
+        left = "move-workspace-to-monitor-left";
+        down = "move-workspace-to-monitor-down";
+        up = "move-workspace-to-monitor-up";
+        right = "move-workspace-to-monitor-right";
+      })
       {
         "Mod+C" = act "close-window";
         "Mod+V" = act "toggle-window-floating";
@@ -295,6 +301,8 @@ in
         "Mod+Tab" = act "focus-window-previous";
         "Mod+Page_Down" = act "focus-workspace-down";
         "Mod+Page_Up" = act "focus-workspace-up";
+        "Mod+Shift+Page_Down" = act "move-workspace-down";
+        "Mod+Shift+Page_Up" = act "move-workspace-up";
         "Mod+WheelScrollDown" = wheelBind "focus-workspace-down";
         "Mod+WheelScrollUp" = wheelBind "focus-workspace-up";
 
