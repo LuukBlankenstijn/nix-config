@@ -143,7 +143,23 @@
         jsonls.enable = true;
         kotlin_language_server.enable = true;
         marksman.enable = true;
-        nil_ls.enable = true;
+        nixd = {
+          enable = true;
+          config.settings.nixd =
+            let
+              flake = ''(builtins.getFlake "/home/luuk/nix-config")'';
+              host = ''(builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname))'';
+              options = "${flake}.nixosConfigurations.\${${host}}.options";
+            in
+            {
+              nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
+              formatting.command = [ "nixfmt" ];
+              options = {
+                nixos.expr = options;
+                home-manager.expr = "${options}.home-manager.users.type.getSubOptions [ ]";
+              };
+            };
+        };
         postgres_lsp.enable = true;
         pyright.enable = true;
         ruff.enable = true;

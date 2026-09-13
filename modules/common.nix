@@ -34,6 +34,11 @@
       "root"
       "@wheel"
     ];
+
+    settings.extra-substituters = [ "https://oh-my-pi.cachix.org" ];
+    settings.extra-trusted-public-keys = [
+      "oh-my-pi.cachix.org-1:FRLFzcZnCIB2GfSpDkgHsl8uGa1zDrx1F+bBlVIy7Wo="
+    ];
   };
 
   users.users.${config.cfg.user} = {

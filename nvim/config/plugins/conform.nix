@@ -8,7 +8,7 @@
       gofumpt
       goimports-reviser
       golines
-      nixpkgs-fmt
+      nixfmt-rfc-style
       sql-formatter
       buf
       ktfmt
@@ -33,7 +33,7 @@
         };
 
         formatters_by_ft = {
-          nix = [ "nixpkgs-fmt" ];
+          nix = [ "nixfmt" ];
           blade = [ "blade-formatter" ];
           go = [
             "gofumpt"
