@@ -5,6 +5,12 @@ lib.mkIf config.cfg.bluetooth.enable {
     powerOnBoot = true;
   };
 
+  services.pipewire.wireplumber.extraConfig."51-bluez-no-autoswitch" = {
+    "wireplumber.settings" = {
+      "bluetooth.autoswitch-to-headset-profile" = false;
+    };
+  };
+
   environment.persistence."/persist" = lib.mkIf config.cfg.impermanence.enable {
     directories = [
       "/etc/bluetooth"
