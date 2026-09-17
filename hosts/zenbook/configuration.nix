@@ -159,7 +159,12 @@
       git.enable = true;
       neovim.enable = true;
       rbw.enable = true;
-      omp.enable = true;
+      omp = {
+        enable = true;
+        modelRoles = {
+          default = "anthropic/claude-opus-5";
+        };
+      };
       pi.enable = true;
       shell.enable = true;
       clipboard = {

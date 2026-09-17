@@ -421,7 +421,30 @@ in
               };
               neovim.enable = mkEnableOption "Neovim editor";
               rbw.enable = mkEnableOption "rbw Bitwarden CLI";
-              omp.enable = mkEnableOption "Oh my Pi (terminal coding agent)";
+              omp = {
+                enable = mkEnableOption "Oh my Pi (terminal coding agent)";
+                modelRoles = mkOption {
+                  type = types.attrsOf types.str;
+                  example = {
+                    default = "anthropic/claude-opus-5";
+                    commit = "ollama/qwen3.5:4b-q4_K_M";
+                  };
+                  description = ''
+                    Model backing each omp role, set per host because the
+                    reachable provider differs between them. Only `default` is
+                    required; omitted roles resolve through omp's own fallback
+                    chain (`tiny` follows `smol`, the rest follow `default`).
+                  '';
+                };
+                extraSettings = mkOption {
+                  type = types.attrs;
+                  default = { };
+                  example = {
+                    hideThinkingBlock = false;
+                  };
+                  description = "Extra omp settings, deep-merged into programs.omp.settings (later wins on conflicts).";
+                };
+              };
               pi.enable = mkEnableOption "pi (terminal coding agent)";
               shell.enable = mkEnableOption "zsh shell configuration";
               clipboard = {

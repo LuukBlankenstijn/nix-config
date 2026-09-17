@@ -75,7 +75,7 @@
     };
 
     omp = {
-      url = "github:can1357/oh-my-pi/v18.1.19";
+      url = "github:can1357/oh-my-pi/v18.2.4";
     };
   };
 
