@@ -199,6 +199,7 @@
     configurationLimit = 20;
   };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelModules = [ "iwlwifi" ];
 
   hardware.graphics = {
     extraPackages = [
