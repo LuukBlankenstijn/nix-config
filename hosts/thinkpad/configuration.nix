@@ -205,6 +205,7 @@
         python3
         glab
         claude-code
+        eduvpn-client
       ];
 
       extraGroups = [ "dialout" ];
