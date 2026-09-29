@@ -158,6 +158,10 @@
               color = "blue";
               id = 1;
             };
+            personal = {
+              color = "green";
+              id = 2;
+            };
           };
           extensions = [
             "onepassword-password-manager"
