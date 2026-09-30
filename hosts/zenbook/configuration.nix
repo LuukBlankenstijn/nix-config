@@ -145,6 +145,7 @@
             };
           };
           extensions = [
+            "ublock-origin"
             "bitwarden"
             "multi-account-containers"
           ];
@@ -162,7 +163,8 @@
       omp = {
         enable = true;
         modelRoles = {
-          default = "anthropic/claude-opus-5";
+          default = "anthropic/claude-opus-5.5";
+          advisor = "anthropic/claude-opus-5.5";
         };
       };
       pi.enable = true;
