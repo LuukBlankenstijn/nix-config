@@ -1,6 +1,19 @@
-{ config, lib, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 let
-  inherit (lib) mkIf mapAttrs' nameValuePair filterAttrs any attrValues;
+  inherit (lib)
+    mkIf
+    mapAttrs'
+    nameValuePair
+    filterAttrs
+    any
+    attrValues
+    ;
   tsSsh = config.cfg.networking.tailscale.ssh;
   nbSshProfiles = filterAttrs (_: p: p.ssh.enable) config.cfg.networking.netbird.profiles;
   nbSshEnabled = config.cfg.networking.netbird.enable && nbSshProfiles != { };
@@ -29,12 +42,16 @@ in
       };
     };
 
+    environment.systemPackages = [ pkgs.waypipe ];
+
     users.users.${config.cfg.user}.openssh.authorizedKeys.keyFiles = [
       inputs.ssh-keys.outPath
     ];
 
     networking.firewall.interfaces =
       (lib.optionalAttrs tsSsh.enable { "tailscale0".allowedTCPPorts = [ 22 ]; })
-      // (mapAttrs' (profileName: _: nameValuePair "nb-${profileName}" { allowedTCPPorts = [ 22 ]; }) nbSshProfiles);
+      // (mapAttrs' (
+        profileName: _: nameValuePair "nb-${profileName}" { allowedTCPPorts = [ 22 ]; }
+      ) nbSshProfiles);
   };
 }
