@@ -40,10 +40,17 @@
       };
       netbird = {
         enable = true;
-        profiles.nb = {
-          ssh.enable = true;
-          ssh.netbirdSsh = true;
-          managementUrl = "https://netbird.luukblankenstijn.nl";
+        profiles = {
+          nb = {
+            port = 51820;
+            managementUrl = "https://netbird.luukblankenstijn.nl";
+            ssh.enable = true;
+            ssh.netbirdSsh = true;
+          };
+          nbg = {
+            port = 51821;
+            managementUrl = "https://nb.gewis.nl";
+          };
         };
       };
     };

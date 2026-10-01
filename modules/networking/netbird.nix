@@ -40,7 +40,7 @@ in
           name = profileName;
           port = p.port;
           hardened = mkIf p.ssh.netbirdSsh false;
-          config = mkIf p.ssh.netbirdSsh { ServerSSHAllowed = true; };
+          config.ServerSSHAllowed = p.ssh.netbirdSsh;
           environment = optionalAttrs (p.managementUrl != null) {
             NB_MANAGEMENT_URL = p.managementUrl;
           };
