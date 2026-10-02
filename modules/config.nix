@@ -172,6 +172,7 @@ in
     networking = {
       enable = mkEnableOption "NetworkManager";
       wifi.enable = mkEnableOption "Wi-Fi support (iwd)";
+      wireguard.router.enable = mkEnableOption "WireGuard router interfaces";
       tailscale = {
         enable = mkEnableOption "Tailscale mesh VPN";
         loginServer = mkOption {
