@@ -10,13 +10,13 @@ lib.mkIf config.cfg.laptop.enable {
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
       CPU_ENERGY_PERF_POLICY_ON_AC = "power";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
 
       CPU_BOOST_ON_AC = 0;
-      CPU_BOOST_ON_BAT = 0;
+      CPU_BOOST_ON_BAT = 1;
 
       PLATFORM_PROFILE_ON_AC = "low-power";
-      PLATFORM_PROFILE_ON_BAT = "low-power";
+      PLATFORM_PROFILE_ON_BAT = "balanced";
 
       USB_AUTOSUSPEND = 1;
     };
