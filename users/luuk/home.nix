@@ -7,6 +7,7 @@
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
+    inputs.nix-index-database.homeModules.nix-index
     ../config/general
     ../config/ssh-client.nix
     ../config/binds.nix

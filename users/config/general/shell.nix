@@ -21,6 +21,12 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       silent = true;
     };
 
+    nix-index = {
+      enable = true;
+      enableZshIntegration = false;
+    };
+    nix-index-database.comma.enable = true;
+
     starship = {
       enable = true;
       enableZshIntegration = true;
@@ -102,10 +108,26 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       shellAliases = {
         ls = "ls -Ahl";
       };
-      initContent = lib.mkBefore ''
-        DISABLE_AUTO_UPDATE="true"
-        eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
-      '';
+      initContent = lib.mkMerge [
+        (lib.mkBefore ''
+          DISABLE_AUTO_UPDATE="true"
+          eval "$(${pkgs.tirith}/bin/tirith init --shell zsh)"
+        '')
+        ''
+          command_not_found_handler() {
+            local -a lines providers
+            lines=("''${(@f)$(, --print-packages "$1" 2>/dev/null)}")
+            providers=("''${(@)''${(@M)lines:#- *}#- }")
+            providers=("''${(@)providers%.out}")
+            print -u2 "zsh: command not found: $1"
+            if (( ''${#providers} )); then
+              print -u2 "  run once:    , $*"
+              print -u2 "  provided by: ''${(j:, :)providers}"
+            fi
+            return 127
+          }
+        ''
+      ];
       completionInit = ''
         autoload -Uz compinit
         if [[ ~/.zcompdump -ot /run/current-system ]]; then
