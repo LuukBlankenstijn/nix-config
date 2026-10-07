@@ -28,7 +28,13 @@
     };
 
     users.luuk = {
-      git.enable = true;
+      git = {
+        enable = true;
+        extraSettings = {
+          commit.gpgsign = false;
+          tag.gpgsign = false;
+        };
+      };
       neovim.enable = true;
       shell.enable = true;
       clipboard.enable = true;

@@ -13,7 +13,7 @@ in
   imports = [ inputs.noctalia-greeter.nixosModules.default ];
 
   config = mkIf (config.cfg.desktop.enable && config.cfg.desktop.displayManager.enable) {
-    programs.noctalia-greeter = {
+    services.displayManager.noctalia-greeter = {
       enable = true;
 
       settings = {

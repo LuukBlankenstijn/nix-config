@@ -20,13 +20,14 @@ lib.mkIf gitCfg.enable {
       user = {
         name = "Luuk Blankenstijn";
         email = "git@luukblankenstijn.nl";
+        signingkey = "~/.ssh/id_ed25519";
       };
-      signing = {
+      gpg = {
         format = "ssh";
-        key = "~/.ssh/id_ed25519";
-        signByDefault = true;
-        signer = "${pkgs.openssh}/bin/ssh-keygen";
+        ssh.program = "${pkgs.openssh}/bin/ssh-keygen";
       };
+      commit.gpgsign = true;
+      tag.gpgsign = true;
       core = {
         autocrlf = false;
         pager = "delta";

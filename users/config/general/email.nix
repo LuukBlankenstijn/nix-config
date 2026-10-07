@@ -19,6 +19,11 @@ let
     "mail.server.server_${id}.authMethod" = 3;
     "mail.smtpserver.smtp_${id}.authMethod" = 3;
   };
+
+  breakpadBuiltWithGcc15 = pkgs.breakpad.override { stdenv = pkgs.gcc15Stdenv; };
+  protonmail-bridge-gui = pkgs.protonmail-bridge-gui.override {
+    sentry-native = pkgs.sentry-native.override { breakpad = breakpadBuiltWithGcc15; };
+  };
 in
 lib.mkIf osConfig.cfg.userConfig.desktop.email.enable {
   accounts.email.accounts = {
@@ -85,6 +90,6 @@ lib.mkIf osConfig.cfg.userConfig.desktop.email.enable {
 
   services.protonmail-bridge.enable = true;
   home.packages = [
-    pkgs.protonmail-bridge-gui
+    protonmail-bridge-gui
   ];
 }

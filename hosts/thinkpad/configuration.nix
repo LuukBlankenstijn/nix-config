@@ -182,15 +182,7 @@
 
       git = {
         enable = true;
-        dirSettings."gitdir:~/code/" = {
-          user = {
-            email = "luuk@dutchcodingcompany.com";
-            signingkey = "~/.ssh/id_ed25519";
-          };
-          gpg.format = "ssh";
-          commit.gpgsign = true;
-          tag.gpgsign = true;
-        };
+        dirSettings."gitdir:~/code/".user.email = "luuk@dutchcodingcompany.com";
       };
       neovim.enable = true;
       omp = {

@@ -8,7 +8,7 @@
       gofumpt
       goimports-reviser
       golines
-      nixfmt-rfc-style
+      nixfmt
       sql-formatter
       buf
       ktfmt

@@ -2,7 +2,7 @@
 {
   services.gnome-keyring.enable = true;
   home.packages = [
-    pkgs.gcr
+    pkgs.gcr_3
     pkgs.libsecret
   ];
 }
