@@ -190,6 +190,7 @@
         gh-dash
         remmina
         bitwarden-desktop
+        mattermost-desktop
       ];
 
       extraGroups = [ "dialout" ];
