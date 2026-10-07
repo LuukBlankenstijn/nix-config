@@ -181,9 +181,7 @@
         discord
         signal-desktop
         eduvpn-client
-        jetbrains.datagrip
         prismlauncher
-        zotero
         gnome-calculator
         slack
         gh

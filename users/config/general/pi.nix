@@ -5,12 +5,26 @@
   inputs,
   ...
 }:
+let
+  stdenvWithFixedNodeModulesHash = pkgs.stdenvNoCC // {
+    mkDerivation =
+      args:
+      pkgs.stdenvNoCC.mkDerivation (
+        if builtins.isAttrs args && args.pname == "pi-node_modules" then
+          args // { outputHash = "sha256-eqbLvdkjUlTsp0kWbnAdHIHLQaJ0eokMWFVNUpP+uN8="; }
+        else
+          args
+      );
+  };
+in
 {
   imports = [ inputs.pi.homeManagerModules.default ];
 
   config.programs.pi-coding-agent = lib.mkIf osConfig.cfg.userConfig.pi.enable {
     enable = true;
-    package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent-src;
+    package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent-src.override {
+      stdenvNoCC = stdenvWithFixedNodeModulesHash;
+    };
 
     extraEnv = {
       PATH = lib.makeBinPath [
