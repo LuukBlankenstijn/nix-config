@@ -172,7 +172,10 @@ in
     networking = {
       enable = mkEnableOption "NetworkManager";
       wifi.enable = mkEnableOption "Wi-Fi support (iwd)";
-      wireguard.router.enable = mkEnableOption "WireGuard router interfaces";
+      wireguard = {
+        router.enable = mkEnableOption "WireGuard tunnel to the home router (wg-router)";
+        gewis.enable = mkEnableOption "WireGuard tunnel to the GEWIS router (wg-gewis)";
+      };
       tailscale = {
         enable = mkEnableOption "Tailscale mesh VPN";
         loginServer = mkOption {

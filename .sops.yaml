@@ -2,6 +2,7 @@ keys:
   - &luuk "age14aaw06ykpmrzgp56gyfhu2c0eh4w0k4aavq594tpym7j978hl5cs7qvccc"
   - &thinkpad "age1vexqsuge2qeuftgyestu99tzq9ap0qf54v7lmwy3fp4pduyqxc3saxshhy"
   - &home-server "age1xq5p2s3u9lpzr656pt2ra459swvqddkj7ht38gvjath9k5ysgeds36tnrk"
+  - &zenbook "age1shqcgthxr0umg70gh3t8ugam37zn8529qe97ujxzckv9dz0dgvmq4rpvua"
 
 creation_rules:
   - path_regex: secrets/thinkpad\.yaml$
@@ -13,3 +14,4 @@ creation_rules:
       - age:
           - *luuk
           - *home-server
+          - *zenbook

@@ -23,7 +23,10 @@
     networking = {
       enable = true;
       wifi.enable = true;
-      wireguard.router.enable = true;
+      wireguard = {
+        router.enable = true;
+        gewis.enable = true;
+      };
       tailscale = {
         enable = true;
         loginServer = "https://headscale.luukblankenstijn.nl";
