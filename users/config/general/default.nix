@@ -11,5 +11,6 @@
     ./rbw.nix
     ./omp.nix
     ./pi.nix
+    ./opencode.nix
   ];
 }

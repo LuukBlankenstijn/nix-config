@@ -450,6 +450,7 @@ in
                 };
               };
               pi.enable = mkEnableOption "pi (terminal coding agent)";
+              opencode.enable = mkEnableOption "OpenCode (terminal coding agent)";
               shell.enable = mkEnableOption "zsh shell configuration";
               clipboard = {
                 enable = mkEnableOption "clipboard tools (wl-clipboard, xclip, osc52)";

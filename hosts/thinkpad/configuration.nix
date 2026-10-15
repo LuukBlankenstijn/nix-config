@@ -193,6 +193,7 @@
         };
       };
       pi.enable = true;
+      opencode.enable = true;
       shell.enable = true;
       clipboard = {
         enable = true;

@@ -79,6 +79,10 @@
     omp = {
       url = "github:can1357/oh-my-pi/v18.3.0";
     };
+
+    opencode = {
+      url = "github:anomalyco/opencode/v2.0.29";
+    };
   };
 
   outputs =
