@@ -34,11 +34,6 @@
     networking = {
       enable = true;
       wifi.enable = true;
-      tailscale = {
-        enable = true;
-        loginServer = "https://headscale.luukblankenstijn.nl";
-        ssh.enable = true;
-      };
       netbird = {
         enable = true;
         profiles = {

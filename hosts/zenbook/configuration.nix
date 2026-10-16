@@ -28,11 +28,6 @@
         router.enable = true;
         gewis.enable = true;
       };
-      tailscale = {
-        enable = true;
-        loginServer = "https://headscale.luukblankenstijn.nl";
-        ssh.enable = true;
-      };
       netbird = {
         enable = true;
         profiles = {
@@ -157,7 +152,6 @@
         };
         email.enable = true;
         bluetooth.enable = true;
-        tailscale.enable = true;
 
         winapps.enable = true;
       };

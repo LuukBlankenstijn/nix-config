@@ -7,21 +7,6 @@
 
   cfg = {
     server.enable = true;
-    networking = {
-      tailscale = {
-        enable = true;
-        loginServer = "https://headscale.luukblankenstijn.nl";
-      };
-      netbird = {
-        enable = true;
-        profiles.netbird = {
-          managementUrl = "https://netbird.luukblankenstijn.nl";
-          ssh.enable = true;
-          ssh.netbirdSsh = true;
-          setupKey.enable = true;
-        };
-      };
-    };
     services.k3s = {
       enable = true;
       gpu.enable = true;

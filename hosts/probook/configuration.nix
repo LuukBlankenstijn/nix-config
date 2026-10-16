@@ -19,7 +19,6 @@
     networking = {
       enable = true;
       wifi.enable = true;
-      tailscale.enable = true;
     };
     laptop.enable = true;
     virtualisation.docker.enable = true;
@@ -51,7 +50,6 @@
         browser.enable = true;
         email.enable = true;
         bluetooth.enable = true;
-        tailscale.enable = true;
 
         winapps.enable = false;
       };

@@ -137,7 +137,6 @@
       nixosConfigurations = {
         zenbook = mkHost { hostname = "zenbook"; };
         probook = mkHost { hostname = "probook"; };
-        headscale-box = mkHost { hostname = "headscale-box"; };
         home-server = mkHost { hostname = "home-server"; };
         thinkpad = mkHost { hostname = "thinkpad"; };
         home-assistant = mkHost {

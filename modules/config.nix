@@ -183,15 +183,6 @@ in
         router.enable = mkEnableOption "WireGuard tunnel to the home router (wg-router)";
         gewis.enable = mkEnableOption "WireGuard tunnel to the GEWIS router (wg-gewis)";
       };
-      tailscale = {
-        enable = mkEnableOption "Tailscale mesh VPN";
-        loginServer = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          description = "Optional login server for Tailscale (e.g. Headscale URL)";
-        };
-        ssh.enable = mkEnableOption "OpenSSH server reachable only via the tailscale0 interface";
-      };
       netbird = {
         enable = mkEnableOption "Netbird mesh VPN";
         profiles = mkOption {
@@ -267,8 +258,6 @@ in
     };
 
     services = {
-      headscale.enable = mkEnableOption "Headscale – self-hosted Tailscale control server";
-      traefik.enable = mkEnableOption "Traefik – reverse proxy and edge router";
       comin.enable = mkEnableOption "comin – pull-based GitOps deployment of this flake";
       home-assistant.enable = mkEnableOption "Home Assistant – home automation (native NixOS service)";
       k3s = {
@@ -402,7 +391,6 @@ in
                   };
                 };
                 email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
-                tailscale.enable = mkEnableOption "Tailscale system-tray applet";
                 bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
 
                 winapps.enable = mkEnableOption "WinApps – Windows applications via Docker/RDP";

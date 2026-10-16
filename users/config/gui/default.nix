@@ -20,7 +20,6 @@ in
     ./pyprland.nix
     ./styling.nix
     ./swaync.nix
-    ./tailscale.nix
     ./thunderbird.nix
     ./touchscreen.nix
     ./waybar.nix
