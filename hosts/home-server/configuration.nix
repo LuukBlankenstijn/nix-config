@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -51,8 +51,6 @@
     nameserver 8.8.8.8
   '';
   services.k3s.extraFlags = [ "--resolv-conf=/etc/k3s-resolv.conf" ];
-
-  services.k3s.package = pkgs.k3s_1_35;
 
   system.stateVersion = "25.05";
 }
