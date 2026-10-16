@@ -7,6 +7,7 @@
 
   cfg = {
     server.enable = true;
+    services.comin.enable = true;
     services.k3s = {
       enable = true;
       gpu.enable = true;
