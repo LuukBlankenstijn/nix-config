@@ -1,4 +1,5 @@
-_: {
+{ config, lib, ... }:
+lib.mkIf config.cfg.desktop.printing.enable {
   services.printing.enable = true;
 
   services.avahi = {

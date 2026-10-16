@@ -48,6 +48,7 @@ in
         };
       };
       audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, JACK, PulseAudio compat)";
+      printing.enable = mkEnableOption "printing (CUPS, with Avahi for network printer discovery)";
       hardware.enable = mkEnableOption "desktop hardware support (firmware, GPU drivers)";
       niri.enable = mkEnableOption "niri scrolling-tiling compositor as a second session (per-user config lives under users.<name>.desktop.niri)";
 

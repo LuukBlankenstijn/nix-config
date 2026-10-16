@@ -12,6 +12,7 @@
     desktop.enable = true;
     desktop.displayManager.enable = true;
     desktop.audio.enable = true;
+    desktop.printing.enable = true;
     desktop.hardware.enable = true;
 
     bluetooth.enable = true;

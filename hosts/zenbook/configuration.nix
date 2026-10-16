@@ -15,6 +15,7 @@
         defaultSession = "Hyprland";
       };
       audio.enable = true;
+      printing.enable = true;
       hardware.enable = true;
     };
 
