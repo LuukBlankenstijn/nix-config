@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./cursor.nix
+    ./default-apps.nix
     ./ghostty.nix
     ./hypridle.nix
     ./hyprland.nix

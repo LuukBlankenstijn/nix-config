@@ -47,6 +47,11 @@ lib.mkIf (osConfig.cfg.userConfig.desktop.enable && osConfig.cfg.userConfig.desk
           };
         };
 
+        xdg.terminal-exec = {
+          enable = true;
+          settings.default = [ "com.mitchellh.ghostty.desktop" ];
+        };
+
         desktop.binds.terminal = {
           key = "Q";
           command = [ "${pkgs.ghostty}/bin/ghostty" ];
