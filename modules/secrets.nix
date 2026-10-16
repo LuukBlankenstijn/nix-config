@@ -10,6 +10,6 @@ in
     ];
     defaultSopsFile = config.cfg.secrets.file;
     defaultSopsFormat = "yaml";
-    secrets.password.neededForUsers = true;
+    secrets.password = lib.mkIf config.cfg.secrets.password.enable { neededForUsers = true; };
   };
 }

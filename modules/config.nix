@@ -29,6 +29,12 @@ in
       description = "Path to the sops secrets file used by both NixOS and home-manager.";
     };
 
+    secrets.password.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Set the primary user's password from the sops `password` secret. Disable on hosts that only allow SSH key login.";
+    };
+
     # ── system features ─────────────────────────────────────────────────────────
     desktop = {
       enable = mkEnableOption "desktop environment (Hyprland, portals, etc.)";
@@ -262,6 +268,8 @@ in
     services = {
       headscale.enable = mkEnableOption "Headscale – self-hosted Tailscale control server";
       traefik.enable = mkEnableOption "Traefik – reverse proxy and edge router";
+      comin.enable = mkEnableOption "comin – pull-based GitOps deployment of this flake";
+      home-assistant.enable = mkEnableOption "Home Assistant – home automation (native NixOS service)";
       k3s = {
         enable = mkEnableOption "K3s – lightweight Kubernetes distribution";
         clusterInit = mkEnableOption "initialize a new cluster with embedded etcd";

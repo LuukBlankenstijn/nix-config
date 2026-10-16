@@ -206,6 +206,7 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "iwlwifi" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.graphics = {
     extraPackages = [

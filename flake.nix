@@ -23,6 +23,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -107,6 +112,7 @@
             inputs.sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             inputs.impermanence.nixosModules.impermanence
+            inputs.comin.nixosModules.comin
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -134,6 +140,10 @@
         headscale-box = mkHost { hostname = "headscale-box"; };
         home-server = mkHost { hostname = "home-server"; };
         thinkpad = mkHost { hostname = "thinkpad"; };
+        home-assistant = mkHost {
+          hostname = "home-assistant";
+          system = "aarch64-linux";
+        };
       };
     };
 }

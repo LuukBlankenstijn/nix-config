@@ -1,8 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   imports = [ ./base.nix ];
 
   users.users.${config.cfg.user} = {
-    hashedPasswordFile = config.sops.secrets.password.path;
+    hashedPasswordFile = lib.mkIf config.cfg.secrets.password.enable config.sops.secrets.password.path;
   };
 }
