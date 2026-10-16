@@ -4,6 +4,7 @@
     "pcie_brcmstb"
     "reset-raspberrypi"
     "usbhid"
+    "uas"
     "usb_storage"
     "vc4"
   ];
