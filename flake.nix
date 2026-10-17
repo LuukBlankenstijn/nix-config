@@ -140,12 +140,7 @@
 
       nixosConfigurations = {
         zenbook = mkHost { hostname = "zenbook"; };
-        home-server = mkHost { hostname = "home-server"; };
         thinkpad = mkHost { hostname = "thinkpad"; };
-        home-assistant = mkHost {
-          hostname = "home-assistant";
-          system = "aarch64-linux";
-        };
       };
     };
 }
