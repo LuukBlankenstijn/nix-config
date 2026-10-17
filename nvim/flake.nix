@@ -29,12 +29,12 @@
       };
 
       homeModules.default =
-        { pkgs, ... }:
+        { lib, ... }:
         {
           imports = [ nixvim.homeModules.nixvim ];
 
           programs.nixvim = {
-            enable = true;
+            enable = lib.mkDefault true;
             defaultEditor = true;
             nixpkgs.useGlobalPackages = true;
             imports = [ ./config ];

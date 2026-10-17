@@ -1,11 +1,16 @@
 { osConfig, lib, pkgs, inputs, ... }:
+let
+  enable = osConfig.cfg.userConfig.neovim.enable;
+in
 {
   imports = [ inputs.neovim.homeModules.default ];
 
-  config = lib.mkIf osConfig.cfg.userConfig.neovim.enable {
-    home.packages = [ pkgs.intelephense ];
+  programs.nixvim.enable = enable;
 
-    xdg.desktopEntries.nvim = {
+  home.packages = lib.mkIf enable [ pkgs.intelephense ];
+
+  xdg.desktopEntries = lib.mkIf enable {
+    nvim = {
       name = "Neovim";
       genericName = "Text Editor";
       comment = "Edit text files";
