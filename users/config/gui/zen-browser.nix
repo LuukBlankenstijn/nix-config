@@ -112,6 +112,57 @@ in
               ];
             };
           })
+
+          (lib.mkIf (osConfig.cfg.deviceCert.enable && browserCfg.deviceCert.enable) (
+            let
+              cert = osConfig.cfg.deviceCert;
+              profileDir = "${config.programs.zen-browser.profilesPath}/${config.programs.zen-browser.profiles.default.path}";
+              importCert = pkgs.writeShellApplication {
+                name = "zen-import-device-cert";
+                runtimeInputs = [
+                  pkgs.nssTools
+                  pkgs.openssl
+                ];
+                text = ''
+                  db="sql:${profileDir}"
+                  nick="${cert.commonName}"
+                  [ -r "${cert.certFile}" ] || exit 0
+
+                  mkdir -p "${profileDir}"
+                  [ -e "${profileDir}/cert9.db" ] || certutil -N -d "$db" --empty-password
+
+                  tmp=$(mktemp -d)
+                  trap 'rm -rf "$tmp"' EXIT
+                  openssl pkcs12 -export -inkey "${cert.keyFile}" -in "${cert.certFile}" \
+                    -name "$nick" -passout pass: -out "$tmp/cert.p12"
+
+                  while certutil -L -d "$db" -n "$nick" >/dev/null 2>&1; do
+                    certutil -F -d "$db" -n "$nick" -f /dev/null
+                  done
+                  pk12util -d "$db" -i "$tmp/cert.p12" -W "" -K ""
+                '';
+              };
+            in
+            {
+              programs.zen-browser.profiles.default.settings."security.default_personal_cert" =
+                "Select Automatically";
+
+              systemd.user.services.zen-device-cert = {
+                Unit.Description = "Import the device certificate into Zen";
+                Service = {
+                  Type = "oneshot";
+                  ExecStart = lib.getExe importCert;
+                };
+                Install.WantedBy = [ "default.target" ];
+              };
+
+              systemd.user.paths.zen-device-cert = {
+                Unit.Description = "Re-import the device certificate into Zen when it is renewed";
+                Path.PathChanged = cert.certFile;
+                Install.WantedBy = [ "default.target" ];
+              };
+            }
+          ))
         ]
       );
 }

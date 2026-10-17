@@ -9,10 +9,8 @@
     impermanence.enable = false;
     secrets.file = ../../secrets/thinkpad.yaml;
     gpg.enable = true;
-    services.alloy = {
-      enable = true;
-      openbao.enable = true;
-    };
+    deviceCert.enable = true;
+    services.alloy.enable = true;
     desktop = {
       enable = true;
       displayManager = {
@@ -159,6 +157,7 @@
         terminal.enable = true;
         browser = {
           enable = true;
+          deviceCert.enable = true;
           containers = {
             work = {
               color = "blue";

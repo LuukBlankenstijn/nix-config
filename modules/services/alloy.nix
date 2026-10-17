@@ -1,25 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 let
-  inherit (lib) mkIf mkForce mkMerge;
+  inherit (lib) mkIf mkForce;
   cfg = config.cfg.services.alloy;
-  bao = cfg.openbao;
-  agentName = "alloy-tls";
-  agentUnit = "vault-agent-${agentName}.service";
-  credentialSecrets = [
-    "openbao/role_id"
-    "openbao/secret_id"
-  ];
-  tlsDir = builtins.dirOf cfg.tls.certFile;
+  cert = config.cfg.deviceCert;
   tlsConfig = ''
     tls_config {
           ca_file   = "/etc/ssl/certs/ca-certificates.crt"
-          cert_file = "${cfg.tls.certFile}"
-          key_file  = "${cfg.tls.keyFile}"
+          cert_file = "${cert.certFile}"
+          key_file  = "${cert.keyFile}"
         }'';
   hostLabels = ''external_labels = { host = "${config.networking.hostName}" }'';
   extraScrapes = lib.concatStrings (
@@ -33,126 +21,94 @@ let
   );
 in
 {
-  config = mkIf cfg.enable (mkMerge [
-    {
-      services.alloy.enable = true;
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cert.enable;
+        message = "cfg.services.alloy authenticates to Loki and Mimir with the device certificate; enable cfg.deviceCert.";
+      }
+    ];
 
-      environment.etc."alloy/config.alloy".text = ''
-        prometheus.exporter.unix "host" { }
+    services.alloy.enable = true;
 
-        discovery.relabel "host" {
-          targets = prometheus.exporter.unix.host.targets
+    environment.etc."alloy/config.alloy".text = ''
+      prometheus.exporter.unix "host" { }
 
-          rule {
-            target_label = "job"
-            replacement  = "node-exporter"
-          }
+      discovery.relabel "host" {
+        targets = prometheus.exporter.unix.host.targets
+
+        rule {
+          target_label = "job"
+          replacement  = "node-exporter"
+        }
+      }
+
+      prometheus.scrape "host" {
+        targets    = discovery.relabel.host.output
+        forward_to = [prometheus.remote_write.mimir.receiver]
+      }
+
+      prometheus.remote_write "mimir" {
+        ${hostLabels}
+
+        endpoint {
+          url = "${cfg.metricsUrl}"
+
+          ${tlsConfig}
+        }
+      }
+
+      loki.relabel "journal" {
+        forward_to = []
+
+        rule {
+          source_labels = ["__journal__systemd_unit"]
+          target_label  = "unit"
         }
 
-        prometheus.scrape "host" {
-          targets    = discovery.relabel.host.output
-          forward_to = [prometheus.remote_write.mimir.receiver]
+        rule {
+          source_labels = ["__journal_priority_keyword"]
+          target_label  = "level"
         }
+      }
 
-        prometheus.remote_write "mimir" {
-          ${hostLabels}
+      loki.source.journal "journal" {
+        max_age       = "12h"
+        labels        = { job = "systemd-journal" }
+        relabel_rules = loki.relabel.journal.rules
+        forward_to    = [loki.write.loki.receiver]
+      }
 
-          endpoint {
-            url = "${cfg.metricsUrl}"
+      loki.write "loki" {
+        ${hostLabels}
 
-            ${tlsConfig}
-          }
+        endpoint {
+          url = "${cfg.logsUrl}"
+
+          ${tlsConfig}
         }
+      }
+    ''
+    + extraScrapes;
 
-        loki.relabel "journal" {
-          forward_to = []
+    users.users.alloy = {
+      isSystemUser = true;
+      group = "alloy";
+      extraGroups = [ cert.group ];
+    };
+    users.groups.alloy = { };
 
-          rule {
-            source_labels = ["__journal__systemd_unit"]
-            target_label  = "unit"
-          }
-
-          rule {
-            source_labels = ["__journal_priority_keyword"]
-            target_label  = "level"
-          }
-        }
-
-        loki.source.journal "journal" {
-          max_age       = "12h"
-          labels        = { job = "systemd-journal" }
-          relabel_rules = loki.relabel.journal.rules
-          forward_to    = [loki.write.loki.receiver]
-        }
-
-        loki.write "loki" {
-          ${hostLabels}
-
-          endpoint {
-            url = "${cfg.logsUrl}"
-
-            ${tlsConfig}
-          }
-        }
-      ''
-      + extraScrapes;
-
-      users.users.alloy = {
-        isSystemUser = true;
-        group = "alloy";
-      };
-      users.groups.alloy = { };
-
-      systemd.services.alloy.serviceConfig = {
+    systemd.services.alloy = {
+      startLimitIntervalSec = 0;
+      serviceConfig = {
         DynamicUser = mkForce false;
         User = "alloy";
         Group = "alloy";
       };
+    };
 
-      systemd.tmpfiles.rules = [ "d ${tlsDir} 0750 root alloy -" ];
-
-      environment.persistence."/persist" = mkIf config.cfg.impermanence.enable {
-        directories = [ "/var/lib/alloy" ];
-      };
-    }
-
-    (mkIf bao.enable {
-      sops.secrets = lib.genAttrs credentialSecrets (_: {
-        sopsFile = bao.secretsFile;
-        restartUnits = [ agentUnit ];
-      });
-
-      services.vault-agent.instances.${agentName} = {
-        package = pkgs.openbao;
-        settings = {
-          vault.address = bao.address;
-
-          auto_auth.method = [
-            {
-              type = "approle";
-              config = {
-                role_id_file_path = config.sops.secrets."openbao/role_id".path;
-                secret_id_file_path = config.sops.secrets."openbao/secret_id".path;
-                remove_secret_id_file_after_reading = false;
-              };
-            }
-          ];
-
-          template = [
-            {
-              destination = "/run/vault-agent/${agentName}.pem";
-              perms = "0600";
-              contents = ''
-                {{- with pkiCert "${bao.pkiIssuePath}" "common_name=${bao.commonName}" -}}
-                {{ .Cert }}{{ .Key }}
-                {{ .Key | writeToFile "${cfg.tls.keyFile}" "root" "alloy" "0640" }}
-                {{ .Cert | writeToFile "${cfg.tls.certFile}" "root" "alloy" "0640" }}
-                {{- end -}}
-              '';
-            }
-          ];
-        };
-      };
-    })
-  ]);
+    environment.persistence."/persist" = mkIf config.cfg.impermanence.enable {
+      directories = [ "/var/lib/alloy" ];
+    };
+  };
 }

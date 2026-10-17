@@ -18,10 +18,8 @@
       hardware.enable = true;
     };
 
-    services.alloy = {
-      enable = true;
-      openbao.enable = true;
-    };
+    deviceCert.enable = true;
+    services.alloy.enable = true;
 
     bluetooth.enable = true;
     boot.splash.enable = true;
@@ -138,6 +136,7 @@
         terminal.enable = true;
         browser = {
           enable = true;
+          deviceCert.enable = true;
           containers = {
             m-account = {
               color = "green";

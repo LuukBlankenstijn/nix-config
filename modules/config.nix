@@ -23,6 +23,51 @@ in
 
     gpg.enable = mkEnableOption "gpg key agent";
 
+    deviceCert = {
+      enable = mkEnableOption "this device's mTLS client certificate, issued and renewed by an OpenBao agent via AppRole";
+      address = mkOption {
+        type = types.str;
+        default = "https://openbao.luukblankenstijn.nl";
+        description = "OpenBao server address.";
+      };
+      pkiIssuePath = mkOption {
+        type = types.str;
+        default = "pki-hosts/issue/${config.networking.hostName}";
+        defaultText = lib.literalExpression "\"pki-hosts/issue/\${config.networking.hostName}\"";
+        description = "PKI issue endpoint, `<pki mount>/issue/<pki role>`. Every host has its own role named after it.";
+      };
+      commonName = mkOption {
+        type = types.str;
+        default = "${config.networking.hostName}.devices.luukblankenstijn.nl";
+        defaultText = lib.literalExpression "\"\${config.networking.hostName}.devices.luukblankenstijn.nl\"";
+        description = "Common name requested for the certificate.";
+      };
+      secretsFile = mkOption {
+        type = types.path;
+        default = ../secrets/openbao + "/${config.networking.hostName}.yaml";
+        defaultText = lib.literalExpression "../secrets/openbao/\${config.networking.hostName}.yaml";
+        description = "Per-host sops file holding `openbao/role_id` and `openbao/secret_id` (OpenBao `devices/hosts/<host>`). The default lies inside this repository, so hosts defined elsewhere must set it.";
+      };
+      group = mkOption {
+        type = types.str;
+        default = "device-cert";
+        readOnly = true;
+        description = "Group that may read the certificate and key. Consumers join it.";
+      };
+      certFile = mkOption {
+        type = types.str;
+        default = "/run/device-cert/cert.pem";
+        readOnly = true;
+        description = "Certificate, rewritten in place on renewal.";
+      };
+      keyFile = mkOption {
+        type = types.str;
+        default = "/run/device-cert/key.pem";
+        readOnly = true;
+        description = "Private key, rewritten in place on renewal.";
+      };
+    };
+
     secrets.file = mkOption {
       type = types.path;
       default = ../secrets/secrets.yaml;
@@ -276,44 +321,6 @@ in
           example = { comin = "127.0.0.1:4243"; };
           description = "Extra Prometheus endpoints on this host to scrape, keyed by job name, as `host:port` serving `/metrics`.";
         };
-        tls = {
-          certFile = mkOption {
-            type = types.str;
-            default = "/run/alloy/tls/cert.pem";
-            description = "Client certificate. Alloy re-reads it on every new connection, so rotating it in place needs no restart. Must be readable by group `alloy`.";
-          };
-          keyFile = mkOption {
-            type = types.str;
-            default = "/run/alloy/tls/key.pem";
-            description = "Client private key. Must be readable by group `alloy`.";
-          };
-        };
-        openbao = {
-          enable = mkEnableOption "OpenBao agent that issues and renews the Alloy client certificate via AppRole";
-          address = mkOption {
-            type = types.str;
-            default = "https://openbao.luukblankenstijn.nl";
-            description = "OpenBao server address.";
-          };
-          pkiIssuePath = mkOption {
-            type = types.str;
-            default = "pki-hosts/issue/${config.networking.hostName}";
-            defaultText = lib.literalExpression "\"pki-hosts/issue/\${config.networking.hostName}\"";
-            description = "PKI issue endpoint, `<pki mount>/issue/<pki role>`. Every host has its own role named after it.";
-          };
-          commonName = mkOption {
-            type = types.str;
-            default = "${config.networking.hostName}.devices.luukblankenstijn.nl";
-            defaultText = lib.literalExpression "\"\${config.networking.hostName}.devices.luukblankenstijn.nl\"";
-            description = "Common name requested for the client certificate.";
-          };
-          secretsFile = mkOption {
-            type = types.path;
-            default = ../secrets/openbao + "/${config.networking.hostName}.yaml";
-            defaultText = lib.literalExpression "../secrets/openbao/\${config.networking.hostName}.yaml";
-            description = "Per-host sops file holding `openbao/role_id` and `openbao/secret_id` (OpenBao `devices/hosts/<host>`). Needs a `.sops.yaml` rule encrypting it only to this host and your own key.";
-          };
-        };
       };
       comin = {
         enable = mkEnableOption "comin – pull-based GitOps deployment";
@@ -453,6 +460,7 @@ in
                     default = [ ];
                     description = "Firefox addon attribute names (from nur firefox-addons) to install.";
                   };
+                  deviceCert.enable = mkEnableOption "importing this device's client certificate (cfg.deviceCert) into Zen and sending it automatically, e.g. for mTLS-protected sites such as ntfy";
                 };
                 email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
                 bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
