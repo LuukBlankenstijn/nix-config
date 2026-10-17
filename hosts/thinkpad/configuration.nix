@@ -10,6 +10,10 @@
     impermanence.enable = false;
     secrets.file = ../../secrets/thinkpad.yaml;
     gpg.enable = true;
+    services.alloy = {
+      enable = true;
+      openbao.enable = true;
+    };
     desktop = {
       enable = true;
       displayManager = {

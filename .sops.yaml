@@ -9,6 +9,20 @@ creation_rules:
     key_groups:
       - age:
           - *thinkpad
+  - path_regex: secrets/openbao/zenbook\.yaml$
+    key_groups:
+      - age:
+          - *luuk
+          - *zenbook
+  - path_regex: secrets/openbao/thinkpad\.yaml$
+    key_groups:
+      - age:
+          - *luuk
+          - *thinkpad
+  - path_regex: secrets/openbao/home-assistant\.yaml$
+    key_groups:
+      - age:
+          - *luuk
   - path_regex: secrets/.*
     key_groups:
       - age:

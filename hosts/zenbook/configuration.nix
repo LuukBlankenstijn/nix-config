@@ -19,6 +19,11 @@
       hardware.enable = true;
     };
 
+    services.alloy = {
+      enable = true;
+      openbao.enable = true;
+    };
+
     bluetooth.enable = true;
     boot.splash.enable = true;
     networking = {

@@ -281,11 +281,6 @@ in
             default = "/run/alloy/tls/key.pem";
             description = "Client private key. Must be readable by group `alloy`.";
           };
-          caFile = mkOption {
-            type = types.str;
-            default = "/run/alloy/tls/ca.pem";
-            description = "CA that signed the Mimir and Loki server certificates.";
-          };
         };
         openbao = {
           enable = mkEnableOption "OpenBao agent that issues and renews the Alloy client certificate via AppRole";
@@ -296,21 +291,21 @@ in
           };
           pkiIssuePath = mkOption {
             type = types.str;
-            default = "pki/issue/alloy";
-            example = "pki_int/issue/alloy";
-            description = "PKI issue endpoint, `<pki mount>/issue/<pki role>`.";
+            default = "pki-hosts/issue/${config.networking.hostName}";
+            defaultText = lib.literalExpression "\"pki-hosts/issue/\${config.networking.hostName}\"";
+            description = "PKI issue endpoint, `<pki mount>/issue/<pki role>`. Every host has its own role named after it.";
           };
           commonName = mkOption {
             type = types.str;
-            default = config.networking.hostName;
-            defaultText = lib.literalExpression "config.networking.hostName";
+            default = "${config.networking.hostName}.devices.luukblankenstijn.nl";
+            defaultText = lib.literalExpression "\"\${config.networking.hostName}.devices.luukblankenstijn.nl\"";
             description = "Common name requested for the client certificate.";
           };
           secretsFile = mkOption {
             type = types.path;
-            default = ../secrets + "/${config.networking.hostName}.yaml";
-            defaultText = lib.literalExpression "../secrets/\${config.networking.hostName}.yaml";
-            description = "Per-host sops file holding `openbao/role-id` and `openbao/secret-id`. Encrypt it only to this host (and your own key), not via the shared secrets.yaml rule.";
+            default = ../secrets/openbao + "/${config.networking.hostName}.yaml";
+            defaultText = lib.literalExpression "../secrets/openbao/\${config.networking.hostName}.yaml";
+            description = "Per-host sops file holding `openbao/role_id` and `openbao/secret_id` (OpenBao `devices/hosts/<host>`). Needs a `.sops.yaml` rule encrypting it only to this host and your own key.";
           };
         };
       };

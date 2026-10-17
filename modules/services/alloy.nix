@@ -11,13 +11,12 @@ let
   agentName = "alloy-tls";
   agentUnit = "vault-agent-${agentName}.service";
   credentialSecrets = [
-    "openbao/role-id"
-    "openbao/secret-id"
+    "openbao/role_id"
+    "openbao/secret_id"
   ];
   tlsDir = builtins.dirOf cfg.tls.certFile;
   tlsConfig = ''
     tls_config {
-          ca_file   = "${cfg.tls.caFile}"
           cert_file = "${cfg.tls.certFile}"
           key_file  = "${cfg.tls.keyFile}"
         }'';
@@ -31,8 +30,17 @@ in
       environment.etc."alloy/config.alloy".text = ''
         prometheus.exporter.unix "host" { }
 
+        discovery.relabel "host" {
+          targets = prometheus.exporter.unix.host.targets
+
+          rule {
+            target_label = "job"
+            replacement  = "node-exporter"
+          }
+        }
+
         prometheus.scrape "host" {
-          targets    = prometheus.exporter.unix.host.targets
+          targets    = discovery.relabel.host.output
           forward_to = [prometheus.remote_write.mimir.receiver]
         }
 
@@ -112,8 +120,8 @@ in
             {
               type = "approle";
               config = {
-                role_id_file_path = config.sops.secrets."openbao/role-id".path;
-                secret_id_file_path = config.sops.secrets."openbao/secret-id".path;
+                role_id_file_path = config.sops.secrets."openbao/role_id".path;
+                secret_id_file_path = config.sops.secrets."openbao/secret_id".path;
                 remove_secret_id_file_after_reading = false;
               };
             }
@@ -125,7 +133,6 @@ in
               contents = ''
                 {{- with pkiCert "${bao.pkiIssuePath}" "common_name=${bao.commonName}" -}}
                 {{ .Key | writeToFile "${cfg.tls.keyFile}" "root" "alloy" "0640" }}
-                {{ .CA | writeToFile "${cfg.tls.caFile}" "root" "alloy" "0640" }}
                 {{ .Cert | writeToFile "${cfg.tls.certFile}" "root" "alloy" "0640" }}
                 {{- end -}}
               '';
