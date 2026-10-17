@@ -17,6 +17,7 @@ let
   tlsDir = builtins.dirOf cfg.tls.certFile;
   tlsConfig = ''
     tls_config {
+          ca_file   = "/etc/ssl/certs/ca-certificates.crt"
           cert_file = "${cfg.tls.certFile}"
           key_file  = "${cfg.tls.keyFile}"
         }'';
@@ -129,9 +130,11 @@ in
 
           template = [
             {
-              destination = "/run/vault-agent/${agentName}.rendered";
+              destination = "/run/vault-agent/${agentName}.pem";
+              perms = "0600";
               contents = ''
                 {{- with pkiCert "${bao.pkiIssuePath}" "common_name=${bao.commonName}" -}}
+                {{ .Cert }}{{ .Key }}
                 {{ .Key | writeToFile "${cfg.tls.keyFile}" "root" "alloy" "0640" }}
                 {{ .Cert | writeToFile "${cfg.tls.certFile}" "root" "alloy" "0640" }}
                 {{- end -}}
