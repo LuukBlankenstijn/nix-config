@@ -9,7 +9,7 @@ in
       remotes = [
         {
           name = "origin";
-          url = "https://github.com/LuukBlankenstijn/nix-config.git";
+          url = config.cfg.services.comin.url;
           branches = {
             main.name = "main";
             testing.name = "";

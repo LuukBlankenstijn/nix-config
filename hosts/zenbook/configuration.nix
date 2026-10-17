@@ -2,7 +2,6 @@
 {
   imports = [
     ./disko.nix
-    ../../modules
     { hardware.facter.reportPath = ./facter.json; }
   ];
 

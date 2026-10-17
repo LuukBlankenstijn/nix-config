@@ -309,7 +309,14 @@ in
           };
         };
       };
-      comin.enable = mkEnableOption "comin – pull-based GitOps deployment of this flake";
+      comin = {
+        enable = mkEnableOption "comin – pull-based GitOps deployment";
+        url = mkOption {
+          type = types.str;
+          default = "https://github.com/LuukBlankenstijn/nix-config.git";
+          description = "Git repository comin deploys this host's nixosConfigurations entry from.";
+        };
+      };
       home-assistant.enable = mkEnableOption "Home Assistant – home automation (native NixOS service)";
       k3s = {
         enable = mkEnableOption "K3s – lightweight Kubernetes distribution";

@@ -103,6 +103,7 @@
           hostname,
           user ? "luuk",
           system ? "x86_64-linux",
+          modules ? [ ./hosts/${hostname}/configuration.nix ],
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
@@ -123,17 +124,20 @@
               cfg.user = user;
               networking.hostName = hostname;
             }
-            ./hosts/${hostname}/configuration.nix
+            ./modules
             (_: {
               virtualisation.vmVariant = {
                 virtualisation.memorySize = 8192;
                 virtualisation.cores = 4;
               };
             })
-          ];
+          ]
+          ++ modules;
         };
     in
     {
+      lib = { inherit mkHost; };
+
       nixosConfigurations = {
         zenbook = mkHost { hostname = "zenbook"; };
         home-server = mkHost { hostname = "home-server"; };
