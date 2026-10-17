@@ -270,6 +270,12 @@ in
           default = "https://logs.luukblankenstijn.nl/loki/api/v1/push";
           description = "Loki push endpoint.";
         };
+        scrapeTargets = mkOption {
+          type = types.attrsOf types.str;
+          default = { };
+          example = { comin = "127.0.0.1:4243"; };
+          description = "Extra Prometheus endpoints on this host to scrape, keyed by job name, as `host:port` serving `/metrics`.";
+        };
         tls = {
           certFile = mkOption {
             type = types.str;
