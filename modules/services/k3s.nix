@@ -35,6 +35,7 @@ in
       };
       systemd.tmpfiles.rules = [
         "L /usr/bin/mount - - - - /run/current-system/sw/bin/mount"
+        "L /usr/bin/fstrim - - - - /run/current-system/sw/bin/fstrim"
       ];
 
       networking.firewall = {
