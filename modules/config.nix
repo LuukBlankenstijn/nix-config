@@ -258,6 +258,62 @@ in
     };
 
     services = {
+      alloy = {
+        enable = mkEnableOption "Grafana Alloy – ship host metrics to Mimir and journald logs to Loki over mTLS";
+        metricsUrl = mkOption {
+          type = types.str;
+          default = "https://metrics.luukblankenstijn.nl/api/v1/push";
+          description = "Mimir Prometheus remote-write endpoint.";
+        };
+        logsUrl = mkOption {
+          type = types.str;
+          default = "https://logs.luukblankenstijn.nl/loki/api/v1/push";
+          description = "Loki push endpoint.";
+        };
+        tls = {
+          certFile = mkOption {
+            type = types.str;
+            default = "/run/alloy/tls/cert.pem";
+            description = "Client certificate. Alloy re-reads it on every new connection, so rotating it in place needs no restart. Must be readable by group `alloy`.";
+          };
+          keyFile = mkOption {
+            type = types.str;
+            default = "/run/alloy/tls/key.pem";
+            description = "Client private key. Must be readable by group `alloy`.";
+          };
+          caFile = mkOption {
+            type = types.str;
+            default = "/run/alloy/tls/ca.pem";
+            description = "CA that signed the Mimir and Loki server certificates.";
+          };
+        };
+        openbao = {
+          enable = mkEnableOption "OpenBao agent that issues and renews the Alloy client certificate via AppRole";
+          address = mkOption {
+            type = types.str;
+            default = "https://openbao.luukblankenstijn.nl";
+            description = "OpenBao server address.";
+          };
+          pkiIssuePath = mkOption {
+            type = types.str;
+            default = "pki/issue/alloy";
+            example = "pki_int/issue/alloy";
+            description = "PKI issue endpoint, `<pki mount>/issue/<pki role>`.";
+          };
+          commonName = mkOption {
+            type = types.str;
+            default = config.networking.hostName;
+            defaultText = lib.literalExpression "config.networking.hostName";
+            description = "Common name requested for the client certificate.";
+          };
+          secretsFile = mkOption {
+            type = types.path;
+            default = ../secrets + "/${config.networking.hostName}.yaml";
+            defaultText = lib.literalExpression "../secrets/\${config.networking.hostName}.yaml";
+            description = "Per-host sops file holding `openbao/role-id` and `openbao/secret-id`. Encrypt it only to this host (and your own key), not via the shared secrets.yaml rule.";
+          };
+        };
+      };
       comin.enable = mkEnableOption "comin – pull-based GitOps deployment of this flake";
       home-assistant.enable = mkEnableOption "Home Assistant – home automation (native NixOS service)";
       k3s = {

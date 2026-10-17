@@ -50,6 +50,7 @@ in
           8472 # flannel VXLAN
           51820 # flannel Wireguard
         ];
+        interfaces.cni0.allowedTCPPorts = [ 9100 ];
       };
       boot = {
 
