@@ -22,6 +22,15 @@ let
           key_file  = "${cfg.tls.keyFile}"
         }'';
   hostLabels = ''external_labels = { host = "${config.networking.hostName}" }'';
+  extraScrapes = lib.concatStrings (
+    lib.mapAttrsToList (job: address: ''
+      prometheus.scrape "${lib.replaceStrings [ "-" ] [ "_" ] job}" {
+        targets    = [{ __address__ = "${address}", job = "${job}" }]
+        forward_to = [prometheus.remote_write.mimir.receiver]
+      }
+
+    '') cfg.scrapeTargets
+  );
 in
 {
   config = mkIf cfg.enable (mkMerge [
@@ -85,7 +94,8 @@ in
             ${tlsConfig}
           }
         }
-      '';
+      ''
+      + extraScrapes;
 
       users.users.alloy = {
         isSystemUser = true;
