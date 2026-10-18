@@ -230,6 +230,12 @@ in
       };
       netbird = {
         enable = mkEnableOption "Netbird mesh VPN";
+        ui.enable = mkOption {
+          type = types.bool;
+          default = config.cfg.desktop.enable;
+          defaultText = lib.literalExpression "config.cfg.desktop.enable";
+          description = "Netbird tray UI.";
+        };
         profiles = mkOption {
           type = types.attrsOf (
             types.submodule (

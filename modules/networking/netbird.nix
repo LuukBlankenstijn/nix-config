@@ -35,7 +35,7 @@ in
       ) setupKeyProfiles;
 
       services.netbird = {
-        ui.enable = true;
+        ui.enable = cfg.ui.enable;
         clients = mapAttrs (profileName: p: {
           name = profileName;
           port = p.port;
