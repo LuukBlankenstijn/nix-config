@@ -161,7 +161,6 @@
             };
         };
         postgres_lsp.enable = true;
-        pyright.enable = true;
         ruff.enable = true;
         sqls.enable = true;
         svelte.enable = true;
