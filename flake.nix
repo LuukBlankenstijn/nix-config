@@ -88,6 +88,11 @@
     opencode = {
       url = "github:anomalyco/opencode/v2.0.29";
     };
+
+    claude-desktop = {
+      url = "github:tomsch/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

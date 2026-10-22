@@ -176,6 +176,7 @@
           ];
         };
         bluetooth.enable = true;
+        claudeDesktop.enable = true;
       };
 
       git = {

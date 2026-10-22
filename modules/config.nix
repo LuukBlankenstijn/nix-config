@@ -470,6 +470,7 @@ in
                 };
                 email.enable = mkEnableOption "email clients (Thunderbird, ProtonMail Bridge)";
                 bluetooth.enable = mkEnableOption "Bluetooth GUI (Overskride, waybar widget)";
+                claudeDesktop.enable = mkEnableOption "Claude Desktop (official Linux beta)";
 
                 winapps.enable = mkEnableOption "WinApps – Windows applications via Docker/RDP";
               };

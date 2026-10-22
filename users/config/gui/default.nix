@@ -4,6 +4,7 @@ let
 in
 {
   imports = [
+    ./claude-desktop.nix
     ./cursor.nix
     ./default-apps.nix
     ./ghostty.nix
