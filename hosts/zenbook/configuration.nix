@@ -191,6 +191,7 @@
         remmina
         bitwarden-desktop
         mattermost-desktop
+        (callPackage ../../pkgs/elegoo-slicer.nix { })
       ];
 
       extraGroups = [ "dialout" ];
