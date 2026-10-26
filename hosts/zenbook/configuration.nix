@@ -155,6 +155,7 @@
         };
         email.enable = true;
         bluetooth.enable = true;
+        claudeDesktop.enable = true;
 
         winapps.enable = true;
       };
@@ -199,13 +200,19 @@
       gewis.enable = true;
     };
   };
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 20;
+  boot = {
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+      };
+      systemd-boot = {
+        configurationLimit = 20;
+        enable = true;
+      };
+    };
+    kernelModules = [ "iwlwifi" ];
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = [ "iwlwifi" ];
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.graphics = {
     extraPackages = [
