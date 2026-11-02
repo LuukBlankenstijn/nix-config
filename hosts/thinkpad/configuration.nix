@@ -15,7 +15,7 @@
       enable = true;
       displayManager = {
         enable = true;
-        defaultSession = "Hyprland";
+        defaultSession = "Hyprland (uwsm-managed)";
       };
       audio.enable = true;
       printing.enable = true;

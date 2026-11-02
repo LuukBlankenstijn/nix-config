@@ -154,7 +154,7 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
     playerctl
   ]);
 
-  wayland.systemd.target = "hyprland-session.target";
+  wayland.systemd.target = "graphical-session.target";
 
   systemd.user.services =
     lib.genAttrs
@@ -176,7 +176,7 @@ lib.mkIf osConfig.cfg.userConfig.desktop.hyprland.enable {
       });
 
   wayland.windowManager.hyprland = {
-    systemd.variables = [ "--all" ];
+    systemd.enable = false;
     enable = true;
     xwayland.enable = true;
     configType = "lua";
