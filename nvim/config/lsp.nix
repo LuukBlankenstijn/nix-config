@@ -126,7 +126,6 @@
       ];
 
       servers = {
-        basedpyright.enable = true;
         buf_ls.enable = true;
         clangd.enable = true;
         docker_compose_language_server.enable = true;
@@ -166,6 +165,7 @@
         svelte.enable = true;
         tailwindcss.enable = true;
         tinymist.enable = true;
+        ty.enable = true;
         typos_lsp.enable = true;
         vtsls.enable = true;
         yamlls.enable = true;
