@@ -82,11 +82,11 @@
     };
 
     omp = {
-      url = "github:can1357/oh-my-pi/v18.3.0";
+      url = "github:can1357/oh-my-pi/v18.15.0";
     };
 
     opencode = {
-      url = "github:anomalyco/opencode/v2.0.29";
+      url = "github:anomalyco/opencode/v2.2.5";
     };
 
     claude-desktop = {

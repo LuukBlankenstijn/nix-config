@@ -11,13 +11,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "claudebar";
-  version = "0.8.1";
+  version = "0.10.6";
 
   src = fetchFromGitHub {
     owner = "mryll";
     repo = "claudebar";
     rev = "v${finalAttrs.version}";
-    sha256 = "137fabzxlzw7vvmkqmwp4ln9wbhmpxn4w3aiabdl2imhfsvf9vxm";
+    hash = "sha256-K9072poFrxod6vVXjEoG+420cvD+6IzkWeRiqS1qw+c=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

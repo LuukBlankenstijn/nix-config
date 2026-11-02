@@ -11,7 +11,7 @@ let
       args:
       pkgs.stdenvNoCC.mkDerivation (
         if builtins.isAttrs args && args.pname == "pi-node_modules" then
-          args // { outputHash = "sha256-eqbLvdkjUlTsp0kWbnAdHIHLQaJ0eokMWFVNUpP+uN8="; }
+          args // { outputHash = "sha256-p2422OCQ2fqNnkzpKXBQW5KXkga1/2jHc9yOYkA3VWc="; }
         else
           args
       );
