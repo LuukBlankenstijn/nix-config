@@ -35,6 +35,10 @@
     networking = {
       enable = true;
       wifi.enable = true;
+      tailscale = {
+        enable = true;
+        loginServer = "https://headscale.dcc-infra.nl";
+      };
       netbird = {
         enable = true;
         profiles = {
@@ -210,6 +214,7 @@
         glab
         claude-code
         eduvpn-client
+        remmina
       ];
 
       extraGroups = [ "dialout" ];

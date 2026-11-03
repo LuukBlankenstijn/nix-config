@@ -228,6 +228,14 @@ in
         router.enable = mkEnableOption "WireGuard tunnel to the home router (wg-router)";
         gewis.enable = mkEnableOption "WireGuard tunnel to the GEWIS router (wg-gewis)";
       };
+      tailscale = {
+        enable = mkEnableOption "Tailscale mesh VPN";
+        loginServer = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "Optional login server for Tailscale (e.g. Headscale URL)";
+        };
+      };
       netbird = {
         enable = mkEnableOption "Netbird mesh VPN";
         ui.enable = mkOption {
