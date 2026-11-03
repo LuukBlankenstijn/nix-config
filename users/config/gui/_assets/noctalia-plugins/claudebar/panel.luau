@@ -50,13 +50,18 @@ local function render()
 
   panel.render(ui.column({ gap = 14, padding = 16 }, {
     ui.row({ gap = 8, align = "center" }, {
-      ui.glyph({ name = "brain", size = 18 }),
+      ui.glyph({ name = data.stale and "clock-pause" or "brain", size = 18 }),
       ui.label({ text = data.plan, fontWeight = "bold" }),
     }),
     ui.separator({}),
     meter("Session", data.sessionPct, data.sessionElapsed, data.sessionReset),
     meter("Weekly", data.weeklyPct, data.weeklyElapsed, data.weeklyReset),
-    ui.row({ align = "center" }, {
+    ui.row({ gap = 8, align = "center" }, {
+      ui.label({
+        text = data.stale and "Showing cached data" or "",
+        fontSize = 12,
+        color = "error",
+      }),
       ui.spacer({ flexGrow = 1 }),
       ui.button({ text = "Refresh", variant = "outline", controlSize = "sm", onClick = "onRefresh" }),
     }),

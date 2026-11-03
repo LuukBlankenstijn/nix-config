@@ -3,7 +3,7 @@ local M = {}
 local ARGV = {
   "claudebar",
   "--format",
-  "{plan}|{session_pct}|{session_reset}|{session_elapsed}|{weekly_pct}|{weekly_reset}|{weekly_elapsed}",
+  "{plan}|{session_pct}|{session_reset}|{session_elapsed}|{weekly_pct}|{weekly_reset}|{weekly_elapsed}|",
 }
 
 local function stripMarkup(text)
@@ -41,8 +41,8 @@ function M.fetch(callback)
     end
 
     local fields = split(stripMarkup(decoded.text))
-    if #fields < 7 then
-      callback(nil, "claudebar returned " .. #fields .. " fields, expected 7")
+    if #fields < 8 then
+      callback(nil, "claudebar returned " .. #fields .. " fields, expected 8")
       return
     end
 
@@ -54,6 +54,7 @@ function M.fetch(callback)
       weeklyPct = tonumber(fields[5]) or 0,
       weeklyReset = fields[6],
       weeklyElapsed = tonumber(fields[7]) or 0,
+      stale = fields[8] ~= "",
     })
   end)
 end

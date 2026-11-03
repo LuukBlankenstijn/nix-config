@@ -23,6 +23,12 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ makeWrapper ];
   dontBuild = true;
 
+  postPatch = ''
+    substituteInPlace claudebar \
+      --replace-fail "'try (.extra_usage != null) catch false' <<< \"\$usage\" 2>/dev/null)" \
+        "'try (((.extra_usage.monthly_limit | numbers) // 0) > 0 or ((.extra_usage.used_credits | numbers) // 0) > 0) catch false' <<< \"\$usage\" 2>/dev/null)"
+  '';
+
   installPhase = ''
     runHook preInstall
     install -Dm755 claudebar $out/bin/claudebar
