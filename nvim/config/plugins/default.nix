@@ -4,6 +4,7 @@
     ./buffer-line.nix
     ./codesettings.nix
     ./conform.nix
+    ./direnv.nix
     ./flash.nix
     ./fzf-lua.nix
     ./gitsigns.nix

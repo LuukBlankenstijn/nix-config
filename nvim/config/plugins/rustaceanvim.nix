@@ -1,4 +1,6 @@
 {
+  dependencies.rust-analyzer.packageFallback = true;
+
   plugins.rustaceanvim = {
     enable = true;
     settings = {

@@ -125,7 +125,7 @@
         }
       ];
 
-      servers = {
+      servers = lib.mapAttrs (_: server: server // { packageFallback = true; }) {
         buf_ls.enable = true;
         clangd.enable = true;
         docker_compose_language_server.enable = true;
