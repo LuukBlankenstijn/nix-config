@@ -28,6 +28,84 @@ let
     ++ lib.optional (installed "spotify") "spotify"
     ++ lib.optional (installed "bitwarden-desktop") "bitwarden";
 
+  lockTextColor = "#F2F3F4BF";
+  lockLineHeight = 1.3;
+
+  logicalSize =
+    output:
+    let
+      scale = output.scale or 1.0;
+      rotated = builtins.elem (output.transform.rotation or 0) [
+        90
+        270
+      ];
+      width = output.mode.width / scale;
+      height = output.mode.height / scale;
+    in
+    if rotated then
+      {
+        width = height;
+        height = width;
+      }
+    else
+      { inherit width height; };
+
+  lockWidget =
+    output: size: attrs:
+    {
+      inherit output;
+      placement_width = size.width;
+      placement_height = size.height;
+      cx = size.width / 2;
+    }
+    // attrs;
+
+  lockClock =
+    {
+      output,
+      size,
+      format,
+      fontSize,
+      offsetAboveCenter,
+    }:
+    lockWidget output size {
+      type = "clock";
+      cy = size.height / 2 - offsetAboveCenter;
+      box_width = size.width;
+      box_height = fontSize * lockLineHeight;
+      settings = {
+        inherit format;
+        color = lockTextColor;
+        background = false;
+        center_text = true;
+      };
+    };
+
+  lockWidgets = lib.concatMapAttrs (
+    output: outputCfg:
+    let
+      size = logicalSize outputCfg;
+    in
+    {
+      "lockscreen-date@${output}" = lockClock {
+        inherit output size;
+        format = "{:%A, %B %d}";
+        fontSize = 22;
+        offsetAboveCenter = 300;
+      };
+      "lockscreen-time@${output}" = lockClock {
+        inherit output size;
+        format = "{:%-I:%M}";
+        fontSize = 95;
+        offsetAboveCenter = 200;
+      };
+      "lockscreen-login-box@${output}" = lockWidget output size {
+        type = "login_box";
+        cy = size.height - 182;
+      };
+    }
+  ) userCfg.desktop.niri.outputs;
+
   msg = args: {
     command = [
       (lib.getExe config.programs.noctalia.package)
@@ -134,6 +212,11 @@ in
         default.path = "${userCfg.desktop.wallpaper}";
       };
       lockscreen.enabled = true;
+
+      lockscreen_widgets = {
+        enabled = true;
+        widget = lockWidgets;
+      };
 
       calendar = {
         enabled = true;
@@ -267,6 +350,13 @@ in
       sessions = [ "niri" ];
     };
   };
+
+  home.activation.resetNoctaliaLockscreenLayout = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    noctaliaSettings="${config.xdg.stateHome}/noctalia/settings.toml"
+    if [ -f "$noctaliaSettings" ]; then
+      run ${lib.getExe pkgs.yq-go} -i -p toml -o toml 'del(.lockscreen_widgets)' "$noctaliaSettings"
+    fi
+  '';
 
   gtk = {
     gtk3.extraCss = ''@import url("noctalia.css");'';
