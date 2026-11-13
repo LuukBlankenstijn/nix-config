@@ -4,6 +4,7 @@
     clipboard = "unnamedplus";
     confirm = true;
     undofile = true;
+    exrc = true;
     undolevels = 10000;
 
     cursorline = true;

@@ -12,6 +12,7 @@
     ./lspconfig.nix
     ./lualine.nix
     ./markdown-preview.nix
+    ./markview.nix
     ./mini-pairs.nix
     ./neo-tree.nix
     ./neotest.nix
