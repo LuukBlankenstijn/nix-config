@@ -14,6 +14,11 @@ lib.mkIf osConfig.cfg.userConfig.shell.enable {
       options = [ "--cmd cd" ];
     };
 
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     direnv = {
       enable = true;
       enableZshIntegration = true;
