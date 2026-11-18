@@ -13,7 +13,7 @@ let
 
     src = pkgs.fetchurl {
       url = "https://github.com/can1357/oh-my-pi/releases/download/v${finalAttrs.version}/omp-linux-x64";
-      hash = "sha256-ZzfuJBVVWjZWzHuJwU0cJcGGWO5MD9T3MJcFFJzLew8=";
+      hash = "sha256-gKaSxa25xxEkuxHne9fts8+Pu6tpgNsyBty2pMspBbU=";
     };
 
     dontUnpack = true;
@@ -60,6 +60,7 @@ let
       platforms = [ "x86_64-linux" ];
     };
   });
+  agentBridge = inputs.agent-bridge.packages.${pkgs.stdenv.hostPlatform.system}.default;
   hasDefaultRole = ompCfg.modelRoles ? default;
 in
 {
@@ -72,6 +73,16 @@ in
         message = "cfg.users.${osConfig.cfg.user}.omp.modelRoles needs a default role";
       }
     ];
+
+    home.packages = [ agentBridge ];
+
+    home.file.".omp/agent/.mcp.json".text = builtins.toJSON {
+      mcpServers.agent-bridge = {
+        type = "stdio";
+        command = lib.getExe agentBridge;
+        args = [ "mcp" ];
+      };
+    };
 
     programs.omp = {
       enable = true;
@@ -97,6 +108,7 @@ in
         task.agentAdvisor.task = "on";
         composer.shape = "borderless";
         dev.autoqaConsent = "granted";
+        extensions = [ "${agentBridge}/lib/agent-bridge/dist/src/omp-extension.js" ];
       } ompCfg.extraSettings;
     };
   };

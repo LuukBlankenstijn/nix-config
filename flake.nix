@@ -82,7 +82,12 @@
     };
 
     omp = {
-      url = "github:can1357/oh-my-pi/v18.15.0";
+      url = "github:can1357/oh-my-pi/v18.22.2";
+    };
+
+    agent-bridge = {
+      url = "github:LuukBlankenstijn/agent-bridge";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     opencode = {

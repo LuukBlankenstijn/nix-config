@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "agent-bridge": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795021666,
+        "narHash": "sha256-qFm2QDb/qgrWGd9nArtOW0niQraoMM73wyhZZgu8Snw=",
+        "owner": "LuukBlankenstijn",
+        "repo": "agent-bridge",
+        "rev": "b65b6047e9c116a58f08a7a696e9376e66ae3357",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LuukBlankenstijn",
+        "repo": "agent-bridge",
+        "type": "github"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -484,11 +504,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792664215,
-        "narHash": "sha256-89U++Pnz9kb8a5Vdx8xAq9z3V172S7A9Surz8mgjGrM=",
+        "lastModified": 1793527794,
+        "narHash": "sha256-ZCz0zE+Lgb3hBn+u3n39Txegdw3jI/SVkQjR+TjClh4=",
         "owner": "ryoppippi",
         "repo": "nix-bun",
-        "rev": "0db08e3d1db83272822209ab82f34b399080494e",
+        "rev": "4170f2a531122ac75aa45d823bd69e6e9a77563f",
         "type": "github"
       },
       "original": {
@@ -659,11 +679,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1786384358,
-        "narHash": "sha256-RzPPiWeUtuvymnpuEWsdtzli5w4kjZs49FqEs3/1u+I=",
+        "lastModified": 1794042290,
+        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2fcb964de67fcf60b43471c55d5d99e61a9ccb5a",
+        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
         "type": "github"
       },
       "original": {
@@ -759,16 +779,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1793540717,
-        "narHash": "sha256-jDs0qxdslo7ocLAXkqS0FRxNn/puBzT62YIppDqakL0=",
+        "lastModified": 1794963948,
+        "narHash": "sha256-kTiPoeS3hYBrjnzTvDRfWeWkqI8ruKslaDcARjEZPeE=",
         "owner": "can1357",
         "repo": "oh-my-pi",
-        "rev": "3fedf8d53267e32a6d7521ce725fdcc4a36fdc67",
+        "rev": "e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63",
         "type": "github"
       },
       "original": {
         "owner": "can1357",
-        "ref": "v18.15.0",
+        "ref": "v18.22.2",
         "repo": "oh-my-pi",
         "type": "github"
       }
@@ -817,6 +837,7 @@
     },
     "root": {
       "inputs": {
+        "agent-bridge": "agent-bridge",
         "claude-desktop": "claude-desktop",
         "comin": "comin",
         "disko": "disko",
@@ -847,11 +868,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791276535,
-        "narHash": "sha256-iwqAmHTX1IgzTumJR3JayNAQAo5xEmmOuGzB6b2pT/Q=",
+        "lastModified": 1794127728,
+        "narHash": "sha256-QhZ104DwHvvMxWxmI13zdppISE27UmdqhRI2VwBg/yU=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "b962e5d0c8cd97196c6a882d659fe451b52ad989",
+        "rev": "51c6dc40d18552701f7c5c62e3f7a5fc899f7132",
         "type": "github"
       },
       "original": {
