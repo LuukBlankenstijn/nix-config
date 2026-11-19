@@ -92,7 +92,7 @@ in
           description = "Session pre-selected in the greeter's picker. This is the picker label, not the desktop file id — list them with `noctalia-greeter sessions` (`Hyprland`, `Niri`). Null lets the greeter remember the last pick.";
         };
       };
-      audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, JACK, PulseAudio compat)";
+      audio.enable = mkEnableOption "audio stack (PipeWire, ALSA, PulseAudio compat)";
       printing.enable = mkEnableOption "printing (CUPS, with Avahi for network printer discovery)";
       hardware.enable = mkEnableOption "desktop hardware support (firmware, GPU drivers)";
       niri.enable = mkEnableOption "niri scrolling-tiling compositor as a second session (per-user config lives under users.<name>.desktop.niri)";
