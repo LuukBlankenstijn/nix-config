@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795037897,
-        "narHash": "sha256-4BJOBxDnsfLPlCkeEcEZ+bIkN7HeFyf3Skwdd2YU5x0=",
+        "lastModified": 1795073325,
+        "narHash": "sha256-O2jFQbgPY4Hx6WUjJJWP9CKME1xu21pEBA51sXTaXek=",
         "owner": "LuukBlankenstijn",
         "repo": "agent-bridge",
-        "rev": "eb5e0f7f2c2bd931d6d84ae60aa9fe0769fcbe40",
+        "rev": "2e7a4b9b5285b661dea2f993dd2349ffb5b7ca57",
         "type": "github"
       },
       "original": {
@@ -779,16 +779,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794963948,
-        "narHash": "sha256-kTiPoeS3hYBrjnzTvDRfWeWkqI8ruKslaDcARjEZPeE=",
+        "lastModified": 1795044896,
+        "narHash": "sha256-/yL4l34pfboulZOlsnetYFQHtJk3jPNbVluWtZXNbOY=",
         "owner": "can1357",
         "repo": "oh-my-pi",
-        "rev": "e1ae2cc998efd1ca151b46ebefc0e0dab6c23c63",
+        "rev": "57771ae562b9345e0579bceb2d68d585e3e6927e",
         "type": "github"
       },
       "original": {
         "owner": "can1357",
-        "ref": "v18.22.2",
+        "ref": "v19.0.0",
         "repo": "oh-my-pi",
         "type": "github"
       }

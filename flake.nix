@@ -82,7 +82,7 @@
     };
 
     omp = {
-      url = "github:can1357/oh-my-pi/v18.22.2";
+      url = "github:can1357/oh-my-pi/v19.0.0";
     };
 
     agent-bridge = {
