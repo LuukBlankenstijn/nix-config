@@ -49,6 +49,7 @@ let
     lib.concatMap (i: [
       (lib.nameValuePair "Mod+${toString i}" { action.focus-workspace = i; })
       (lib.nameValuePair "Mod+Shift+${toString i}" { action.move-window-to-workspace = i; })
+      (lib.nameValuePair "Mod+Alt+${toString i}" { action.move-column-to-workspace = i; })
     ]) (lib.range 1 9)
   );
 
@@ -234,33 +235,33 @@ in
       workspaceBinds
       (directional "Mod" {
         left = "focus-column-left";
-        down = "focus-window-or-workspace-down";
-        up = "focus-window-or-workspace-up";
+        down = "focus-window-down";
+        up = "focus-window-up";
         right = "focus-column-right";
       })
       (directional "Mod+Shift" {
         left = "move-column-left";
-        down = "move-window-down-or-to-workspace-down";
-        up = "move-window-up-or-to-workspace-up";
+        down = "move-window-down";
+        up = "move-window-up";
         right = "move-column-right";
       })
       (directional "Mod+Ctrl" {
         left = "focus-monitor-left";
-        down = "focus-monitor-down";
-        up = "focus-monitor-up";
+        down = "focus-workspace-down";
+        up = "focus-workspace-up";
         right = "focus-monitor-right";
       })
       (directional "Mod+Ctrl+Shift" {
-        left = "move-column-to-monitor-left";
-        down = "move-column-to-monitor-down";
-        up = "move-column-to-monitor-up";
-        right = "move-column-to-monitor-right";
+        left = "move-workspace-to-monitor-left";
+        down = "move-workspace-down";
+        up = "move-workspace-up";
+        right = "move-workspace-to-monitor-right";
       })
       (directional "Mod+Alt" {
-        left = "move-workspace-to-monitor-left";
-        down = "move-workspace-to-monitor-down";
-        up = "move-workspace-to-monitor-up";
-        right = "move-workspace-to-monitor-right";
+        left = "move-column-to-monitor-left";
+        down = "move-column-to-workspace-down";
+        up = "move-column-to-workspace-up";
+        right = "move-column-to-monitor-right";
       })
       {
         "Mod+C" = act "close-window";
@@ -269,6 +270,7 @@ in
         "Mod+F" = act "maximize-column";
         "Mod+Shift+F" = act "fullscreen-window";
         "Mod+Ctrl+F" = act "expand-column-to-available-width";
+        "Mod+Ctrl+Shift+F" = act "maximize-window-to-edges";
         "Mod+T" = act "toggle-column-tabbed-display";
         "Mod+O" = act "toggle-overview";
 
@@ -286,21 +288,23 @@ in
         "Mod+Slash" = act "expel-window-from-column";
 
         "Mod+R" = act "switch-preset-column-width";
-        "Mod+Ctrl+R" = act "switch-preset-window-height";
+        "Mod+Ctrl+R" = act "switch-preset-column-width-back";
         "Mod+Minus".action.set-column-width = "-10%";
         "Mod+Equal".action.set-column-width = "+10%";
+        "Mod+Shift+R" = act "switch-preset-window-height";
         "Mod+Shift+Minus".action.set-window-height = "-10%";
         "Mod+Shift+Equal".action.set-window-height = "+10%";
+        "Mod+Shift+0" = act "reset-window-height";
         "Mod+Shift+C" = act "center-column";
+        "Mod+Ctrl+C" = act "center-visible-columns";
 
         "Mod+Home" = act "focus-column-first";
         "Mod+End" = act "focus-column-last";
-        "Mod+Ctrl+Home" = act "move-column-to-first";
-        "Mod+Ctrl+End" = act "move-column-to-last";
+        "Mod+Shift+Home" = act "move-column-to-first";
+        "Mod+Shift+End" = act "move-column-to-last";
 
         "Mod+Tab" = act "focus-window-previous";
-        "Mod+Shift+Page_Down" = act "move-workspace-down";
-        "Mod+Shift+Page_Up" = act "move-workspace-up";
+        "Mod+Ctrl+Tab" = act "focus-workspace-previous";
         "Mod+WheelScrollDown" = wheelBind "focus-workspace-down";
         "Mod+WheelScrollUp" = wheelBind "focus-workspace-up";
 
@@ -313,7 +317,12 @@ in
         "Ctrl+Print" = act "screenshot-screen";
         "Alt+Print" = act "screenshot-window";
 
-        "Mod+M".action.quit = [ ];
+        "Mod+Shift+Escape" = {
+          action.toggle-keyboard-shortcuts-inhibit = [ ];
+          allow-inhibiting = false;
+        };
+        "Mod+Shift+P" = act "power-off-monitors";
+        "Mod+Shift+M".action.quit = [ ];
       }
       (mediaBind "Play" [ "play-pause" ])
       (mediaBind "Pause" [ "play-pause" ])
