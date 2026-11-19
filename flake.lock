@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795073325,
-        "narHash": "sha256-O2jFQbgPY4Hx6WUjJJWP9CKME1xu21pEBA51sXTaXek=",
+        "lastModified": 1795080589,
+        "narHash": "sha256-kw5lY1qI85E0WMcb73gfK4bFvLRVvhBV5hCZCICjpD8=",
         "owner": "LuukBlankenstijn",
         "repo": "agent-bridge",
-        "rev": "2e7a4b9b5285b661dea2f993dd2349ffb5b7ca57",
+        "rev": "e5c0676c8b0b33639c00509a8ad40fbbfe7d1f64",
         "type": "github"
       },
       "original": {
