@@ -234,14 +234,14 @@ in
       workspaceBinds
       (directional "Mod" {
         left = "focus-column-left";
-        down = "focus-window-down";
-        up = "focus-window-up";
+        down = "focus-window-or-workspace-down";
+        up = "focus-window-or-workspace-up";
         right = "focus-column-right";
       })
       (directional "Mod+Shift" {
         left = "move-column-left";
-        down = "move-window-down";
-        up = "move-window-up";
+        down = "move-window-down-or-to-workspace-down";
+        up = "move-window-up-or-to-workspace-up";
         right = "move-column-right";
       })
       (directional "Mod+Ctrl" {
@@ -299,8 +299,6 @@ in
         "Mod+Ctrl+End" = act "move-column-to-last";
 
         "Mod+Tab" = act "focus-window-previous";
-        "Mod+Page_Down" = act "focus-workspace-down";
-        "Mod+Page_Up" = act "focus-workspace-up";
         "Mod+Shift+Page_Down" = act "move-workspace-down";
         "Mod+Shift+Page_Up" = act "move-workspace-up";
         "Mod+WheelScrollDown" = wheelBind "focus-workspace-down";
